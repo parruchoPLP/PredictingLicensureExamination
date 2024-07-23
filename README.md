@@ -25,3 +25,13 @@ To run the project, follow these steps:
     ```sh
     python app.py
     ```
+
+7. Go to Thesis laravel directory and open terminal.
+   
+8. Start laravel server and tailwind:
+    ```sh
+    php artisan serve
+    ```
+    ```sh
+    npm run dev
+    ```
