@@ -58,4 +58,15 @@ class FileController extends Controller
 
         return view('filemanagement', compact('data'));
     }
+
+    public function report($filename)
+    {
+        $path = storage_path('app/public/uploads/' . $filename);
+
+        // Load the file and parse its contents
+        $data = Excel::toArray(new DataImport, $path);
+        $headers = !empty($data[0]) ? array_keys($data[0][0]) : [];
+
+        return view('report', compact('data', 'headers', 'filename'));
+    }
 }
