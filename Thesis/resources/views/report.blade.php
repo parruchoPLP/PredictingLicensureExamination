@@ -58,9 +58,9 @@
                     @php
                         $lastValue = end($row);
                     @endphp
-                    <tr class="border-b group hover:{{ $lastValue == 'Pass' ? 'bg-emerald-100' : ($lastValue == 'Fail' ? 'bg-red-100' : '') }}">
+                    <tr class="border-b group {{ $lastValue == 'Pass' ? 'hover:bg-emerald-100' : ($lastValue == 'Fail' ? 'hover:bg-red-100' : '') }}">
                         @foreach($row as $key => $value)
-                        <td class="py-2 px-4 whitespace-nowrap @if($loop->first) sticky left-0 z-10 bg-white {{ $lastValue == 'Pass' ? 'group-hover:bg-emerald-100' : ($lastValue == 'Fail' ? 'group-hover:bg-red-100' : '') }} @endif @if($loop->last) sticky right-0 z-10 bg-white {{ $key == 'predicted_licensure_outcome' && $value == 'Pass' ? 'bg-emerald-100 text-black' : ($key == 'predicted_licensure_outcome' && $value == 'Fail' ? 'bg-red-100 text-black' : '') }}@endif">{{$value}}</td>
+                        <td class="py-2 px-4 whitespace-nowrap @if($loop->first) sticky left-0 z-10 bg-white {{ $lastValue == 'Pass' ? 'group-hover:bg-emerald-100' : ($lastValue == 'Fail' ? 'group-hover:bg-red-100' : '') }} @endif @if($loop->last) sticky right-0 z-10 {{ $key == 'predicted_licensure_outcome' && $value == 'Pass' ? 'bg-emerald-100 text-black' : ($key == 'predicted_licensure_outcome' && $value == 'Fail' ? 'bg-red-100 text-black' : '') }}@endif">{{$value}}</td>
                         @endforeach
                     </tr>
                     @endforeach
