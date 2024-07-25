@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UpdateProfileRequest;
 
 class UserController extends Controller
 {
@@ -39,8 +40,9 @@ class UserController extends Controller
             $user->password = bcrypt($request->input('password'));
         }
         
+        /** @var \App\Models\User $user **/
         $user->save();
 
-        return redirect()->route('profile.show')->with('success_title', 'Profile Updated')->with('success_info', 'Your profile has been updated successfully.');
+        return back()->with('success_title', 'Profile Updated')->with('success_info', 'Your profile has been updated successfully.');
     }
 }
