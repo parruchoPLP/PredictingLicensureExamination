@@ -10,25 +10,33 @@ To run the project, follow these steps:
     ```sh
     pip install flask
     ```
-
-4. Go to project directory, open terminal and enter the following:
+    
+3. Install the necessary python libraries through pip:
    ```sh
-   composer install
+   pip install pandas scikit-learn joblib numpy matplotlib
+   ```
+
+4. Make sure gd extension is enabled in the php configuration file (php.ini)
+
+5. Open the terminal and do the following:
+   ```sh
+   cd Thesis
+   composer update
    cp .env.example .env
    php artisan key:generate
    npm install -D tailwindcss postcss autoprefixer
    ```
 
-5. Go to ThesisPredictiveModel directory and open terminal.
-
-6. Start the flask development server:
+6. Open a new terminal to start the flask development server:
     ```sh
-    python app.py
+    cd ThesisPredictiveModel
+    py app.py
     ```
 
-7. Go to Thesis laravel directory and open terminal.
-   
-8. Start laravel server and tailwind:
+8. Open a new terminal to start laravel and npm development server:
+    ```sh
+    cd Thesis
+    ```
     ```sh
     php artisan serve
     ```
