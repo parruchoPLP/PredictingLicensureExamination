@@ -3,6 +3,15 @@
 @section('title', 'Login')
 
 @section('content')
+@if (session('success_title') && session('success_info'))
+    <x-success_alert 
+        :successTitle="session('success_title')" 
+        :successInfo="session('success_info')" />
+@endif
+
+@if ($errors->any())
+    <x-error_alert />
+@endif
 <section class="bg-slate-100 flex justify-center items-center min-h-screen font-arial">
     <div class="bg-white p-12 rounded-xl shadow-lg">
         <p class="font-bold text-4xl text-emerald-600 text-center mb-3">Welcome!</p>

@@ -3,7 +3,7 @@
 @section('title', 'File Management')
 
 @section('content')
-<section id="report" class="bg-slate-100 min-h-screen py-36 px-24 font-arial">
+<section id="report" class="bg-slate-100 min-h-screen py-20 px-20 font-arial ml-60">
     <div id="files" class="bg-white rounded-xl shadow-lg p-8">
         <p class="font-bold text-2xl text-slate-800"> <i class="fas fa-folder mr-6"></i> Your files </p> 
         @php
@@ -77,7 +77,7 @@
         <form action="{{ route('upload') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="file" name="file" required><br>
-            <button type="submit" class="mt-8 p-4 bg-emerald-200 rounded-lg font-bold hover:bg-emerald-600 hover:text-slate-200">Upload</button>
+            <button type="submit" class="mt-8 py-4 px-6 bg-emerald-200 rounded-lg font-bold hover:bg-emerald-600 hover:text-slate-200">Upload</button>
         </form>
     </div>
 </section>

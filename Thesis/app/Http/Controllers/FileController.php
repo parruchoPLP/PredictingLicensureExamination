@@ -39,13 +39,13 @@ class FileController extends Controller
 
             // Handle the response
             if ($response->successful()) {
-                return back()->with(['success' => 'File uploaded successfully', 'full_path' => $fullPath]);
+                return back()->with(['success_title' => 'Success', 'success_info' => 'File uploaded successfully', 'full_path' => $fullPath]);
             } else {
                 return back()->withErrors(['failed_upload' => 'Error! Check the file format and attributes.']);
             }
         }
 
-        return response()->json(['error' => 'No file uploaded'], 400);
+        return back()->withErrors(['failed_upload' => 'No file uploaded']);
     }
 
     public function showFiles()
@@ -81,10 +81,10 @@ class FileController extends Controller
         // Check if file exists and delete it
         if (File::exists($filePath)) {
             File::delete($filePath);
-            return redirect()->back()->with('success', 'File deleted successfully!');
+            return redirect()->back()->with(['success_title' => 'Delete Success', 'success_info' => 'File deleted successfully!']);
         }
 
-        return redirect()->back()->with('error', 'File not found.');
+        return redirect()->back()->withErrors(['failed_upload' => 'No file uploaded']);
     }
 
     public function downloadFile(Request $request)
@@ -101,6 +101,6 @@ class FileController extends Controller
             return $fileSystem->download($filePath);
         }
 
-        return redirect()->back()->with('error', 'File not found');
+        return redirect()->back()->withErrors(['failed_download' => 'File not found.']);
     }
 }

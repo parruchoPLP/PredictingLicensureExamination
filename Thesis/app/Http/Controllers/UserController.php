@@ -15,7 +15,7 @@ class UserController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect('/dashboard');
+            return redirect('/dashboard')->with(['success_title' => 'Success', 'success_info' => 'Logged in successfully']);
         } else {
             return back()->withErrors(['error' => 'Invalid credentials. Please try again.'])->withInput($request->only('username'));
         }
@@ -26,6 +26,6 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('/login')->with(['success_title' => 'Success', 'success_info' => 'Logged out successfully']);
     }
 }
