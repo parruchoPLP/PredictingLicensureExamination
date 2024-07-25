@@ -27,8 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     });
-    Route::get('/analytics', function () {
-        return view('analytics');
+    Route::get('/acctmanagement', function () {
+        return view('acctmanagement');
     });
     Route::get('/', function () {
         return view('dashboard');
@@ -37,4 +37,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload', [FileController::class, 'upload'])->name('upload');
     Route::delete('/delete-file', [FileController::class, 'deleteFile'])->name('delete.file');
     Route::get('/download-file', [FileController::class, 'downloadFile'])->name('download.file');
+    Route::get('/profile', [UserController::class, 'show'])->name('profile.show');
+    Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
 });

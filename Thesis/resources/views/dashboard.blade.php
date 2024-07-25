@@ -3,34 +3,25 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<section id="dashboard" class="bg-slate-100 min-h-screen py-20 px-20 font-arial ml-60">
-    <div class="container mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div class="bg-white p-4 rounded shadow relative">
-                <canvas id="averagePredictionAccuracyChart" style="max-width: 300px; max-height: 300px;"></canvas>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <h2 class="text-2xl font-bold">Average Prediction Accuracy</h2>
-                </div>
-            </div>
-            <div class="bg-white p-4 rounded shadow relative">
-                <canvas id="overallPassingRateChart" style="max-width: 300px; max-height: 300px;"></canvas>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <h2 class="text-2xl font-bold">Overall Passing Rate</h2>
-                </div>
-            </div>
-            <div class="bg-white p-4 rounded shadow flex items-center justify-center">
-                <div>
-                    <h2 class="text-3xl font-bold">Top Licensure Outcome Predictor</h2>
-                    <p id="topPredictor" class="text-2xl">Placeholder Predictor</p>
-                </div>
-            </div>
+<section id="dashboard" class="bg-slate-100 min-h-screen px-32 py-24 font-arial">
+    <h1 class="text-4xl font-bold"> Welcome, Dean! </h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
+        <div class="bg-cyan-50 p-10 rounded-xl shadow-lg flex items-center justify-center">
+            <canvas id="averagePredictionAccuracyChart" class="max-w-[130px] max-h-[130px]"></canvas>
+            <h2 class="text-2xl font-bold ml-8">Average Prediction Accuracy</h2>
         </div>
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold">Feature Importance</h2>
+        <div class="bg-emerald-50 p-10 rounded-xl shadow-lg flex items-center justify-center">
+            <canvas id="overallPassingRateChart" class="max-w-[130px] max-h-[130px]"></canvas>
+            <h2 class="text-2xl font-bold ml-8">Overall Passing <br> Rate</h2>
         </div>
-        <div class="bg-white p-4 rounded shadow">
-            <canvas id="featureImportanceChart" style="max-width: 100%;"></canvas>
+        <div class="bg-lime-50 p-10 rounded-xl shadow-lg flex flex-col justify-center">
+            <h2 class="text-2xl font-bold">Top Licensure Outcome Predictor</h2>
+            <p id="topPredictor" class="text-2xl mt-3">Placeholder Predictor</p>
         </div>
+    </div>
+    <h2 class="text-2xl font-bold text-center mt-14 mb-8">Feature Importance</h2>
+    <div class="bg-white p-8 rounded-xl shadow-lg relative">
+        <canvas id="featureImportanceChart" style="max-width: 100%;"></canvas>
     </div>
 </section>
 @endsection
@@ -48,6 +39,28 @@
             values: [0.25, 0.20, 0.15, 0.10, 0.30] // Example values
         };
 
+        // Custom plugin to display text in the center of the doughnut chart
+        const centerTextPlugin = {
+            id: 'centerText',
+            afterDraw: (chart) => {
+                if (chart.config.type === 'doughnut') {
+                    const { width, height, ctx } = chart;
+                    ctx.restore();
+                    const fontSize = (height / 114).toFixed(2);
+                    ctx.font = `bold ${fontSize}em sans-serif`;
+                    ctx.textBaseline = 'middle';
+                    const text = `${chart.data.datasets[0].data[0]}%`;
+                    const textX = Math.round((width - ctx.measureText(text).width) / 2);
+                    const textY = height / 2;
+                    ctx.fillText(text, textX, textY);
+                    ctx.save();
+                }
+            }
+        };
+
+        // Register the plugin
+        Chart.register(centerTextPlugin);
+
         // Average Prediction Accuracy Doughnut Chart
         const ctx1 = document.getElementById('averagePredictionAccuracyChart').getContext('2d');
         new Chart(ctx1, {
@@ -56,7 +69,7 @@
                 labels: ['Accuracy', 'Remaining'],
                 datasets: [{
                     data: [averagePredictionAccuracy, 100 - averagePredictionAccuracy],
-                    backgroundColor: ['#4CAF50', '#E0E0E0']
+                    backgroundColor: ['#22D3EE', '#A5F3FC']
                 }]
             },
             options: {
@@ -71,6 +84,10 @@
                                 return context.label + ': ' + context.raw + '%';
                             }
                         }
+                    },
+                    centerText: {
+                        display: true,
+                        text: `${averagePredictionAccuracy}%`
                     }
                 }
             }
@@ -84,7 +101,7 @@
                 labels: ['Passing Rate', 'Remaining'],
                 datasets: [{
                     data: [overallPassingRate, 100 - overallPassingRate],
-                    backgroundColor: ['#2196F3', '#E0E0E0']
+                    backgroundColor: ['#34D399', '#A7F3D0']
                 }]
             },
             options: {
@@ -99,6 +116,10 @@
                                 return context.label + ': ' + context.raw + '%';
                             }
                         }
+                    },
+                    centerText: {
+                        display: true,
+                        text: `${overallPassingRate}%`
                     }
                 }
             }
@@ -116,7 +137,7 @@
                 datasets: [{
                     label: 'Feature Importance',
                     data: featureImportanceData.values,
-                    backgroundColor: '#FF9800'
+                    backgroundColor: '#99F6E4'
                 }]
             },
             options: {
@@ -131,6 +152,9 @@
                                 return context.label + ': ' + (context.raw * 100).toFixed(2) + '%';
                             }
                         }
+                    },
+                    centerText: {
+                        display: false
                     }
                 },
                 scales: {

@@ -28,4 +28,19 @@ class UserController extends Controller
 
         return redirect('/login')->with(['success_title' => 'Success', 'success_info' => 'Logged out successfully']);
     }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $user = auth()->user();
+        $user->name = $request->input('name');
+        $user->username = $request->input('username');
+        
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+        
+        $user->save();
+
+        return redirect()->route('profile.show')->with('success_title', 'Profile Updated')->with('success_info', 'Your profile has been updated successfully.');
+    }
 }

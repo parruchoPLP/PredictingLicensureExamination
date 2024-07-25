@@ -32,11 +32,6 @@
                     <i class="fas fa-eye text-slate-800 hover:text-emerald-600"></i>
                 </button>
             </div>
-            @if($errors->any())
-                <div class="text-red-600 mb-4">
-                    {{ $errors->first() }}
-                </div>
-            @endif
             <div>
                 <button type="submit" name="submit" class="bg-emerald-400 text-slate-900 font-bold p-4 px-6 text-md rounded-full mt-5 min-w-[350px] hover:bg-emerald-600 hover:text-slate-200">Log in</button>
             </div>
@@ -44,20 +39,25 @@
     </div>
 </section>
 @endsection
+
 @push('scripts')
 <script>
-    document.getElementById('togglePassword').addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = document.getElementById('togglePassword');
         const passwordField = document.getElementById('password');
-        const icon = this.querySelector('i');
-        if (passwordField.type === 'password') {
-            passwordField.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            passwordField.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
+        const icon = togglePassword.querySelector('i');
+        
+        togglePassword.addEventListener('click', function () {
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
     });
 </script>
 @endpush

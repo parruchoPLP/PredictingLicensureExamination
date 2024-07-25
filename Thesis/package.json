@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "chart.js": "^4.4.3",
+        "chartjs": "^0.3.24",
         "chartjs-plugin-datalabels": "^2.2.0"
     }
 }

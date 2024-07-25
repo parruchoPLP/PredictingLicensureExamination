@@ -6,7 +6,7 @@
 @if ($errors->any())
     <x-error_alert />
 @endif
-<section id="report" class="bg-slate-100 min-h-screen py-20 px-20 font-arial ml-60">
+<section id="report" class="bg-slate-100 min-h-screen px-32 py-24 font-arial">
     <div class="bg-white rounded-xl shadow-lg p-8">
         <p class="text-2xl text-slate-800 font-bold"> 
             <i class="fas fa-table mr-6"></i> 
@@ -18,7 +18,7 @@
                 <span class="text-slate-800">{{ $filename }}</span>
             </p>
             <p class="flex items-center text-slate-800 hover:text-emerald-600 hover:cursor-pointer">
-                <a href="{{ route('download.file', ['file' => urlencode($filename)]) }}" class="flex items-center text-slate-800 hover:text-emerald-600">
+                <a href="{{ route('download.file', ['file' => urlencode($filename)]) }}" class="flex items-center underline text-slate-800 hover:text-emerald-600">
                     Download report
                     <i class="fa fa-download ml-2 hover:text-emerald-600"></i>
                 </a>
@@ -41,7 +41,7 @@
                 <option value="Fail" {{ request('result') == 'Fail' ? 'selected' : '' }}>Fail</option>
             </select>
         
-            <button type="submit">Filter</button>
+            <button type="submit" class="underline ml-4 hover:text-emerald-400">Filter</button>
         </form>
         
         <div class="overflow-x-auto scrollable">
