@@ -6,21 +6,21 @@
 <section id="dashboard" class="bg-slate-100 min-h-screen px-32 py-24 font-arial">
     <h1 class="text-4xl font-bold"> Welcome, Dean! </h1>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
-        <div class="bg-cyan-50 p-10 rounded-xl shadow-lg flex items-center justify-center">
+        <div class="bg-cyan-50 p-10 rounded-xl shadow-lg flex items-center justify-center overflow-auto max-h-[300px]">
             <canvas id="averagePredictionAccuracyChart" class="max-w-[130px] max-h-[130px]"></canvas>
-            <h2 class="text-2xl font-bold ml-8">Average Prediction Accuracy</h2>
+            <h2 class="text-2xl font-bold ml-5">Average Prediction Accuracy</h2>
         </div>
-        <div class="bg-emerald-50 p-10 rounded-xl shadow-lg flex items-center justify-center">
+        <div class="bg-emerald-50 p-10 rounded-xl shadow-lg flex items-center justify-center overflow-auto max-h-[300px]">
             <canvas id="overallPassingRateChart" class="max-w-[130px] max-h-[130px]"></canvas>
-            <h2 class="text-2xl font-bold ml-8">Overall Passing <br> Rate</h2>
+            <h2 class="text-2xl font-bold ml-5">Overall Passing Rate</h2>
         </div>
-        <div class="bg-lime-50 p-10 rounded-xl shadow-lg flex flex-col justify-center">
+        <div class="bg-lime-50 p-10 rounded-xl shadow-lg flex flex-col justify-center overflow-auto max-h-[300px]">
             <h2 class="text-2xl font-bold">Top Licensure Outcome Predictor</h2>
             <p id="topPredictor" class="text-2xl mt-3">Placeholder Predictor</p>
         </div>
     </div>
     <h2 class="text-2xl font-bold text-center mt-14 mb-8">Feature Importance</h2>
-    <div class="bg-white p-8 rounded-xl shadow-lg relative">
+    <div class="bg-white p-8 rounded-xl shadow-lg relative overflow-auto">
         <canvas id="featureImportanceChart" style="max-width: 100%;"></canvas>
     </div>
 </section>

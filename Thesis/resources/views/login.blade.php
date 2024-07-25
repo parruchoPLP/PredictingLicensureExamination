@@ -38,9 +38,6 @@
         </form>
     </div>
 </section>
-@endsection
-
-@push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const togglePassword = document.getElementById('togglePassword');
@@ -60,4 +57,4 @@
         });
     });
 </script>
-@endpush
+@endsection

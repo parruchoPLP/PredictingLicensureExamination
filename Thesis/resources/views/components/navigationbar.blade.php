@@ -10,7 +10,7 @@
 <button id="navbar-toggle" class="fixed top-4 left-4 z-50 p-3 text-3xl text-slate-900 rounded">
     <i class="fa fa-bars"></i>
 </button>
-<nav id="navbar" class="fixed top-0 left-0 h-full w-auto bg-slate-200 flex flex-col items-center font-arial text-lg z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+<nav id="navbar" class="fixed top-0 left-0 h-full w-auto bg-slate-200 flex flex-col items-center font-arial text-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
     <button id="navbar-close" class="absolute top-4 right-4 text-2xl text-slate-900">
         <i class="fa fa-times"></i>
     </button>
