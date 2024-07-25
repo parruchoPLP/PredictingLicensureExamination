@@ -107,3 +107,28 @@ try:
     print("Model saved successfully as 'random_forest_licensure_model.pkl'")
 except Exception as e:
     print(f"An error occurred while saving the model: {e}")
+
+'''
+# Get feature importances
+feature_importances = model.feature_importances_
+
+# Get feature names
+feature_names = ['age', 'gender'] + grade_columns
+
+# Create a DataFrame for feature importances
+importance_df = pd.DataFrame({
+    'Feature': feature_names,
+    'Importance': feature_importances
+})
+
+# Sort the DataFrame by importance
+importance_df = importance_df.sort_values(by='Importance', ascending=False)
+
+# Print the top predictors
+print("\nTop predictors based on feature importance:")
+print(importance_df)
+
+# Print the most important predictor
+top_predictor = importance_df.iloc[0]
+print(f"\nThe top predictor is '{top_predictor['Feature']}' with an importance score of {top_predictor['Importance']:.4f}")
+'''

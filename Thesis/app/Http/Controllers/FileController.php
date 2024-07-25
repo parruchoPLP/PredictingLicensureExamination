@@ -41,6 +41,7 @@ class FileController extends Controller
             if ($response->successful()) {
                 return back()->with(['success_title' => 'Success', 'success_info' => 'File uploaded successfully', 'full_path' => $fullPath]);
             } else {
+                File::delete($fullPath);
                 return back()->withErrors(['failed_upload' => 'Error! Check the file format and attributes.']);
             }
         }

@@ -77,7 +77,7 @@
         <form action="{{ route('upload') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="file" name="file" required><br>
-            <button type="submit" class="mt-8 py-4 px-6 bg-emerald-200 rounded-lg font-bold hover:bg-emerald-600 hover:text-slate-200">Upload</button>
+            <button type="submit" class="mt-8 py-4 px-6 bg-emerald-200 rounded-lg font-bold hover:bg-emerald-600 hover:text-slate-200 ">Upload</button>
         </form>
     </div>
 </section>
