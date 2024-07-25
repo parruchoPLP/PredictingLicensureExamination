@@ -1,5 +1,3 @@
-@vite('resources/css/app.css')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <nav class="fixed flex top-0 w-full p-3 px-32 z-20 bg-gradient-to-b from-slate-100 to-slate-100/10 font-arial overflow-x-auto">
     <div class="max-w-screen-xl mx-auto flex justify-between items-center font-bold">
         <ul class="flex p-3 text-2xl">

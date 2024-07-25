@@ -1,5 +1,8 @@
-@vite('resources/css/app.css')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+@extends('layouts.app')
+
+@section('title', 'Login')
+
+@section('content')
 <section class="bg-slate-100 flex justify-center items-center min-h-screen font-arial">
     <div class="bg-white p-12 rounded-xl shadow-lg">
         <p class="font-bold text-4xl text-emerald-600 text-center mb-3">Welcome!</p>
@@ -31,6 +34,8 @@
         </form>
     </div>
 </section>
+@endsection
+@push('scripts')
 <script>
     document.getElementById('togglePassword').addEventListener('click', function () {
         const passwordField = document.getElementById('password');
@@ -46,3 +51,4 @@
         }
     });
 </script>
+@endpush

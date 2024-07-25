@@ -1,4 +1,8 @@
-<x-navigationbar />
+@extends('layouts.app')
+
+@section('title', 'File Management')
+
+@section('content')
 <section id="report" class="bg-slate-100 min-h-screen py-36 px-24 font-arial">
     <div id="files" class="bg-white rounded-xl shadow-lg p-8">
         <p class="font-bold text-2xl text-slate-800"> <i class="fas fa-folder mr-6"></i> Your files </p> 
@@ -28,7 +32,12 @@
                             <a href="{{ url('/report?file=' . urlencode($row['file'])) }}" class="text-emerald-600 border-b hover:border-sky-800 py-1 px-3 hover:text-sky-800">View Report</a>
                         </td>
                         <td class="py-2 px-4">
-                            <button class="text-red-800 border-b hover:border-red-500 py-1 px-3 hover:text-red-500">Delete</button>
+                            <form action="{{ route('delete.file') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this file?');">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="file" value="{{ $row['file'] }}">
+                                <button type="submit" class="text-red-800 border-b hover:border-red-500 py-1 px-3 hover:text-red-500">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach
@@ -72,3 +81,4 @@
         </form>
     </div>
 </section>
+@endsection

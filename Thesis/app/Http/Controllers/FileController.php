@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DataImport; // Create this import class
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\File;
 
 class FileController extends Controller
 {
@@ -68,5 +69,38 @@ class FileController extends Controller
         $headers = !empty($data[0]) ? array_keys($data[0][0]) : [];
 
         return view('report', compact('data', 'headers', 'filename'));
+    }
+
+    public function deleteFile(Request $request)
+    {
+        $fileName = $request->input('file');
+        
+        // Path to the file
+        $filePath = storage_path('app/public/uploads/' . $fileName);
+        
+        // Check if file exists and delete it
+        if (File::exists($filePath)) {
+            File::delete($filePath);
+            return redirect()->back()->with('success', 'File deleted successfully!');
+        }
+
+        return redirect()->back()->with('error', 'File not found.');
+    }
+
+    public function downloadFile(Request $request)
+    {
+        $fileName = $request->query('file');
+
+        // Path to the file relative to the 'public' disk
+        $filePath = 'uploads/' . $fileName;
+
+        // Check if the file exists on the 'public' disk
+        if (Storage::disk('public')->exists($filePath)) {
+            /** @var \Illuminate\Filesystem\FilesystemAdapter */
+            $fileSystem = Storage::disk('public');
+            return $fileSystem->download($filePath);
+        }
+
+        return redirect()->back()->with('error', 'File not found');
     }
 }

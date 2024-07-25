@@ -22,7 +22,7 @@ Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/authenticate', [UserController::class, 'authenticate'])->name('authenticate');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/report', [ReportController::class, 'showReport']);
+    Route::get('/report', [ReportController::class, 'showReport'])->name('report.show');
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -35,4 +35,6 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::get('/filemanagement', [FileController::class, 'showfiles']);
     Route::post('/upload', [FileController::class, 'upload'])->name('upload');
+    Route::delete('/delete-file', [FileController::class, 'deleteFile'])->name('delete.file');
+    Route::get('/download-file', [FileController::class, 'downloadFile'])->name('download.file');
 });
