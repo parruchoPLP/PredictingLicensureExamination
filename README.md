@@ -10,6 +10,8 @@ Before proceeding, please ensure you clone this repository into a stable and con
    
 3. Start Apache and MySQL through XAMPP.
 
-4. Run 'setup.py' to install the necessary libraries and dependencies for Python and Laravel.
+4. (First-time Setup Only) Check the database if there are any existing database named 'laravel'. If there is one, proceed to drop the database.
+
+5. Run 'setup.py' to install the necessary libraries and dependencies for Python and Laravel.
     
-5. Run 'start_server.py' to start Laravel, npm, and Flask.
+6. Run 'start_server.py' to start Laravel, npm, and Flask.
