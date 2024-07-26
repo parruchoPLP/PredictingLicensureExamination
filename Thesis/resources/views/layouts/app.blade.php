@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     @vite(['resources/css/app.css','resources/js/app.js'])
+    <script src="{{ asset('js/DarkMode.js') }}" defer></script>
     @stack('scripts')
     @yield('styles')
 </head>
 @if(!Request::is('login'))
-<body class="bg-gray-100 overflow-x-hidden">
+<body class="bg-gray-100 overflow-x-hidden {{ session('darkmode') ? 'dark' : '' }}">
     <header>
         <x-navigationbar />
 
@@ -33,7 +34,7 @@
 </body>
 @endif
 @if(Request::is('login'))
-<body class="bg-gray-100 overflow-x-hidden">
+<body class="bg-gray-100 overflow-x-hidden {{ session('darkmode') ? 'dark' : '' }}">
     <main>
         @yield('content')
         @stack('scripts')
