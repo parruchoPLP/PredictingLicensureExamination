@@ -7,11 +7,14 @@
 @if ($errors->any())
     <x-error_alert />
 @endif
-<button id="navbar-toggle" class="fixed top-4 left-4 z-50 p-3 text-3xl text-slate-900 rounded">
+
+<button id="navbar-toggle" class="fixed top-4 left-4 z-50 p-3 text-3xl text-slate-900 rounded" type="button" data-drawer-target="navbar" data-drawer-show="navbar" aria-controls="navbar">
     <i class="fa fa-bars"></i>
 </button>
-<nav id="navbar" class="fixed top-0 left-0 h-full w-auto bg-slate-200 flex flex-col items-center font-arial text-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
-    <button id="navbar-close" class="absolute top-4 right-4 text-2xl text-slate-900">
+
+<nav id="navbar" class="fixed top-0 left-0 h-full w-auto bg-slate-200 flex flex-col items-center font-arial text-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out" tabindex="-1" aria-labelledby="navbar-label">
+    <h5 id="navbar-label" class="sr-only">Navigation</h5>
+    <button id="navbar-close" class="absolute top-4 right-4 text-2xl text-slate-900" type="button" data-drawer-hide="navbar" aria-controls="navbar">
         <i class="fa fa-times"></i>
     </button>
     <ul class="pt-24">
@@ -42,18 +45,31 @@
         </button>
     </form>
 </nav>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const toggleButton = document.getElementById('navbar-toggle');
-        const closeButton = document.getElementById('navbar-close');
-        const navbar = document.getElementById('navbar');
+        const drawers = document.querySelectorAll('[data-drawer-target]');
+        drawers.forEach(drawer => {
+            const targetId = drawer.getAttribute('data-drawer-target');
+            const target = document.getElementById(targetId);
+            if (!target) return;
 
-        toggleButton.addEventListener('click', function () {
-            navbar.classList.toggle('-translate-x-full');
-        });
+            const showEvent = drawer.getAttribute('data-drawer-show');
+            if (showEvent) {
+                drawer.addEventListener('click', () => {
+                    target.classList.remove('-translate-x-full');
+                });
+            }
 
-        closeButton.addEventListener('click', function () {
-            navbar.classList.add('-translate-x-full');
+            const hideEvent = drawer.getAttribute('data-drawer-hide');
+            if (hideEvent) {
+                const hideButton = target.querySelector(`[data-drawer-hide="${hideEvent}"]`);
+                if (hideButton) {
+                    hideButton.addEventListener('click', () => {
+                        target.classList.add('-translate-x-full');
+                    });
+                }
+            }
         });
     });
 </script>

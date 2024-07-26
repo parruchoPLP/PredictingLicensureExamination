@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DataImport; // Create this import class
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class ReportController extends Controller
 {
@@ -33,11 +33,20 @@ class ReportController extends Controller
             $collection = $collection->where('predicted_licensure_outcome', $request->query('result'));
         }
 
-        // Get filtered data as array
-        $filteredData = $collection->toArray();
+        // Search by ID if not null or an empty string
+        if ($request->has('id') && $request->query('id') !== null && $request->query('id') !== '') {
+            $collection = $collection->where('id', $request->query('id'));
+        }
 
-        return view('report', compact('filteredData', 'headers', 'filename'));
+        // Paginate the filtered data
+        $perPage = 15; // Number of items per page
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $filteredData = $collection->forPage($currentPage, $perPage);
+        $paginator = new LengthAwarePaginator($filteredData, $collection->count(), $perPage, $currentPage, [
+            'path' => $request->url(),
+            'query' => $request->query(),
+        ]);
+
+        return view('report', compact('paginator', 'headers', 'filename'));
     }
-
-
 }

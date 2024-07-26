@@ -38,7 +38,6 @@
             labels: ['Algebra', 'Trigonometry', 'Calculus', 'Physics', 'Chemistry'],
             values: [0.25, 0.20, 0.15, 0.10, 0.30] // Example values
         };
-
         // Custom plugin to display text in the center of the doughnut chart
         const centerTextPlugin = {
             id: 'centerText',
@@ -57,10 +56,8 @@
                 }
             }
         };
-
         // Register the plugin
         Chart.register(centerTextPlugin);
-
         // Average Prediction Accuracy Doughnut Chart
         const ctx1 = document.getElementById('averagePredictionAccuracyChart').getContext('2d');
         new Chart(ctx1, {
@@ -92,7 +89,6 @@
                 }
             }
         });
-
         // Overall Passing Rate Doughnut Chart
         const ctx2 = document.getElementById('overallPassingRateChart').getContext('2d');
         new Chart(ctx2, {
@@ -124,10 +120,8 @@
                 }
             }
         });
-
         // Set the top predictor
         document.getElementById('topPredictor').textContent = topPredictor;
-
         // Feature Importance Bar Chart
         const ctx3 = document.getElementById('featureImportanceChart').getContext('2d');
         new Chart(ctx3, {
@@ -137,7 +131,8 @@
                 datasets: [{
                     label: 'Feature Importance',
                     data: featureImportanceData.values,
-                    backgroundColor: '#99F6E4'
+                    backgroundColor: '#99F6E4',
+                    borderRadius: 100
                 }]
             },
             options: {
