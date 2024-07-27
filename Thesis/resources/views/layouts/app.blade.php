@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     @vite(['resources/css/app.css','resources/js/app.js'])
     <script src="{{ asset('js/DarkMode.js') }}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     @stack('scripts')
     @yield('styles')
 </head>
-@if(!Request::is('login'))
+@if(!Request::is('login') && !Request::is('about'))
 <body class="bg-gray-100 overflow-x-hidden {{ session('darkmode') ? 'dark' : '' }}">
     <header>
         <x-navigationbar />
@@ -35,6 +36,14 @@
 @endif
 @if(Request::is('login'))
 <body class="bg-gray-100 overflow-x-hidden {{ session('darkmode') ? 'dark' : '' }}">
+    <main>
+        @yield('content')
+        @stack('scripts')
+    </main>
+</body>
+@endif
+@if(Request::is('about'))
+<body class="scroll-smooth">
     <main>
         @yield('content')
         @stack('scripts')

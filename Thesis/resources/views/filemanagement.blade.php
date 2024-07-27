@@ -16,33 +16,37 @@
             ];
         @endphp
         <div class="overflow-x-auto pt-7">
-            <table class="min-w-full bg-white text-md border dark:bg-slate-800">
-                <thead class="bg-emerald-200 text-slate-800 dark:bg-emerald-700 dark:text-slate-200 text-left uppercase font-bold">
-                    <tr>
-                        <th class="py-2 px-4 w-3/5">File Name</th>
-                        <th class="py-2 px-4 w-1/5"></th>
-                        <th class="py-2 px-4 w-1/5"></th>
-                    </tr>
-                </thead>
-                <tbody class="text-gray-700 dark:text-slate-200">
-                    @foreach($data as $row)
-                    <tr class="border-b hover:bg-emerald-100 dark:hover:bg-emerald-950">
-                        <td class="py-2 px-4">{{ $row['file'] }}</td>
-                        <td class="py-2 px-4">
-                            <a href="{{ url('/report?file=' . urlencode($row['file'])) }}" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">View Report</a>
-                        </td>
-                        <td class="py-2 px-4">
-                            <form action="{{ route('delete.file') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this file?');">
-                                @csrf
-                                @method('DELETE')
-                                <input type="hidden" name="file" value="{{ $row['file'] }}">
-                                <button type="submit" class="text-red-800 border-b hover:border-red-500 py-1 px-3 hover:text-red-500 dark:text-red-300 hover:dark:text-red-500">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            @if(empty($data))
+                <p class="text-slate-600 text-center dark:text-slate-400 mt-4">No files uploaded.</p>
+            @else
+                <table class="min-w-full bg-white text-md border dark:bg-slate-800">
+                    <thead class="bg-emerald-200 text-slate-800 dark:bg-emerald-700 dark:text-slate-200 text-left uppercase font-bold">
+                        <tr>
+                            <th class="py-2 px-4 w-3/5">File Name</th>
+                            <th class="py-2 px-4 w-1/5"></th>
+                            <th class="py-2 px-4 w-1/5"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 dark:text-slate-200">
+                        @foreach($data as $row)
+                        <tr class="border-b hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                            <td class="py-2 px-4">{{ $row['file'] }}</td>
+                            <td class="py-2 px-4">
+                                <a href="{{ url('/report?file=' . urlencode($row['file'])) }}" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">View Report</a>
+                            </td>
+                            <td class="py-2 px-4">
+                                <form action="{{ route('delete.file') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this file?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="hidden" name="file" value="{{ $row['file'] }}">
+                                    <button type="submit" class="text-red-800 border-b hover:border-red-500 py-1 px-3 hover:text-red-500 dark:text-red-300 hover:dark:text-red-500">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
         </div>
     </div>
     <div id="upFiles" class="mt-10 bg-white dark:bg-slate-700 rounded-xl shadow-lg p-8 text-slate-800 dark:text-slate-200 overflow-x-auto">

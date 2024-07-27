@@ -20,6 +20,9 @@ use App\Http\Controllers\UserController;
 
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/authenticate', [UserController::class, 'authenticate'])->name('authenticate');
+Route::get('/about', function () {
+    return view('about');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/report', [ReportController::class, 'showReport'])->name('report.show');

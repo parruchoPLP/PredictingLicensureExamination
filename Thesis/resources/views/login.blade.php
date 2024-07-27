@@ -12,7 +12,7 @@
 @if ($errors->any())
     <x-error_alert />
 @endif
-<button id="darkmode-toggle" class="fixed bottom-4 right-4 z-20 py-3 px-4 text-2xl text-slate-600 bg-white dark:bg-slate-900 dark:text-emerald-300 shadow-lg rounded hover:bg-slate-200 hover:dark:bg-slate-600">
+<button id="darkmode-toggle" class="fixed bottom-4 right-4 z-20 py-3 px-4 text-2xl text-slate-600 bg-white dark:bg-slate-900 dark:text-emerald-300 shadow-lg rounded-xl hover:bg-slate-200 hover:dark:bg-slate-600 transition-transform transform hover:scale-105">
     <i id="darkmode-icon" class="fa fa-moon"></i>
 </button>
 

@@ -25,7 +25,7 @@
             </p>
         </div>
         <br>
-        <form method="GET" action="{{ route('report.show') }}">
+        <form method="GET" action="{{ route('report.show') }}" class="mb-3">
             <input type="hidden" name="file" value="{{ $filename }}">
             <label for="gender">Gender:</label>
             <select name="gender" id="gender" class="dark:bg-slate-800">
@@ -34,17 +34,17 @@
                 <option value="F" {{ request('gender') == 'F' ? 'selected' : '' }}>Female</option>
             </select>
         
-            <label for="result">Result:</label>
+            <label for="result" class="ml-5">Result:</label>
             <select name="result" id="result" class="dark:bg-slate-800">
                 <option value="All" {{ request('result') == 'All' ? 'selected' : '' }}>All</option>
                 <option value="Pass" {{ request('result') == 'Pass' ? 'selected' : '' }}>Pass</option>
                 <option value="Fail" {{ request('result') == 'Fail' ? 'selected' : '' }}>Fail</option>
             </select>
 
-            <label for="id">Search by ID:</label>
-            <input type="text" name="id" id="id" value="{{ request('id') }}" placeholder="Enter ID">
+            <label for="id" class="ml-5">Search by ID:</label>
+            <input type="text" class="dark:bg-slate-800" name="id" id="id" value="{{ request('id') }}" placeholder="Enter ID">
 
-            <button type="submit" class="underline ml-4 hover:text-emerald-400">Filter</button>
+            <button type="submit" class="ml-4 bg-emerald-200 dark:bg-emerald-700 px-4 py-2 hover:bg-emerald-300 dark:hover:bg-emerald-600">Filter</button>
         </form>
         
         <div class="overflow-x-auto scrollable relative">
