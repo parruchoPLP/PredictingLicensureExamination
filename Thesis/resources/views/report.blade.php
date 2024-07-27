@@ -6,7 +6,7 @@
 @if ($errors->any())
     <x-error_alert />
 @endif
-<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen px-32 py-24 font-arial">
+<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-32 pl-48 py-24 font-arial">
     <div class="bg-white rounded-xl shadow-lg p-8 dark:bg-slate-700 dark:text-slate-200">
         <p class="text-2xl text-slate-800 font-bold dark:text-slate-200"> 
             <i class="fas fa-table mr-6"></i> 
@@ -75,7 +75,7 @@
                     @endphp
                     <tr class="border-b group {{ $lastValue == 'Pass' ? 'hover:bg-emerald-100 dark:hover:bg-slate-800 dark:hover:text-emerald-400' : ($lastValue == 'Fail' ? 'hover:bg-red-100 dark:hover:text-red-400 dark:hover:bg-slate-800' : '') }}">
                         @foreach($row as $key => $value)
-                        <td class="py-2 px-4 whitespace-nowrap @if($loop->first) sticky left-0 z-10 bg-white dark:bg-slate-800 {{ $lastValue == 'Pass' ? 'group-hover:bg-emerald-100 dark:group-hover:bg-slate-800 dark:hover:text-emerald-900 dark:bg-slate-800 dark:group-hover:text-emerald-400' : ($lastValue == 'Fail' ? 'group-hover:bg-red-100 dark:group-hover:bg-slate-800 dark:hover:text-red-900 dark:bg-slate-800 dark:group-hover:text-red-400' : '') }} @endif @if($loop->last) sticky right-0 z-10 {{ $key == 'predicted_licensure_outcome' && $value == 'Pass' ? 'bg-emerald-100 dark:bg-slate-800 text-black dark:text-emerald-400' : ($key == 'predicted_licensure_outcome' && $value == 'Fail' ? 'bg-red-100 dark:bg-slate-800 text-black dark:text-red-400' : '') }}@endif">
+                        <td class="py-2 px-4 whitespace-nowrap @if($loop->first) sticky left-0 z-5 bg-white dark:bg-slate-800 {{ $lastValue == 'Pass' ? 'group-hover:bg-emerald-100 dark:group-hover:bg-slate-800 dark:hover:text-emerald-900 dark:bg-slate-800 dark:group-hover:text-emerald-400' : ($lastValue == 'Fail' ? 'group-hover:bg-red-100 dark:group-hover:bg-slate-800 dark:hover:text-red-900 dark:bg-slate-800 dark:group-hover:text-red-400' : '') }} @endif @if($loop->last) sticky right-0 z-10 {{ $key == 'predicted_licensure_outcome' && $value == 'Pass' ? 'bg-emerald-100 dark:bg-slate-800 text-black dark:text-emerald-400' : ($key == 'predicted_licensure_outcome' && $value == 'Fail' ? 'bg-red-100 dark:bg-slate-800 text-black dark:text-red-400' : '') }}@endif">
                             {{ $value }}
                         </td>
                         @endforeach

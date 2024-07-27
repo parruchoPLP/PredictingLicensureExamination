@@ -8,72 +8,54 @@
     <x-error_alert />
 @endif
 
-<button id="navbar-toggle" class="fixed top-4 left-4 z-50 py-3 px-4 text-2xl text-slate-600 bg-white dark:bg-slate-900 dark:text-slate-200 shadow-lg rounded-xl hover:bg-slate-200 hover:dark:bg-slate-600 transition-transform transform hover:scale-105" type="button" data-drawer-target="navbar" data-drawer-show="navbar" aria-controls="navbar">
-    <i class="fa fa-bars"></i>
-</button>
-
 <button id="darkmode-toggle" class="fixed bottom-4 right-4 z-20 py-3 px-4 text-2xl text-slate-600 bg-white dark:bg-slate-900 dark:text-slate-200 shadow-lg rounded-xl hover:bg-slate-200 hover:dark:bg-slate-600 transition-transform transform hover:scale-105">
     <i id="darkmode-icon" class="fa fa-moon"></i>
 </button>
 
-<nav id="navbar" class="fixed top-0 left-0 h-full shadow-xl w-auto bg-white dark:bg-slate-900 flex flex-col items-center font-arial text-lg z-50 transform -translate-x-full transition-transform duration-300 ease-in-out" tabindex="-1" aria-labelledby="navbar-label">
-    <h5 id="navbar-label" class="sr-only">Navigation</h5>
-    <button id="navbar-close" class="absolute top-4 right-4 text-xl dark:text-slate-200 text-slate-900" type="button" data-drawer-hide="navbar" aria-controls="navbar">
-        <i class="fa fa-times"></i>
-    </button>
-    <ul class="pt-24 px-4">
-        <li>
-            <a href="/dashboard" class="block py-6 px-14 rounded-lg text-slate-800 dark:text-slate-200 hover:text-emerald-500 dark:hover:text-emerald-300 hover:font-bold {{ request()->is('dashboard') ? 'bg-slate-300 font-bold dark:bg-gray-700' : '' }}">
-                <i class="fa fa-tachometer-alt mr-6"></i>
-                Dashboard
+<nav id="navbar" class="fixed top-4 left-4 bottom-4 w-auto hover:w-64 rounded-xl shadow-lg bg-white dark:bg-slate-900 flex flex-col items-center font-arial text-lg z-50 transition-all duration-300 ease-in-out" tabindex="-1" aria-labelledby="navbar-label">
+    <ul class="mt-24 p-4 w-full space-y-4 text-slate-800 dark:text-slate-200">
+        <li class="group">
+            <a href="/dashboard" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 hover:font-bold {{ request()->is('dashboard') ? 'bg-emerald-200 font-bold dark:bg-emerald-800' : '' }}">
+                <i class="fa fa-tachometer-alt"></i>
+                <span class="hidden group-hover:inline ml-4">Dashboard</span>
             </a>
         </li>
-        <li>
-            <a href="/filemanagement" class="block py-6 px-14 rounded-lg text-slate-800 dark:text-slate-200 hover:text-emerald-500 dark:hover:text-emerald-300 hover:font-bold {{ request()->is('filemanagement', 'report') ? 'bg-slate-300 font-bold dark:bg-gray-700' : '' }}">
-                <i class="fa fa-folder mr-6"></i>
-                Files
+        <li class="group">
+            <a href="/filemanagement" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 hover:font-bold {{ request()->is('filemanagement', 'report') ? 'bg-emerald-200 font-bold dark:bg-emerald-800' : '' }}">
+                <i class="fa fa-folder"></i>
+                <span class="hidden group-hover:inline ml-4">Files</span>
             </a>
         </li>
-        <li>
-            <a href="/acctmanagement" class="block py-6 px-14 rounded-lg text-slate-800 dark:text-slate-200 hover:text-emerald-500 dark:hover:text-emerald-300 hover:font-bold {{ request()->is('acctmanagement') ? 'bg-slate-300 font-bold dark:bg-gray-700' : '' }}">
-                <i class="fa fa-user mr-6"></i>
-                User
+        <li class="group">
+            <a href="/acctmanagement" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 hover:font-bold {{ request()->is('acctmanagement') ? 'bg-emerald-200 font-bold dark:bg-emerald-800' : '' }}">
+                <i class="fa fa-user"></i>
+                <span class="hidden group-hover:inline ml-4">User</span>
             </a>
         </li>
     </ul>
-    <form action="/logout" method="POST" class="mt-auto w-full">
+    <form action="/logout" method="POST" class="mt-auto w-full p-4 border-t border-slate-300 dark:border-gray-700">
         @csrf
-        <button type="submit" class="block py-6 w-full text-slate-800 dark:text-slate-200 hover:text-emerald-500 dark:hover:text-emerald-300 hover:font-bold border-t border-slate-300 dark:border-gray-700">
-            <i class="fa fa-sign-out-alt mr-6"></i>
-            Logout
+        <button type="submit" class="block p-4 rounded-lg w-full text-left text-slate-800 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700 hover:font-bold">
+            <i class="fa fa-sign-out-alt"></i>
+            <span class="hidden group-hover:inline ml-4">Logout</span>
         </button>
     </form>
 </nav>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const drawers = document.querySelectorAll('[data-drawer-target]');
-        drawers.forEach(drawer => {
-            const targetId = drawer.getAttribute('data-drawer-target');
-            const target = document.getElementById(targetId);
-            if (!target) return;
-
-            const showEvent = drawer.getAttribute('data-drawer-show');
-            if (showEvent) {
-                drawer.addEventListener('click', () => {
-                    target.classList.remove('-translate-x-full');
-                });
-            }
-
-            const hideEvent = drawer.getAttribute('data-drawer-hide');
-            if (hideEvent) {
-                const hideButton = target.querySelector(`[data-drawer-hide="${hideEvent}"]`);
-                if (hideButton) {
-                    hideButton.addEventListener('click', () => {
-                        target.classList.add('-translate-x-full');
-                    });
-                }
-            }
+        const navbar = document.getElementById('navbar');
+        navbar.addEventListener('mouseover', () => {
+            navbar.classList.add('w-64');
+            document.querySelectorAll('#navbar span').forEach(span => {
+                span.classList.remove('hidden');
+            });
+        });
+        navbar.addEventListener('mouseout', () => {
+            navbar.classList.remove('w-64');
+            document.querySelectorAll('#navbar span').forEach(span => {
+                span.classList.add('hidden');
+            });
         });
     });
 </script>

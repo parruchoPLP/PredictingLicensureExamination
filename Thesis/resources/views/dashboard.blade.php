@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<section id="dashboard" class="bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-200 min-h-screen px-32 py-24 font-arial">
+<section id="dashboard" class="bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-200 min-h-screen pr-32 pl-48 py-24 font-arial">
     <h1 class="text-4xl font-bold"> Welcome, Dean! </h1>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
         <div class="bg-cyan-50 dark:bg-cyan-800 p-10 rounded-xl shadow-lg flex items-center justify-center overflow-auto max-h-[300px] transition-transform transform hover:scale-105">
