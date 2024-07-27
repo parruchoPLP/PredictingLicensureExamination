@@ -8,6 +8,9 @@ use App\Imports\DataImport; // Create this import class
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Log;
 
 class FileController extends Controller
 {
@@ -85,7 +88,7 @@ class FileController extends Controller
             return redirect()->back()->with(['success_title' => 'Delete Success', 'success_info' => 'File deleted successfully!']);
         }
 
-        return redirect()->back()->withErrors(['failed_upload' => 'No file uploaded']);
+        return redirect()->back()->withErrors(['failed_delete' => 'File not found']);
     }
 
     public function downloadFile(Request $request)
@@ -103,5 +106,173 @@ class FileController extends Controller
         }
 
         return redirect()->back()->withErrors(['failed_download' => 'File not found.']);
+    }
+
+    public function showSystemFiles()
+    {
+        // Define the path to the external directory
+        $directoryPath = base_path('../ThesisPredictiveModel/TrainingData');
+
+        // Initialize an array to hold file information
+        $data = [];
+
+        // Check if the directory exists
+        if (is_dir($directoryPath)) {
+            // Scan the directory for files
+            $files = array_diff(scandir($directoryPath), ['..', '.']); // Exclude '.' and '..'
+
+            // Process each file
+            foreach ($files as $file) {
+                if (is_file($directoryPath . '/' . $file)) {
+                    $data[] = ['file' => $file];
+                }
+            }
+        } else {
+            // Handle the case where the directory does not exist
+            // You might want to log an error or provide a message to the user
+            $data = ['error' => 'Directory does not exist.'];
+        }
+
+        // Return the view with the file data
+        return view('systemfiles', compact('data'));
+    }
+
+    public function deleteSystemFile(Request $request)
+    {
+        $fileName = $request->input('file');
+
+        // Define the path to the external directory
+        $directoryPath = base_path('../ThesisPredictiveModel/TrainingData');
+        
+        // Check if the directory exists
+        if (is_dir($directoryPath)) {
+            // Path to the file
+            $filePath = $directoryPath . "/" . $fileName;
+
+            // Get all files in the directory
+            $files = array_diff(scandir($directoryPath), ['..', '.']); // Exclude '.' and '..'
+
+            // Check if there is only one file in the directory
+            if (count($files) <= 1) {
+                return redirect()->back()->withErrors(['failed_delete' => 'Cannot delete the file. Directory must have at least one file.']);
+            }
+
+            // Check if file exists and delete it
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+                return redirect()->back()->with(['success_title' => 'Delete Success', 'success_info' => 'File deleted successfully!']);
+            }
+        } else {
+            return redirect()->back()->withErrors(['failed_delete' => 'Directory does not exist.']);
+        }
+        return redirect()->back()->withErrors(['failed_delete' => 'File not found.']);
+    }
+
+    public function uploadSystemFile(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx,csv'
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Get the original filename
+            $originalName = $file->getClientOriginalName();
+
+            // Define the path to the external directory
+            $directoryPath = base_path('../ThesisPredictiveModel/TrainingData');
+            
+            // Check if the directory exists
+            if (!is_dir($directoryPath)) {
+                return redirect()->back()->withErrors(['failed_upload' => 'Directory does not exist.']);
+            }
+
+            // Load the file using PhpSpreadsheet
+            $spreadsheet = IOFactory::load($file->getPathname());
+            $sheet = $spreadsheet->getActiveSheet();
+            $data = $sheet->toArray();
+
+            // Define the required columns
+            $requiredColumns = [
+                'age', 'gender', 'algebra', 'trigo', 'advalgebra', 'anageo', 'diffcal', 'stats', 
+                'intcal', 'advmat', 'numeric', 'vector', 'elxdevice', 'elxcirc', 'signals', 
+                'princo', 'lcst', 'digicom', 'trans', 'micro', 'broadcast', 'control', 
+                'circ1', 'elemag', 'circ2', 'passed'
+            ];
+
+            // Check if the required columns exist in the header row
+            $header = array_map('strtolower', $data[0]); // Convert header to lowercase for case-insensitive comparison
+            foreach ($requiredColumns as $column) {
+                if (!in_array($column, $header)) {
+                    return redirect()->back()->withErrors(['failed_upload' => "Missing required column: $column"]);
+                }
+            }
+
+            // Check for missing data in the required columns
+            $columnIndices = array_flip($header);
+            foreach ($data as $rowIndex => $row) {
+                if ($rowIndex == 0) continue; // Skip header row
+                foreach ($requiredColumns as $column) {
+                    if (!isset($row[$columnIndices[$column]]) || $row[$columnIndices[$column]] === '') {
+                        return redirect()->back()->withErrors(['failed_upload' => "Missing data in column: $column at row: " . ($rowIndex + 1)]);
+                    }
+                }
+            }
+
+            // Move the file to the specified directory
+            $file->move($directoryPath, $originalName);
+            return redirect()->back()->with(['success_title' => 'Upload Success', 'success_info' => 'File uploaded successfully!']);
+        }
+
+        return redirect()->back()->withErrors(['failed_upload' => 'No file uploaded']);
+    }
+
+    public function downloadSystemFile(Request $request)
+    {
+        $fileName = $request->query('file');
+
+        // Define the path to the external directory
+        $directoryPath = base_path('../ThesisPredictiveModel/TrainingData');
+
+        // Check if the directory exists
+        if (!is_dir($directoryPath)) {
+            return redirect()->back()->withErrors(['failed_download' => 'Directory does not exist.']);
+        }
+
+        // Path to the file
+        $filePath = $directoryPath . '/' . $fileName;
+
+        // Check if file exists and download
+        if (File::exists($filePath)) {
+            return response()->download($filePath);
+        }
+
+        return redirect()->back()->withErrors(['failed_download' => 'File not found.']);
+    }
+
+    public function reloadModel(Request $request)
+    {
+        // Define the path to the batch file
+        $batchFilePath = base_path('../reload_model.bat');
+
+        // Check if the batch file exists
+        if (!file_exists($batchFilePath)) {
+            return redirect()->back()->withErrors(['failed_reload' => 'Batch file does not exist.']);
+        }
+
+        // Execute the batch file
+        $output = [];
+        $returnVar = 0;
+        exec("{$batchFilePath} 2>&1", $output, $returnVar);
+
+        // Check the result
+        if ($returnVar === 0) {
+            return redirect()->back()->with(['success_title' => 'Model Reload Success', 'success_info' => 'Predictive model reloaded successfully!']);
+        } else {
+            // Capture and log the output for debugging
+            Log::error('Model reload failed', ['output' => $output, 'return_var' => $returnVar]);
+            return redirect()->back()->withErrors(['failed_reload' => 'Failed to reload the predictive model.']);
+        }
     }
 }

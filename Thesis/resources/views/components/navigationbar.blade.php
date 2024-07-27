@@ -32,6 +32,12 @@
                 <span class="hidden group-hover:inline ml-4">User</span>
             </a>
         </li>
+        <li class="group">
+            <a href="/systemfiles" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 hover:font-bold {{ request()->is('systemfiles') ? 'bg-emerald-200 font-bold dark:bg-emerald-800' : '' }}">
+                <i class="fa fa-cog"></i>
+                <span class="hidden group-hover:inline ml-4">System Files</span>
+            </a>
+        </li>
     </ul>
     <form action="/logout" method="POST" class="mt-auto w-full p-4 border-t border-slate-300 dark:border-gray-700">
         @csrf
