@@ -10,3 +10,6 @@
     </div>
     <img src="{{ $src }}" alt="{{ $alt }}" class="h-12 w-12 rounded-full object-cover">
 </a>
+
+<!-- Include the clock component -->
+@include('components.clock')
