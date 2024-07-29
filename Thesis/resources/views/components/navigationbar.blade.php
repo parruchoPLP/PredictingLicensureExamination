@@ -38,6 +38,12 @@
                 <span class="hidden group-hover:inline ml-4">System Files</span>
             </a>
         </li>
+        <li class="group">
+            <a href="/recentlydeleted" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 hover:font-bold {{ request()->is('recentlydeleted') ? 'bg-emerald-200 font-bold dark:bg-emerald-800' : '' }}">
+                <i class="fas fa-undo"></i>
+                <span class="hidden group-hover:inline ml-4">Recently Deleted</span>
+            </a>
+        </li>
     </ul>
     <form action="/logout" method="POST" class="mt-auto w-full p-4 border-t border-slate-300 dark:border-gray-700">
         @csrf

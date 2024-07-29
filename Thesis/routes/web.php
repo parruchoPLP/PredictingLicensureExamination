@@ -52,4 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/delete-systemfile', [FileController::class, 'deleteSystemFile'])->name('delete.systemfile');
     Route::post('/uploadSystemFile', [FileController::class, 'uploadSystemFile'])->name('upload.systemfile');
     Route::post('/reloadmodel', [FileController::class, 'reloadModel'])->name('reload.model');
+    Route::get('/recentlydeleted', [FileController::class, 'showrecentlydeleted']);
+    Route::post('/restore-file', [FileController::class, 'restoreFile'])->name('restore.file');
+    Route::delete('/delete-permanently', [FileController::class, 'deletePermanently'])->name('delete.permanently');
 });

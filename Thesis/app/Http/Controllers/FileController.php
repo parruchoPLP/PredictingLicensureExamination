@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\DataImport; // Create this import class
+use App\Imports\DataImport;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+use App\Models\DeletedFile;
+use Illuminate\Support\Str;
 
 class FileController extends Controller
 {
@@ -20,26 +23,34 @@ class FileController extends Controller
         $request->validate([
             'file' => 'required|mimes:xls,xlsx,csv'
         ]);
-
+    
         // Handle the file upload
         if ($request->hasFile('file')) {
             // Get the uploaded file
             $file = $request->file('file');
-
+    
             // Get the original filename
             $originalName = $file->getClientOriginalName();
-
+    
+            // Define the relative path
+            $relativePath = 'public/uploads/' . $originalName;
+    
+            // Check if the file already exists
+            if (Storage::exists($relativePath)) {
+                return back()->withErrors(['failed_upload' => 'A file with the same name already exists.']);
+            }
+    
             // Store the file in the 'uploads' directory within the 'public' disk
-            $relativePath = $file->storeAs('public/uploads', $originalName);
-
+            $file->storeAs('public/uploads', $originalName);
+    
             // Get the full path of the stored file
             $fullPath = storage_path('app/' . $relativePath);
-
+    
             // Make a POST request to the Flask app for predictions
             $response = Http::post('http://localhost:5000/batchpredict', [
                 'file_path' => $fullPath
             ]);
-
+    
             // Handle the response
             if ($response->successful()) {
                 return back()->with(['success_title' => 'Success', 'success_info' => 'File uploaded successfully', 'full_path' => $fullPath]);
@@ -48,7 +59,7 @@ class FileController extends Controller
                 return back()->withErrors(['failed_upload' => 'Error! Check the file format and attributes.']);
             }
         }
-
+    
         return back()->withErrors(['failed_upload' => 'No file uploaded']);
     }
 
@@ -78,17 +89,71 @@ class FileController extends Controller
     public function deleteFile(Request $request)
     {
         $fileName = $request->input('file');
-        
-        // Path to the file
         $filePath = storage_path('app/public/uploads/' . $fileName);
-        
-        // Check if file exists and delete it
+        $deletedFolder = storage_path('app/public/recently_deleted/');
+    
+        if (!File::exists($deletedFolder)) {
+            File::makeDirectory($deletedFolder, 0755, true);
+        }
+    
+        // Check if file exists and move it to the recently deleted folder
         if (File::exists($filePath)) {
-            File::delete($filePath);
-            return redirect()->back()->with(['success_title' => 'Delete Success', 'success_info' => 'File deleted successfully!']);
+            $timestamp = Carbon::now()->format('Ymd_His');
+            $uniqueFileName = $timestamp . '_' . $fileName;
+
+            $deletedFilePath = $deletedFolder . $uniqueFileName;
+    
+            // Move the file
+            File::move($filePath, $deletedFilePath);
+    
+            // Save metadata to database
+            DeletedFile::create([
+                'original_name' => $fileName,
+                'timestamped_name' => $uniqueFileName,
+                'path' => 'public/recently_deleted/' . $fileName,
+                'deleted_at' => Carbon::now(),
+            ]);
+    
+            return redirect()->back()->with(['success_title' => 'Delete Success', 'success_info' => 'File moved to recently deleted!']);
+        }
+    
+        return redirect()->back()->withErrors(['failed_delete' => 'File not found']);
+    }
+
+    public function restoreFile(Request $request)
+    {
+        $fileName = $request->input('file');
+        $filePath = storage_path('app/public/recently_deleted/' . $fileName);
+        $originalFileName = DeletedFile::where('timestamped_name', $fileName)
+                            ->pluck('original_name')
+                            ->first();
+
+        if (file_exists($filePath)) {
+            $originalPath = storage_path('app/public/uploads/' . $originalFileName);
+
+            // Check if file already exists
+            if (file_exists($originalPath)) {
+                // Append a number to the filename to make it unique
+                $fileInfo = pathinfo($originalFileName);
+                $baseName = $fileInfo['filename'];
+                $extension = $fileInfo['extension'];
+                $counter = 1;
+
+                while (file_exists($originalPath)) {
+                    $newFileName = $baseName . '(' . $counter . ').' . $extension;
+                    $originalPath = storage_path('app/public/uploads/' . $newFileName);
+                    $counter++;
+                }
+            }
+            rename($filePath, $originalPath);
+
+            // Delete record from database
+            DeletedFile::where('timestamped_name', $fileName)->delete();
+
+            return redirect()->back()->with(['success_title' => 'Restore Success', 'success_info' => 'File restored successfully!']);
         }
 
-        return redirect()->back()->withErrors(['failed_delete' => 'File not found']);
+        return redirect()->back()->withErrors(['failed_restore' => 'File not found']);
     }
 
     public function downloadFile(Request $request)
@@ -274,5 +339,31 @@ class FileController extends Controller
             Log::error('Model reload failed', ['output' => $output, 'return_var' => $returnVar]);
             return redirect()->back()->withErrors(['failed_reload' => 'Failed to reload the predictive model.']);
         }
+    }
+
+    public function showRecentlyDeleted()
+    {
+        $files = DeletedFile::where('deleted_at', '>=', now()->subDays(30))
+            ->orderBy('deleted_at', 'desc')
+            ->get();
+
+        return view('recentlydeleted', ['data' => $files]);
+    }
+
+    public function deletePermanently(Request $request)
+    {
+        $fileName = $request->input('file');
+        $filePath = storage_path('app/public/recently_deleted/' . $fileName);
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+
+            // Delete record from database
+            DeletedFile::where('timestamped_name', $fileName)->delete();
+
+            return redirect()->back()->with(['success_title' => 'Delete Success', 'success_info' => 'File permanently deleted!']);
+        }
+
+        return redirect()->back()->withErrors(['failed_delete' => 'File not found']);
     }
 }
