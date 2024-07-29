@@ -3,15 +3,17 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<section id="dashboard" class="bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-200 min-h-screen pr-32 pl-48 py-24 font-arial">
-    <h1 class="text-4xl font-bold"> Welcome, Dean! </h1>
+<section id="dashboard" class="bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-200 min-h-screen pr-7 pl-32 py-4 font-arial">
+<h1 class="text-5xl font-bold py-14"> Welcome, Dean! </h1>
+<div class="border-t border-gray-600 py-5"></div>
+<h1 class="text-4xl font-bold"> Dashboard </h1>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
-        <div class="bg-cyan-50 dark:bg-cyan-800 p-10 rounded-xl shadow-lg flex items-center justify-center overflow-auto max-h-[300px] transition-transform transform hover:scale-105">
-            <canvas id="averagePredictionAccuracyChart" class="max-w-[130px] max-h-[130px]"></canvas>
+        <div class="bg-cyan-50 dark:bg-cyan-800 p-14 rounded-xl shadow-lg flex items-center justify-center overflow-auto max-h-[400x] transition-transform transform hover:scale-105">
+            <canvas id="averagePredictionAccuracyChart" class="max-w-[170px] max-h-[170px]"></canvas>
             <h2 class="text-2xl font-bold ml-5">Average Prediction Accuracy</h2>
         </div>
         <div class="bg-emerald-50 dark:bg-green-800 p-10 rounded-xl shadow-lg flex items-center justify-center overflow-auto max-h-[300px] transition-transform transform hover:scale-105">
-            <canvas id="overallPassingRateChart" class="max-w-[130px] max-h-[130px]"></canvas>
+            <canvas id="overallPassingRateChart" class="max-w-[170px] max-h-[170px]"></canvas>
             <h2 class="text-2xl font-bold ml-5">Overall Passing Rate</h2>
         </div>
         <div class="bg-lime-50 p-10 dark:bg-slate-700 rounded-xl shadow-lg flex flex-col justify-center overflow-auto max-h-[300px] transition-transform transform hover:scale-105">

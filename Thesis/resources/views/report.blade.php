@@ -6,7 +6,7 @@
 @if ($errors->any())
     <x-error_alert />
 @endif
-<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-32 pl-48 py-24 font-arial">
+<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-7 pl-32 py-24 font-arial">
     <div class="bg-white rounded-xl shadow-lg p-8 dark:bg-slate-700 dark:text-slate-200">
         <p class="text-2xl text-slate-800 font-bold dark:text-slate-200"> 
             <i class="fas fa-table mr-6"></i> 

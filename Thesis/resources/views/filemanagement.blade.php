@@ -3,7 +3,7 @@
 @section('title', 'File Management')
 
 @section('content')
-<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-32 pl-48 py-24 font-arial">
+<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-7 pl-32 py-24 font-arial">
     <div id="files" class="bg-white dark:bg-slate-700 rounded-xl shadow-lg p-8">
         <p class="font-bold text-2xl text-slate-800 dark:text-slate-200"> <i class="fas fa-folder mr-6"></i> Your files </p> 
         @php
