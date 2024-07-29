@@ -1,4 +1,11 @@
 @echo off
 cd ThesisPredictiveModel
-call venv\Scripts\activate
-python prcode.py
+
+if exist venv\Scripts\activate (
+    call venv\Scripts\activate
+    python prcode.py
+    exit /b 0
+) else (
+    py prcode.py
+    exit /b 0
+)
