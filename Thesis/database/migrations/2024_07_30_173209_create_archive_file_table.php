@@ -11,18 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deleted_files', function (Blueprint $table) {
+        Schema::create('archive_files', function (Blueprint $table) {
             $table->id();
             $table->string('original_name');
             $table->string('timestamped_name');
             $table->string('path');
-            $table->timestamp('deleted_at');
+            $table->timestamp('archived_at');
             $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        Schema::dropIfExists('deleted_files');
+        Schema::dropIfExists('archive_files');
     }
 };

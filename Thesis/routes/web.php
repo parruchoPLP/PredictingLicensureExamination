@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::get('/filemanagement', [FileController::class, 'showfiles']);
     Route::post('/upload', [FileController::class, 'upload'])->name('upload');
-    Route::delete('/delete-file', [FileController::class, 'deleteFile'])->name('delete.file');
+    Route::delete('/archive-file', [FileController::class, 'archiveFile'])->name('archive.file');
     Route::get('/download-file', [FileController::class, 'downloadFile'])->name('download.file');
     Route::get('/download-systemfile', [FileController::class, 'downloadSystemFile'])->name('download.systemfile');
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/delete-systemfile', [FileController::class, 'deleteSystemFile'])->name('delete.systemfile');
     Route::post('/uploadSystemFile', [FileController::class, 'uploadSystemFile'])->name('upload.systemfile');
     Route::post('/reloadmodel', [FileController::class, 'reloadModel'])->name('reload.model');
-    Route::get('/recentlydeleted', [FileController::class, 'showrecentlydeleted']);
+    Route::get('/archivedfiles', [FileController::class, 'showarchivedfiles']);
     Route::post('/restore-file', [FileController::class, 'restoreFile'])->name('restore.file');
     Route::delete('/delete-permanently', [FileController::class, 'deletePermanently'])->name('delete.permanently');
 });

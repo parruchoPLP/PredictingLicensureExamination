@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-use App\Models\DeletedFile;
+use App\Models\ArchiveFile;
 use Illuminate\Support\Str;
 
 class FileController extends Controller
@@ -86,14 +86,14 @@ class FileController extends Controller
         return view('report', compact('data', 'headers', 'filename'));
     }
 
-    public function deleteFile(Request $request)
+    public function archiveFile(Request $request)
     {
         $fileName = $request->input('file');
         $filePath = storage_path('app/public/uploads/' . $fileName);
-        $deletedFolder = storage_path('app/public/recently_deleted/');
+        $archiveFolder = storage_path('app/public/archive_folder/');
     
-        if (!File::exists($deletedFolder)) {
-            File::makeDirectory($deletedFolder, 0755, true);
+        if (!File::exists($archiveFolder)) {
+            File::makeDirectory($archiveFolder, 0755, true);
         }
     
         // Check if file exists and move it to the recently deleted folder
@@ -101,30 +101,30 @@ class FileController extends Controller
             $timestamp = Carbon::now()->format('Ymd_His');
             $uniqueFileName = $timestamp . '_' . $fileName;
 
-            $deletedFilePath = $deletedFolder . $uniqueFileName;
+            $archivedFilePath = $archiveFolder . $uniqueFileName;
     
             // Move the file
-            File::move($filePath, $deletedFilePath);
+            File::move($filePath, $archivedFilePath);
     
             // Save metadata to database
-            DeletedFile::create([
+            ArchiveFile::create([
                 'original_name' => $fileName,
                 'timestamped_name' => $uniqueFileName,
-                'path' => 'public/recently_deleted/' . $fileName,
-                'deleted_at' => Carbon::now(),
+                'path' => 'public/archive_folder/' . $fileName,
+                'archived_at' => Carbon::now(),
             ]);
     
-            return redirect()->back()->with(['success_title' => 'Delete Success', 'success_info' => 'File moved to recently deleted!']);
+            return redirect()->back()->with(['success_title' => 'Archive Success', 'success_info' => 'Successfully archived file!']);
         }
     
-        return redirect()->back()->withErrors(['failed_delete' => 'File not found']);
+        return redirect()->back()->withErrors(['failed_archive' => 'File not found']);
     }
 
     public function restoreFile(Request $request)
     {
         $fileName = $request->input('file');
-        $filePath = storage_path('app/public/recently_deleted/' . $fileName);
-        $originalFileName = DeletedFile::where('timestamped_name', $fileName)
+        $filePath = storage_path('app/public/archive_folder/' . $fileName);
+        $originalFileName = ArchiveFile::where('timestamped_name', $fileName)
                             ->pluck('original_name')
                             ->first();
 
@@ -148,7 +148,7 @@ class FileController extends Controller
             rename($filePath, $originalPath);
 
             // Delete record from database
-            DeletedFile::where('timestamped_name', $fileName)->delete();
+            ArchiveFile::where('timestamped_name', $fileName)->delete();
 
             return redirect()->back()->with(['success_title' => 'Restore Success', 'success_info' => 'File restored successfully!']);
         }
@@ -341,13 +341,13 @@ class FileController extends Controller
         }
     }
 
-    public function showRecentlyDeleted()
+    public function showArchivedFiles()
     {
-        $files = DeletedFile::where('deleted_at', '>=', now()->subDays(30))
-            ->orderBy('deleted_at', 'desc')
+        $files = ArchiveFile::where('archived_at', '>=', now()->subDays(30))
+            ->orderBy('archived_at', 'desc')
             ->get();
 
-        return view('recentlydeleted', ['data' => $files]);
+        return view('archive', ['data' => $files]);
     }
 
     public function deletePermanently(Request $request)
@@ -359,7 +359,7 @@ class FileController extends Controller
             unlink($filePath);
 
             // Delete record from database
-            DeletedFile::where('timestamped_name', $fileName)->delete();
+            ArchiveFile::where('timestamped_name', $fileName)->delete();
 
             return redirect()->back()->with(['success_title' => 'Delete Success', 'success_info' => 'File permanently deleted!']);
         }

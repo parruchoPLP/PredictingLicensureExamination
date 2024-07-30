@@ -35,11 +35,11 @@
                                 <a href="{{ url('/report?file=' . urlencode($row['file'])) }}" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">View Report</a>
                             </td>
                             <td class="py-2 px-4">
-                                <form action="{{ route('delete.file') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this file?');">
+                                <form action="{{ route('archive.file') }}" method="POST" onsubmit="return confirm('Are you sure you want to archive this file?');">
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" name="file" value="{{ $row['file'] }}">
-                                    <button type="submit" class="text-red-800 border-b hover:border-red-500 py-1 px-3 hover:text-red-500 dark:text-red-300 hover:dark:text-red-500">Delete</button>
+                                    <button type="submit" class="text-red-800 border-b hover:border-red-500 py-1 px-3 hover:text-red-500 dark:text-red-300 hover:dark:text-red-500">Archive</button>
                                 </form>
                             </td>
                         </tr>

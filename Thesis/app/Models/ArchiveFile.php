@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DeletedFile extends Model
+class ArchiveFile extends Model
 {
     use HasFactory;
 
@@ -13,8 +13,8 @@ class DeletedFile extends Model
         'original_name',
         'timestamped_name',
         'path',
-        'deleted_at',
+        'archived_at',
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['archived_at'];
 }

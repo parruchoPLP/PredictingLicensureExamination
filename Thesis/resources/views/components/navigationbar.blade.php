@@ -39,9 +39,9 @@
             </a>
         </li>
         <li class="group">
-            <a href="/recentlydeleted" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 hover:font-bold {{ request()->is('recentlydeleted') ? 'bg-emerald-200 font-bold dark:bg-emerald-800' : '' }}">
-                <i class="fas fa-undo"></i>
-                <span class="hidden group-hover:inline ml-4">Recently Deleted</span>
+            <a href="/archivedfiles" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 hover:font-bold {{ request()->is('archivedfiles') ? 'bg-emerald-200 font-bold dark:bg-emerald-800' : '' }}">
+                <i class="fas fa-archive"></i>
+                <span class="hidden group-hover:inline ml-4">Archived Files</span>
             </a>
         </li>
     </ul>
