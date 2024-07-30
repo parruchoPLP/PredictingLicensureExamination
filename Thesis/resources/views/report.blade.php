@@ -6,8 +6,8 @@
 @if ($errors->any())
     <x-error_alert />
 @endif
-<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-32 pl-48 py-24 font-arial">
-    <div class="bg-white rounded-xl shadow-lg p-8 dark:bg-slate-700 dark:text-slate-200">
+<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-9 pl-36 py-24 font-arial space-y-14">
+    <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700 dark:text-slate-200">
         <p class="text-2xl text-slate-800 font-bold dark:text-slate-200"> 
             <i class="fas fa-table mr-6"></i> 
             Electronics Engineers Licensure Examination Performance Prediction Report
@@ -85,9 +85,28 @@
             </table>
         </div>
 
-        <!-- Pagination Links -->
         <div class="mt-4">
             {{ $paginator->links() }}
+        </div>
+    </div>
+    <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-200"> Report summary: </h1>
+    <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700 text-slate-800 dark:text-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="border-r">
+            <h2 class="text-2xl font-bold">Pass/Fail Rate</h2>
+                <div class="flex items-center justify-center p-6">
+                    <canvas id="passFailRateChart" class="max-w-[180px] max-h-[180px]"></canvas>
+                    <div class="ml-8">
+                        <ul id="passFailLegend" class="text-sm">
+                            <!-- Legends will be added by JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+        </div>
+        <div class="pl-4"> 
+            <h2 class="text-2xl font-bold">Suggested interventions:</h2>
+            <p class="mt-6">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper eleifend. Cras interdum, ipsum sit amet facilisis efficitur, turpis dolor pretium augue, a feugiat nisl felis non risus. Nam ac tortor euismod, fermentum arcu et, dapibus nisl. Etiam condimentum ligula ac tellus lacinia, id tristique arcu vestibulum. Mauris sollicitudin dui a ligula ultrices vestibulum.
+            </p>
         </div>
     </div>
 </section>
