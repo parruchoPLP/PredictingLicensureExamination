@@ -13,7 +13,7 @@
 </button>
 
 <nav id="navbar" class="fixed top-4 left-4 bottom-4 w-auto hover:w-64 rounded-xl shadow-lg bg-white dark:bg-slate-900 flex flex-col items-center font-arial text-lg z-50 transition-all duration-300 ease-in-out" tabindex="-1" aria-labelledby="navbar-label">
-    <ul class="mt-24 p-4 w-full space-y-4 text-slate-800 dark:text-slate-200">
+    <ul class="mt-16 p-4 w-full space-y-4 text-slate-800 dark:text-slate-200">
         <li class="group">
             <a href="/dashboard" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 hover:font-bold {{ request()->is('dashboard') ? 'bg-emerald-200 font-bold dark:bg-emerald-800' : '' }}">
                 <i class="fa fa-tachometer-alt"></i>
