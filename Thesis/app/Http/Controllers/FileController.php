@@ -353,7 +353,7 @@ class FileController extends Controller
     public function deletePermanently(Request $request)
     {
         $fileName = $request->input('file');
-        $filePath = storage_path('app/public/recently_deleted/' . $fileName);
+        $filePath = storage_path('app/public/archive_folder/' . $fileName);
 
         if (file_exists($filePath)) {
             unlink($filePath);
