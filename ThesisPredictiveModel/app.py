@@ -18,11 +18,11 @@ except Exception as e:
 label_encoder_gender = LabelEncoder()
 
 # Load the dataset (for label encoder fitting)
-file_path = 'dummy_data.csv'
+file_path = 'TrainingData.csv'
 df = pd.read_csv(file_path)
 
 # Fit label encoders
-label_encoder_gender.fit(df['gender'])
+label_encoder_gender.fit(df['PERFORMANCE'])
 
 # Endpoint for batch prediction
 @app.route('/batchpredict', methods=['POST'])
@@ -42,25 +42,48 @@ def batch_predict():
         app.logger.info("Received file: %s", file_path)
 
         # Check if all required fields are present in the input data
-        required_fields = ['age', 'gender'] + [
-            'algebra', 'trigo', 'advalgebra', 'anageo', 'diffcal', 'stats', 'intcal',
-            'advmat', 'numeric', 'vector', 'elxdevice', 'elxcirc', 'signals', 'princo',
-            'lcst', 'digicom', 'trans', 'micro', 'broadcast', 'control', 'circ1',
-            'elemag', 'circ2'
+        required_fields = [
+            'CALCULUS I', 'CALCULUS II', 'DIFFERENTIAL EQUATIONS', 
+            'CHEMISTRY FOR ENGINEERS', 'PHYSICS FOR ENGINEERS', 
+            'COMPUTER AIDED DRAFTING', 'ENGINEERING ECONOMICS', 
+            'ENGINEERING MANAGEMENT', 'PHYSICS II', 'MATERIAL SCIENCE AND ENGINEERING',
+            'COMPUTER PROGRAMMING', 'ENVIRONMENTAL SCIENCE AND ENGINEERING',
+            'ADVANCED ENGINEERING MATHEMATICS', 'ELECTROMAGNETICS',
+            'ECE LAWS, CONTRACTS, ETHICS, STANDARDS AND SAFETY',
+            'ELECTRONICS 1: ELECTRONIC DEVICES AND CIRCUITS', 
+            'ELECTRONICS 2: ELECTRONIC CIRCUIT ANALYSIS AND DESIGN', 
+            'SIGNALS, SPECTRA AND SIGNAL PROCESSING', 
+            'COMMUNICATIONS 1: PRINCIPLES OF COMMUNICATION SYSTEMS', 
+            'COMMUNICATIONS 4: TRANSMISSION MEDIA AND ANTENNA SYSTEM AND DESIGN',
+            'DIGITAL ELECTRONICS 1: LOGIC CIRCUITS AND SWITCHING THEORY', 
+            'DIGITAL ELECTRONICS 2: MICROPROCESSOR, MICROCONTROLLER SYSTEM AND DESIGN',
+            'FEEDBACK AND CONTROL SYSTEMS', 'DESIGN 1/CAPSTONE PROJECT 1', 
+            'DESIGN 2/ CAPSTONE PROJECT 2', 'SEMINARS/COLLOQUIUM', 
+            'ECE ELECTIVE: INDUSTRIAL ELECTRONICS'
         ]
 
         if not all(field in df_input.columns for field in required_fields):
             return jsonify({'error': 'Missing required fields'}), 400
 
-        # Encode categorical variables
-        df_input['gender'] = label_encoder_gender.transform(df_input['gender'])
-
         # Standardize the numerical features
-        columns_to_standardize = ['age'] + [
-            'algebra', 'trigo', 'advalgebra', 'anageo', 'diffcal', 'stats', 'intcal',
-            'advmat', 'numeric', 'vector', 'elxdevice', 'elxcirc', 'signals', 'princo',
-            'lcst', 'digicom', 'trans', 'micro', 'broadcast', 'control', 'circ1',
-            'elemag', 'circ2'
+        columns_to_standardize = [
+            'CALCULUS I', 'CALCULUS II', 'DIFFERENTIAL EQUATIONS', 
+            'CHEMISTRY FOR ENGINEERS', 'PHYSICS FOR ENGINEERS', 
+            'COMPUTER AIDED DRAFTING', 'ENGINEERING ECONOMICS', 
+            'ENGINEERING MANAGEMENT', 'PHYSICS II', 'MATERIAL SCIENCE AND ENGINEERING',
+            'COMPUTER PROGRAMMING', 'ENVIRONMENTAL SCIENCE AND ENGINEERING',
+            'ADVANCED ENGINEERING MATHEMATICS', 'ELECTROMAGNETICS',
+            'ECE LAWS, CONTRACTS, ETHICS, STANDARDS AND SAFETY',
+            'ELECTRONICS 1: ELECTRONIC DEVICES AND CIRCUITS', 
+            'ELECTRONICS 2: ELECTRONIC CIRCUIT ANALYSIS AND DESIGN', 
+            'SIGNALS, SPECTRA AND SIGNAL PROCESSING', 
+            'COMMUNICATIONS 1: PRINCIPLES OF COMMUNICATION SYSTEMS', 
+            'COMMUNICATIONS 4: TRANSMISSION MEDIA AND ANTENNA SYSTEM AND DESIGN',
+            'DIGITAL ELECTRONICS 1: LOGIC CIRCUITS AND SWITCHING THEORY', 
+            'DIGITAL ELECTRONICS 2: MICROPROCESSOR, MICROCONTROLLER SYSTEM AND DESIGN',
+            'FEEDBACK AND CONTROL SYSTEMS', 'DESIGN 1/CAPSTONE PROJECT 1', 
+            'DESIGN 2/ CAPSTONE PROJECT 2', 'SEMINARS/COLLOQUIUM', 
+            'ECE ELECTIVE: INDUSTRIAL ELECTRONICS'
         ]
         scaler = StandardScaler()
         df_input[columns_to_standardize] = scaler.fit_transform(df_input[columns_to_standardize])
@@ -69,9 +92,8 @@ def batch_predict():
         predictions = model.predict(df_input[required_fields])
 
         # Mapping numeric labels to categories (assuming binary classification: 0 - Fail, 1 - Pass)
-        df_input['predicted_licensure_outcome'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions]
+        df_input['predicted_licensure_outcome'] = ['Expected to Pass' if pred == 1 else 'Expected to Fail' for pred in predictions]
         df_input[columns_to_standardize] = scaler.inverse_transform(df_input[columns_to_standardize])
-        df_input['gender'] = label_encoder_gender.inverse_transform(df_input['gender'])
 
         df_input.to_csv(file_path, index=False)
         app.logger.info("Predictions saved to %s", file_path)

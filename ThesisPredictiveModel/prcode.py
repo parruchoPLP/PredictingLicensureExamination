@@ -39,12 +39,25 @@ print(combined_df)
 
 # Select relevant columns including the target column 'Licensure Outcome'
 grade_columns = [
-    'algebra', 'trigo', 'advalgebra', 'anageo', 'diffcal', 'stats', 'intcal',
-    'advmat', 'numeric', 'vector', 'elxdevice', 'elxcirc', 'signals', 'princo',
-    'lcst', 'digicom', 'trans', 'micro', 'broadcast', 'control', 'circ1',
-    'elemag', 'circ2'
+    'CALCULUS I', 'CALCULUS II', 'DIFFERENTIAL EQUATIONS', 
+    'CHEMISTRY FOR ENGINEERS', 'PHYSICS FOR ENGINEERS', 
+    'COMPUTER AIDED DRAFTING', 'ENGINEERING ECONOMICS', 
+    'ENGINEERING MANAGEMENT', 'PHYSICS II', 'MATERIAL SCIENCE AND ENGINEERING',
+    'COMPUTER PROGRAMMING', 'ENVIRONMENTAL SCIENCE AND ENGINEERING',
+    'ADVANCED ENGINEERING MATHEMATICS', 'ELECTROMAGNETICS',
+    'ECE LAWS, CONTRACTS, ETHICS, STANDARDS AND SAFETY',
+    'ELECTRONICS 1: ELECTRONIC DEVICES AND CIRCUITS', 
+    'ELECTRONICS 2: ELECTRONIC CIRCUIT ANALYSIS AND DESIGN', 
+    'SIGNALS, SPECTRA AND SIGNAL PROCESSING', 
+    'COMMUNICATIONS 1: PRINCIPLES OF COMMUNICATION SYSTEMS', 
+    'COMMUNICATIONS 4: TRANSMISSION MEDIA AND ANTENNA SYSTEM AND DESIGN',
+    'DIGITAL ELECTRONICS 1: LOGIC CIRCUITS AND SWITCHING THEORY', 
+    'DIGITAL ELECTRONICS 2: MICROPROCESSOR, MICROCONTROLLER SYSTEM AND DESIGN',
+    'FEEDBACK AND CONTROL SYSTEMS', 'DESIGN 1/CAPSTONE PROJECT 1', 
+    'DESIGN 2/ CAPSTONE PROJECT 2', 'SEMINARS/COLLOQUIUM', 
+    'ECE ELECTIVE: INDUSTRIAL ELECTRONICS'
 ]
-selected_columns = ['age', 'gender'] + grade_columns + ['passed']
+selected_columns = grade_columns + ['PERFORMANCE']
 combined_df = combined_df[selected_columns]
 
 # Drop rows with missing values in the selected columns
@@ -54,16 +67,11 @@ combined_df.dropna(subset=selected_columns, inplace=True)
 print("Head of the DataFrame:")
 print(combined_df.head())
 
-# Convert categorical variables to numerical using label encoding
-label_encoder_gender = LabelEncoder()
-
-combined_df['gender'] = label_encoder_gender.fit_transform(combined_df['gender'])
-
 # Display the head of the DataFrame
 print("Head of the DataFrame:")
 print(combined_df.head())
 
-columns_to_standardize = grade_columns + ['age']
+columns_to_standardize = grade_columns
 
 # Initialize the scaler
 scaler = StandardScaler()
@@ -76,8 +84,8 @@ print("Head of the DataFrame:")
 print(combined_df.head())
 
 # Split the data into features (X) and target variable (y)
-X = combined_df[['age', 'gender'] + grade_columns]
-y = combined_df['passed']
+X = combined_df[grade_columns]
+y = combined_df['PERFORMANCE']
 
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
