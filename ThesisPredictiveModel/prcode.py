@@ -3,9 +3,12 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score
+from imblearn.over_sampling import SMOTE
+from collections import Counter
 import joblib
 import glob
+import numpy as np
 
 # Define the directory containing the files
 directory_path = os.path.join(os.path.dirname(__file__), 'TrainingData')
@@ -54,8 +57,7 @@ grade_columns = [
     'DIGITAL ELECTRONICS 1: LOGIC CIRCUITS AND SWITCHING THEORY', 
     'DIGITAL ELECTRONICS 2: MICROPROCESSOR, MICROCONTROLLER SYSTEM AND DESIGN',
     'FEEDBACK AND CONTROL SYSTEMS', 'DESIGN 1/CAPSTONE PROJECT 1', 
-    'DESIGN 2/ CAPSTONE PROJECT 2', 'SEMINARS/COLLOQUIUM', 
-    'ECE ELECTIVE: INDUSTRIAL ELECTRONICS'
+    'ECE ELECTIVE: INDUSTRIAL ELECTRONICS', 'DESIGN 2/ CAPSTONE PROJECT 2', 'SEMINARS/COLLOQUIUM'
 ]
 selected_columns = grade_columns + ['PERFORMANCE']
 combined_df = combined_df[selected_columns]
@@ -87,35 +89,27 @@ print(combined_df.head())
 X = combined_df[grade_columns]
 y = combined_df['PERFORMANCE']
 
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Apply SMOTE to oversample the minority classes
+smote = SMOTE(sampling_strategy='auto' ,random_state=100)
+X_resampled, y_resampled = smote.fit_resample(X, y)
+
+# Display resampled class distribution
+print("Resampled class distribution:", Counter(y_resampled))
+
+# Split the resampled data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=42)
 
 # Create a RandomForestClassifier model
-model = RandomForestClassifier(n_estimators=50, max_features='sqrt', max_depth=5, random_state=42)
+model = RandomForestClassifier(n_estimators=100, max_features='sqrt', max_depth=10, random_state=42)
 
-'''
-# Define the parameter grid
-param_grid = {
-    'max_depth': [5, 10, 15, 20, None],
-    'n_estimators': [50, 100, 200]
-}
+# Perform 5-fold cross-validation
+cv_scores = cross_val_score(model, X_train, y_train, cv=5, scoring='accuracy')
 
-# Initialize a RandomForestClassifier
-rf = RandomForestClassifier(random_state=42)
+# Print cross-validation scores
+print(f"Cross-validation scores: {cv_scores}")
+print(f"Mean cross-validation score: {np.mean(cv_scores):.2f}")
 
-# Perform grid search with cross-validation
-grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=5, n_jobs=-1, scoring='accuracy')
-grid_search.fit(X_train, y_train)
-
-# Get the best parameters
-best_params = grid_search.best_params_
-print(f"Best parameters found: {best_params}")
-
-# Train the final model with the best parameters
-final_model = RandomForestClassifier(**best_params, random_state=42)
-final_model.fit(X_train, y_train)
-'''
-# Train the model
+# Train the model on the entire training set
 model.fit(X_train, y_train)
 
 # Print message indicating that the model is trained
@@ -126,7 +120,7 @@ y_pred = model.predict(X_test)
 
 # Display accuracy and classification report
 accuracy = accuracy_score(y_test, y_pred)
-print(f'Accuracy: {accuracy:.2f}')
+print(f'Accuracy on test set: {accuracy:.2f}')
 print('Classification Report:')
 print(classification_report(y_test, y_pred))
 
@@ -140,16 +134,12 @@ try:
 except Exception as e:
     print(f"An error occurred while saving the model: {e}")
 
-'''
 # Get feature importances
 feature_importances = model.feature_importances_
 
-# Get feature names
-feature_names = ['age', 'gender'] + grade_columns
-
 # Create a DataFrame for feature importances
 importance_df = pd.DataFrame({
-    'Feature': feature_names,
+    'Feature': grade_columns,
     'Importance': feature_importances
 })
 
@@ -163,4 +153,3 @@ print(importance_df)
 # Print the most important predictor
 top_predictor = importance_df.iloc[0]
 print(f"\nThe top predictor is '{top_predictor['Feature']}' with an importance score of {top_predictor['Importance']:.4f}")
-'''
