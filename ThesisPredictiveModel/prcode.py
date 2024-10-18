@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split, cross_val_score
 from imblearn.over_sampling import SMOTE
@@ -9,6 +9,8 @@ from collections import Counter
 import joblib
 import glob
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Define the directory containing the files
 directory_path = os.path.join(os.path.dirname(__file__), 'TrainingData')
@@ -153,3 +155,16 @@ print(importance_df)
 # Print the most important predictor
 top_predictor = importance_df.iloc[0]
 print(f"\nThe top predictor is '{top_predictor['Feature']}' with an importance score of {top_predictor['Importance']:.4f}")
+
+'''
+# Generate the confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Display the confusion matrix
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=True, fmt='g', cmap='Blues', cbar=False)
+plt.title('Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.show()
+'''
