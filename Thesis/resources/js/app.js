@@ -242,8 +242,7 @@ document.addEventListener('DOMContentLoaded', function () {
             datasets: [{
                 label: 'Feature Importance',
                 data: featureImportanceData.values,
-                backgroundColor: '#34D399',
-                borderRadius: 100
+                backgroundColor: '#34D399'
             }]
         },
         options: {

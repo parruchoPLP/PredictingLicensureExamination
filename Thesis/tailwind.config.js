@@ -12,12 +12,14 @@ export default {
       fontFamily: {
         'arial': ['Arial', 'sans-serif'],
       },
+      screens: {
+        'mid-lg': '800px',  // Custom screen breakpoint
+      },
     },
   },
   plugins: [
     require('flowbite/plugin')({
-        charts: true,
+      charts: true,
     }),
   ],
 }
-
