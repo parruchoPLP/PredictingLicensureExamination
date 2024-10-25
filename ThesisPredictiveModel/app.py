@@ -43,23 +43,11 @@ def batch_predict():
 
         # Check if all required fields are present in the input data
         required_fields = [
-            'CALCULUS I', 'CALCULUS II', 'DIFFERENTIAL EQUATIONS', 
-            'CHEMISTRY FOR ENGINEERS', 'PHYSICS FOR ENGINEERS', 
-            'COMPUTER AIDED DRAFTING', 'ENGINEERING ECONOMICS', 
-            'ENGINEERING MANAGEMENT', 'PHYSICS II', 'MATERIAL SCIENCE AND ENGINEERING',
-            'COMPUTER PROGRAMMING', 'ENVIRONMENTAL SCIENCE AND ENGINEERING',
-            'ADVANCED ENGINEERING MATHEMATICS', 'ELECTROMAGNETICS',
-            'ECE LAWS, CONTRACTS, ETHICS, STANDARDS AND SAFETY',
-            'ELECTRONICS 1: ELECTRONIC DEVICES AND CIRCUITS', 
-            'ELECTRONICS 2: ELECTRONIC CIRCUIT ANALYSIS AND DESIGN', 
-            'SIGNALS, SPECTRA AND SIGNAL PROCESSING', 
-            'COMMUNICATIONS 1: PRINCIPLES OF COMMUNICATION SYSTEMS', 
-            'COMMUNICATIONS 4: TRANSMISSION MEDIA AND ANTENNA SYSTEM AND DESIGN',
-            'DIGITAL ELECTRONICS 1: LOGIC CIRCUITS AND SWITCHING THEORY', 
-            'DIGITAL ELECTRONICS 2: MICROPROCESSOR, MICROCONTROLLER SYSTEM AND DESIGN',
-            'FEEDBACK AND CONTROL SYSTEMS', 'DESIGN 1/CAPSTONE PROJECT 1', 
-            'DESIGN 2/ CAPSTONE PROJECT 2', 'SEMINARS/COLLOQUIUM', 
-            'ECE ELECTIVE: INDUSTRIAL ELECTRONICS'
+            'ECE 111', 'ECE 112', 'ECE 114', 'ECE 121', 'ECE 122', 'ECE 131', 
+            'ECE 132', 'ECE 133', 'ECE 141', 'ECE 143', 'ECE 142', 'ECE 146', 
+            'ECE 152', 'ECE 153', 'ECE 156', 'ECE 151', 'ECE 154', 'ECE 158', 
+            'ECE 155', 'ECE 162', 'ECE 160', 'ECE 163', 'ECE 164', 'ECE 166', 
+            'ECE 167', 'ECE 168', 'ECE 202'
         ]
 
         if not all(field in df_input.columns for field in required_fields):
@@ -67,23 +55,11 @@ def batch_predict():
 
         # Standardize the numerical features
         columns_to_standardize = [
-            'CALCULUS I', 'CALCULUS II', 'DIFFERENTIAL EQUATIONS', 
-            'CHEMISTRY FOR ENGINEERS', 'PHYSICS FOR ENGINEERS', 
-            'COMPUTER AIDED DRAFTING', 'ENGINEERING ECONOMICS', 
-            'ENGINEERING MANAGEMENT', 'PHYSICS II', 'MATERIAL SCIENCE AND ENGINEERING',
-            'COMPUTER PROGRAMMING', 'ENVIRONMENTAL SCIENCE AND ENGINEERING',
-            'ADVANCED ENGINEERING MATHEMATICS', 'ELECTROMAGNETICS',
-            'ECE LAWS, CONTRACTS, ETHICS, STANDARDS AND SAFETY',
-            'ELECTRONICS 1: ELECTRONIC DEVICES AND CIRCUITS', 
-            'ELECTRONICS 2: ELECTRONIC CIRCUIT ANALYSIS AND DESIGN', 
-            'SIGNALS, SPECTRA AND SIGNAL PROCESSING', 
-            'COMMUNICATIONS 1: PRINCIPLES OF COMMUNICATION SYSTEMS', 
-            'COMMUNICATIONS 4: TRANSMISSION MEDIA AND ANTENNA SYSTEM AND DESIGN',
-            'DIGITAL ELECTRONICS 1: LOGIC CIRCUITS AND SWITCHING THEORY', 
-            'DIGITAL ELECTRONICS 2: MICROPROCESSOR, MICROCONTROLLER SYSTEM AND DESIGN',
-            'FEEDBACK AND CONTROL SYSTEMS', 'DESIGN 1/CAPSTONE PROJECT 1', 
-            'DESIGN 2/ CAPSTONE PROJECT 2', 'SEMINARS/COLLOQUIUM', 
-            'ECE ELECTIVE: INDUSTRIAL ELECTRONICS'
+            'ECE 111', 'ECE 112', 'ECE 114', 'ECE 121', 'ECE 122', 'ECE 131', 
+            'ECE 132', 'ECE 133', 'ECE 141', 'ECE 143', 'ECE 142', 'ECE 146', 
+            'ECE 152', 'ECE 153', 'ECE 156', 'ECE 151', 'ECE 154', 'ECE 158', 
+            'ECE 155', 'ECE 162', 'ECE 160', 'ECE 163', 'ECE 164', 'ECE 166', 
+            'ECE 167', 'ECE 168', 'ECE 202'
         ]
         scaler = StandardScaler()
         df_input[columns_to_standardize] = scaler.fit_transform(df_input[columns_to_standardize])
@@ -92,9 +68,9 @@ def batch_predict():
         predictions = model.predict(df_input[required_fields])
 
         # Mapping numeric labels to categories (assuming binary classification: 0 - Fail, 1 - Pass)
-        df_input['predicted_licensure_outcome'] = ['Expected to Pass' if pred == 1 else 'Expected to Fail' for pred in predictions]
+        df_input['PERFORMANCE'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions]
         df_input[columns_to_standardize] = scaler.inverse_transform(df_input[columns_to_standardize])
-
+        df_input.rename(columns={'PERFORMANCE':'EXPECTED PERFORMANCE'}, inplace=True)
         df_input.to_csv(file_path, index=False)
         app.logger.info("Predictions saved to %s", file_path)
 

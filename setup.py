@@ -42,7 +42,7 @@ def main():
 
     # Define the commands to run
     python_commands = [
-        f"{activate_command} && pip install pandas scikit-learn joblib numpy matplotlib flask imblearn seaborn"
+        f"{activate_command} && pip install pandas scikit-learn joblib numpy matplotlib flask imblearn seaborn shap"
     ]
 
     laravel_commands = [

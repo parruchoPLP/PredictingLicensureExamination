@@ -81,9 +81,13 @@ class FileController extends Controller
 
         // Load the file and parse its contents
         $data = Excel::toArray(new DataImport, $path);
-        $headers = !empty($data[0]) ? array_keys($data[0][0]) : [];
+        $headers = !empty($data[0]) ? array_map('trim', array_keys($data[0][0])) : [];
 
-        return view('report', compact('data', 'headers', 'filename'));
+        return view('report', [
+            'data' => $data,
+            'headers' => $headers,
+            'filename' => $filename
+        ]);
     }
 
     public function archiveFile(Request $request)
@@ -260,14 +264,15 @@ class FileController extends Controller
 
             // Define the required columns
             $requiredColumns = [
-                'age', 'gender', 'algebra', 'trigo', 'advalgebra', 'anageo', 'diffcal', 'stats', 
-                'intcal', 'advmat', 'numeric', 'vector', 'elxdevice', 'elxcirc', 'signals', 
-                'princo', 'lcst', 'digicom', 'trans', 'micro', 'broadcast', 'control', 
-                'circ1', 'elemag', 'circ2', 'passed'
+                'ECE 111', 'ECE 112', 'ECE 114', 'ECE 121', 'ECE 122', 'ECE 131', 
+                'ECE 132', 'ECE 133', 'ECE 141', 'ECE 143', 'ECE 142', 'ECE 146', 
+                'ECE 152', 'ECE 153', 'ECE 156', 'ECE 151', 'ECE 154', 'ECE 158', 
+                'ECE 155', 'ECE 162', 'ECE 160', 'ECE 163', 'ECE 164', 'ECE 166', 
+                'ECE 167', 'ECE 168', 'ECE 202', 'PERFORMANCE'
             ];
 
             // Check if the required columns exist in the header row
-            $header = array_map('strtolower', $data[0]); // Convert header to lowercase for case-insensitive comparison
+            $header = array_map('strtoupper', $data[0]); // Convert header to lowercase for case-insensitive comparison
             foreach ($requiredColumns as $column) {
                 if (!in_array($column, $header)) {
                     return redirect()->back()->withErrors(['failed_upload' => "Missing required column: $column"]);
@@ -329,7 +334,7 @@ class FileController extends Controller
         // Execute the batch file
         $output = [];
         $returnVar = 0;
-        exec("{$batchFilePath} 2>&1", $output, $returnVar);
+        exec("cd " . escapeshellarg(base_path('../ThesisPredictiveModel')) . " && reload_model.bat 2>&1", $output, $returnVar);
 
         // Check the result
         if ($returnVar === 0) {

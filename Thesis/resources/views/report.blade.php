@@ -65,13 +65,25 @@
                         @foreach($headers as $index => $header)
                         <th class="py-2 px-4 whitespace-nowrap @if($loop->first) sticky left-0 z-20 bg-emerald-200 dark:bg-emerald-700 @endif @if($loop->last) sticky right-0 z-20 bg-emerald-200 dark:bg-emerald-700 @endif"
                             data-popover-target="popover-header-{{ $index }}">
-                            {{ $header }}
-                            <div id="popover-header-{{ $index }}" data-popover role="tooltip" class="absolute z-50 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
+                            {{ strtoupper(str_replace('_', ' ', $header)) }}
+                            <div id="popover-header-{{ $index }}" data-popover role="tooltip" class="absolute z-50 invisible inline-block w-auto text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
                                 <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-                                    <h3 class="font-semibold text-gray-900 dark:text-white">Feature</h3>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white">
+                                        @if (in_array(strtoupper(str_replace('_', ' ', $header)), ['STUDENT ID', 'GENDER', 'EXPECTED PERFORMANCE']))
+                                            FEATURE
+                                        @else
+                                            {{ strtoupper(str_replace('_', ' ', $header)) }}
+                                        @endif
+                                    </h3>
                                 </div>
                                 <div class="px-3 py-2">
-                                    <p>{{ $header }}</p>
+                                    <p>
+                                        @if (in_array(strtoupper(str_replace('_', ' ', $header)), ['STUDENT ID', 'GENDER', 'EXPECTED PERFORMANCE']))
+                                            {{ strtoupper(str_replace('_', ' ', $header)) }}
+                                        @else
+                                            {{ $courseDictionary[strtoupper(trim(str_replace('_', ' ', $header)))] ?? 'Unknown Feature' }}
+                                        @endif
+                                    </p>
                                 </div>
                                 <div data-popper-arrow></div>
                             </div>
@@ -86,7 +98,7 @@
                     @endphp
                     <tr class="border-b group {{ $lastValue == 'Pass' ? 'hover:bg-emerald-100 dark:hover:bg-slate-800 dark:hover:text-emerald-400' : ($lastValue == 'Fail' ? 'hover:bg-red-100 dark:hover:text-red-400 dark:hover:bg-slate-800' : '') }}">
                         @foreach($row as $key => $value)
-                        <td class="py-2 px-4 whitespace-nowrap @if($loop->first) sticky left-0 z-5 bg-white dark:bg-slate-800 {{ $lastValue == 'Pass' ? 'group-hover:bg-emerald-100 dark:group-hover:bg-slate-800 dark:hover:text-emerald-900 dark:bg-slate-800 dark:group-hover:text-emerald-400' : ($lastValue == 'Fail' ? 'group-hover:bg-red-100 dark:group-hover:bg-slate-800 dark:hover:text-red-900 dark:bg-slate-800 dark:group-hover:text-red-400' : '') }} @endif @if($loop->last) sticky right-0 z-5 {{ $key == 'predicted_licensure_outcome' && $value == 'Pass' ? 'bg-emerald-100 dark:bg-slate-800 text-black dark:text-emerald-400' : ($key == 'predicted_licensure_outcome' && $value == 'Fail' ? 'bg-red-100 dark:bg-slate-800 text-black dark:text-red-400' : '') }}@endif">
+                        <td class="py-2 px-4 whitespace-nowrap @if($loop->first) sticky left-0 z-5 bg-white dark:bg-slate-800 {{ $lastValue == 'Pass' ? 'group-hover:bg-emerald-100 dark:group-hover:bg-slate-800 dark:hover:text-emerald-900 dark:bg-slate-800 dark:group-hover:text-emerald-400' : ($lastValue == 'Fail' ? 'group-hover:bg-red-100 dark:group-hover:bg-slate-800 dark:hover:text-red-900 dark:bg-slate-800 dark:group-hover:text-red-400' : '') }} @endif @if($loop->last) sticky right-0 z-5 {{ $key == 'EXPECTED_PERFORMANCE' && $value == 'Pass' ? 'bg-emerald-100 dark:bg-slate-800 text-black dark:text-emerald-400' : ($key == 'EXPECTED_PERFORMANCE' && $value == 'Fail' ? 'bg-red-100 dark:bg-slate-800 text-black dark:text-red-400' : '') }}@endif">
                             {{ $value }}
                         </td>
                         @endforeach
