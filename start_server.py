@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import shutil
 
 def run_command(command):
     process = subprocess.Popen(command, shell=True)
@@ -17,6 +18,14 @@ def run_batch_file(batch_file_path):
         return False
     return True
 
+def copy_batch_file_to_public(batch_file_path, public_dir):
+    try:
+        shutil.copy(batch_file_path, public_dir)
+        print(f"Copied {batch_file_path} to {public_dir}")
+    except Exception as e:
+        print(f"Failed to copy {batch_file_path} to {public_dir}: {e}", file=sys.stderr)
+        sys.exit(1)
+
 def main():
     # Get the current working directory (the root of the project)
     root_dir = os.getcwd()
@@ -25,6 +34,7 @@ def main():
     # Define relative paths to the model and laravel directories
     model_dir = os.path.join(root_dir, "ThesisPredictiveModel")
     laravel_dir = os.path.join(root_dir, "Thesis")
+    public_dir = os.path.join(laravel_dir, "public")
     venv_dir = os.path.join(model_dir, "venv")
     batch_file_path = os.path.join(root_dir, "reload_model.bat")
 
@@ -33,6 +43,11 @@ def main():
         sys.exit("Error: ThesisPredictiveModel directory not found.")
     if not os.path.exists(laravel_dir):
         sys.exit("Error: Thesis directory not found.")
+    if not os.path.exists(public_dir):
+        sys.exit("Error: Public directory not found in Laravel project.")
+
+    # Copy the batch file to the Laravel public directory
+    copy_batch_file_to_public(batch_file_path, public_dir)
 
     # Execute the batch file before starting servers
     if not run_batch_file(batch_file_path):
