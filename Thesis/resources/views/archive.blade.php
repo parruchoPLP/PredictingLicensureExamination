@@ -3,14 +3,14 @@
 @section('title', 'Archived Files')
 
 @section('content')
-<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-9 pl-36 py-24 font-arial">
+<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-9 pl-36 py-36 font-arial">
     <div id="files" class="bg-white dark:bg-slate-700 rounded-xl shadow-lg p-8">
-        <p class="font-bold text-2xl text-slate-800 dark:text-slate-200"> <i class="fas fa-archive mr-6"></i> Archived Files </p> 
-        <div class="overflow-x-auto pt-7">
+        <p class="font-bold text-xl text-slate-800 dark:text-slate-200"> <i class="fas fa-archive mr-6"></i> Archived Files </p> 
+        <div class="overflow-x-auto pt-7 text-sm">
             @if($data->isEmpty())
                 <p class="text-slate-600 text-center dark:text-slate-400 mt-4">No archived files.</p>
             @else
-                <table class="min-w-full bg-white text-md border dark:bg-slate-800">
+                <table class="min-w-full bg-white border dark:bg-slate-800">
                     <thead class="bg-emerald-200 text-slate-800 dark:bg-emerald-700 dark:text-slate-200 text-left uppercase font-bold">
                         <tr>
                             <th class="py-2 px-4 w-2/5">File Name</th>

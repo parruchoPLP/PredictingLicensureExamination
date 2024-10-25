@@ -3,13 +3,13 @@
 @section('title', 'Account Management')
 
 @section('content')
-<section id="acctmanagement" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-9 pl-36 py-24 font-arial">
+<section id="acctmanagement" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-9 pl-36 py-16 font-arial">
     <div class="bg-white dark:bg-slate-700 rounded-xl shadow-lg p-8 text-slate-800 dark:text-slate-200">
-        <p class="font-bold text-2xl"> <i class="fas fa-user mr-6"></i> Your account </p>
+        <p class="font-bold text-xl"> <i class="fas fa-user mr-6"></i> Your account </p>
         <form action="{{ route('profile.update') }}" method="POST" class="mt-8 space-y-6">
             @csrf
             @method('PUT')
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-slate-600 dark:text-slate-200">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-slate-600 dark:text-slate-200 text-sm">
                 <div class="space-y-6">
                     <div>
                         <label for="name" class="block font-semibold">Name</label>

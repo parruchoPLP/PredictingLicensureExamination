@@ -30,18 +30,18 @@ document.addEventListener('DOMContentLoaded', function () {
         afterDraw: (chart) => {
             const { width, height, ctx } = chart;
             const { id } = chart.canvas;
-
+            
             if (id === 'overallPassingRateChart' || id === 'averagePredictionAccuracyChart' ||
                 id === 'precisionChart' || id === 'recallChart' || id === 'f1ScoreChart') {
                 ctx.restore();
                 const fontSize = (height / 114).toFixed(2);
                 ctx.font = `bold ${fontSize}em sans-serif`;
                 ctx.textBaseline = 'middle';
-
+                
                 let text;
                 let textX;
                 let textY;
-
+                
                 if (id === 'overallPassingRateChart') {
                     text = `${chart.data.datasets[0].data[0]}%`;
                     textX = Math.round((width - ctx.measureText(text).width) / 2);
@@ -242,8 +242,7 @@ document.addEventListener('DOMContentLoaded', function () {
             datasets: [{
                 label: 'Feature Importance',
                 data: featureImportanceData.values,
-                backgroundColor: '#34D399',
-                borderRadius: 100
+                backgroundColor: '#34D399'
             }]
         },
         options: {
@@ -282,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
         pass: 16, // Example number of passes
         fail: 24,  // Example number of fails
     };
-
+    
     const passPercentage = (passFailData.pass / (passFailData.pass + passFailData.fail) * 100).toFixed(2);
     const failPercentage = (passFailData.fail / (passFailData.pass + passFailData.fail) * 100).toFixed(2);
 
