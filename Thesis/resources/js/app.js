@@ -3,17 +3,7 @@ import 'flowbite';
 import Chart from 'chart.js/auto';
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Data placeholders
-    const averagePredictionAccuracy = 85; // Example: 85%
-    const overallPassingRate = 75; // Example: 75%
-    const topPredictors = ['Algebra', 'Trigonometry', 'Calculus']; // Example top 3 predictors
-    const precision = 80; // Example: 80%
-    const recall = 90; // Example: 90%
-    const f1Score = 85; // Example: 85%
-    const featureImportanceData = {
-        labels: ['Algebra', 'Trigonometry', 'Calculus', 'Physics', 'Chemistry'],
-        values: [0.465, 0.397, 0.385, 0.340, 0.387] // Example values
-    };
+    const topPredictors = ['ECE 111', 'ECE 151', 'ECE 114', 'ECE 162', 'ECE 143']; // Example top 3 predictors
 
     const topPredictorsList = document.getElementById('topPredictorsList');
 
@@ -25,256 +15,367 @@ document.addEventListener('DOMContentLoaded', function () {
         topPredictorsList.appendChild(listItem);
     });
 
-    const centerTextPlugin = {
-        id: 'centerText',
-        afterDraw: (chart) => {
-            const { width, height, ctx } = chart;
-            const { id } = chart.canvas;
-            
-            if (id === 'overallPassingRateChart' || id === 'averagePredictionAccuracyChart' ||
-                id === 'precisionChart' || id === 'recallChart' || id === 'f1ScoreChart') {
-                ctx.restore();
-                const fontSize = (height / 114).toFixed(2);
-                ctx.font = `bold ${fontSize}em sans-serif`;
-                ctx.textBaseline = 'middle';
-                
-                let text;
-                let textX;
-                let textY;
-                
-                if (id === 'overallPassingRateChart') {
-                    text = `${chart.data.datasets[0].data[0]}%`;
-                    textX = Math.round((width - ctx.measureText(text).width) / 2);
-                    textY = height / 2;
-                } else if (id === 'averagePredictionAccuracyChart' ||
-                           id === 'precisionChart' || id === 'recallChart' || id === 'f1ScoreChart') {
-                    text = `${chart.data.datasets[0].data[0]}%`;
-                    textX = Math.round((width - ctx.measureText(text).width) / 2);
-                    textY = height * 0.75; 
-                }
+    const getChartOptions = () => {
+        return {
+            series: [75, 25], // 75% passing, 25% failing
+            colors: ["#10b981", "#6ee7b7"], // Color for passing and failing
+            chart: {
+                height: 420,
+                width: "100%",
+                type: "donut",
+            },
+            stroke: {
+                colors: ["transparent"],
+                lineCap: "round",
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            name: {
+                                show: true,
+                                offsetY: 20,
+                            },
+                            total: {
+                                showAlways: true,
+                                show: true,
+                                label: "Passing Rate",
+                                formatter: function () {
+                                    return "75%"; // Display only the passing rate
+                                },
+                            },
+                            value: {
+                                show: true,
+                                offsetY: -20,
+                                formatter: function (value) {
+                                    return value + "%"; // Show each section's value as a percentage
+                                },
+                            },
+                        },
+                        size: "70%",
+                    },
+                },
+            },
+            grid: {
+                padding: {
+                    top: -2,
+                },
+            },
+            labels: ["Passing", "Failing"], // Labels for passing and failing
+            dataLabels: {
+                enabled: false,
+            },
+            legend: {
+                position: "top",
+            },
+            yaxis: {
+                labels: {
+                    formatter: function (value) {
+                        return value + "%";
+                    },
+                },
+            },
+            xaxis: {
+                labels: {
+                    formatter: function (value) {
+                        return value + "%";
+                    },
+                },
+                axisTicks: {
+                    show: false,
+                },
+                axisBorder: {
+                    show: false,
+                },
+            },
+        };
+    };
+    
+    if (document.getElementById("passingRate-chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById("passingRate-chart"), getChartOptions());
+        chart.render();
+    }   
 
-                ctx.fillText(text, textX, textY);
-                ctx.save();
-            }
-        }
+    const options = {
+        colors: ["#10b981", "#6ee7b7"], // Original colors (if needed, they can be removed)
+        series: [
+            {
+                name: "Feature Importance",
+                data: [
+                    { x: "ECE 111", y: 0.10 },
+                    { x: "ECE 112", y: 0.15 },
+                    { x: "ECE 114", y: 0.05 },
+                    { x: "ECE 121", y: 0.20 },
+                    { x: "ECE 122", y: 0.30 },
+                    { x: "ECE 131", y: 0.40 },
+                    { x: "ECE 132", y: 0.25 },
+                    { x: "ECE 133", y: 0.35 },
+                    { x: "ECE 141", y: 0.20 },
+                    { x: "ECE 143", y: 0.30 },
+                    { x: "ECE 142", y: 0.15 },
+                    { x: "ECE 146", y: 0.25 },
+                    { x: "ECE 152", y: 0.40 },
+                    { x: "ECE 153", y: 0.30 },
+                    { x: "ECE 156", y: 0.10 },
+                    { x: "ECE 151", y: 0.45 },
+                    { x: "ECE 154", y: 0.20 },
+                    { x: "ECE 158", y: 0.35 },
+                    { x: "ECE 155", y: 0.25 },
+                    { x: "ECE 162", y: 0.30 },
+                    { x: "ECE 160", y: 0.15 },
+                    { x: "ECE 163", y: 0.40 },
+                    { x: "ECE 164", y: 0.10 },
+                    { x: "ECE 166", y: 0.50 },
+                    { x: "ECE 167", y: 0.30 },
+                    { x: "ECE 168", y: 0.20 },
+                    { x: "ECE 202", y: 0.25 },
+                ],
+            },
+        ],
+        chart: {
+            type: "bar",
+            height: "250px",
+            toolbar: {
+                show: false,
+            },
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: "70%",
+                borderRadiusApplication: "end",
+                borderRadius: 1,
+            },
+        },
+        tooltip: {
+            shared: true,
+            intersect: false
+        },
+        states: {
+            hover: {
+                filter: {
+                    type: "darken",
+                    value: 1,
+                },
+            },
+        },
+        stroke: {
+            show: true,
+            width: 0,
+            colors: ["transparent"],
+        },
+        grid: {
+            show: true,
+            strokeDashArray: 4,
+            padding: {
+                left: 2,
+                right: 2,
+                top: -14,
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        legend: {
+            show: true,
+            position: "top", // Positioning legend at the top
+            horizontalAlign: "center", // Centering legend horizontally
+        },
+        xaxis: {
+            floating: false,
+            labels: {
+                show: true,
+                style: {
+                    cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400',
+                },
+            },
+            axisBorder: {
+                show: false,
+            },
+            axisTicks: {
+                show: false,
+            },
+            title: {
+                text: "Courses", // Label for x-axis
+                style: {
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                },
+            },
+        },
+        fill: {
+            type: "gradient", // Enable gradient fill
+            gradient: {
+                shade: "light", // Specify light or dark shade
+                type: "horizontal", // Horizontal gradient
+                gradientToColors: ["#6ee7b7"], // Emerald green for the gradient end
+                stops: [0, 100], // Start and end stops for the gradient
+            },
+        },
     };
 
-    Chart.register(centerTextPlugin);
+    if (document.getElementById("feature-chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById("feature-chart"), options);
+        chart.render();
+    }
 
-    // Average Prediction Accuracy Doughnut Chart
-    const ctx1 = document.getElementById('averagePredictionAccuracyChart').getContext('2d');
-    new Chart(ctx1, {
-        type: 'doughnut',
-        data: {
-            labels: ['Accuracy', 'Remaining'],
-            datasets: [{
-                data: [averagePredictionAccuracy, 100 - averagePredictionAccuracy],
-                backgroundColor: ['#34D399', '#A7F3D0']
-            }]
-        },
-        options: {
-            responsive: true,
-            cutout: '50%', 
-            rotation: -90, 
-            circumference: 180, 
-            plugins: {
-                legend: {
-                    display: false,
+    const getRadialChartOptions = () => {
+        return {
+            series: [90, 85, 70, 75], // Update this to include values for Accuracy, Precision, Recall, and F1 Score
+            colors: ["#6ee7b7", "#34d399", "#10b981", "#059669"], // Add a color for the fourth metric
+            chart: {
+                height: "250px",
+                width: "100%",
+                type: "radialBar",
+                sparkline: {
+                enabled: true,
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + context.raw + '%';
-                        }
-                    }
+            },
+            plotOptions: {
+                radialBar: {
+                track: {
+                    background: '#d1fae5',
                 },
-                centerText: {
-                    display: true,
-                    text: `${averagePredictionAccuracy}%`
+                dataLabels: {
+                    show: false,
+                },
+                hollow: {
+                    margin: 0,
+                    size: "10%",
+                }
+                },
+            },
+            grid: {
+                show: false,
+                strokeDashArray: 4,
+                padding: {
+                left: 2,
+                right: 2,
+                top: -23,
+                bottom: -20,
+                },
+            },
+            labels: ["Accuracy", "Precision", "Recall", "F1 Score"], // Update labels for the metrics
+            legend: {
+                show: true,
+                position: "bottom",
+            },
+            tooltip: {
+                enabled: true,
+                x: {
+                show: false,
+                },
+            },
+            yaxis: {
+                show: false,
+                labels: {
+                formatter: function (value) {
+                    return value + '%';
+                }
                 }
             }
-        }
-    });
-
-    // Overall Passing Rate Doughnut Chart
-    const ctx2 = document.getElementById('overallPassingRateChart').getContext('2d');
-    new Chart(ctx2, {
-        type: 'doughnut',
-        data: {
-            labels: ['Passing Rate', 'Remaining'],
-            datasets: [{
-                data: [overallPassingRate, 100 - overallPassingRate],
-                backgroundColor: ['#34D399', '#A7F3D0']
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + context.raw + '%';
-                        }
-                    }
-                },
-                centerText: {
-                    display: true,
-                    text: `${overallPassingRate}%`
-                }
             }
         }
-    });
-
-    // Precision Doughnut Chart
-    const ctx3 = document.getElementById('precisionChart').getContext('2d');
-    new Chart(ctx3, {
-        type: 'doughnut',
-        data: {
-            labels: ['Precision', 'Remaining'],
-            datasets: [{
-                data: [precision, 100 - precision],
-                backgroundColor: ['#34D399', '#A7F3D0']
-            }]
-        },
-        options: {
-            responsive: true,
-            cutout: '50%', 
-            rotation: -90, 
-            circumference: 180, 
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + context.raw + '%';
-                        }
-                    }
-                },
-                centerText: {
-                    display: true,
-                    text: `${precision}%`
-                }
-            }
+        
+        if (document.getElementById("metrics-chart") && typeof ApexCharts !== 'undefined') {
+            const chart = new ApexCharts(document.querySelector("#metrics-chart"), getRadialChartOptions());
+            chart.render();
         }
-    });
-
-    // Recall Doughnut Chart
-    const ctx4 = document.getElementById('recallChart').getContext('2d');
-    new Chart(ctx4, {
-        type: 'doughnut',
-        data: {
-            labels: ['Recall', 'Remaining'],
-            datasets: [{
-                data: [recall, 100 - recall],
-                backgroundColor: ['#34D399', '#A7F3D0']
-            }]
-        },
-        options: {
-            responsive: true,
-            cutout: '50%', 
-            rotation: -90, 
-            circumference: 180, 
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + context.raw + '%';
-                        }
+    
+        const PLPoptions = {
+            xaxis: {
+                show: true,
+                categories: ['Apr, 2018', 'Oct, 2018', 'Apr, 2019', 'Oct, 2019', 'Oct, 2022', 'Apr, 2023', 'Oct, 2023'],
+                labels: {
+                    show: true,
+                    style: {
+                        fontFamily: "Inter, sans-serif",
+                        cssClass: 'text-xs font-normal fill-gray-500'
                     }
                 },
-                centerText: {
-                    display: true,
-                    text: `${recall}%`
-                }
-            }
-        }
-    });
-
-    // F1 Score Doughnut Chart
-    const ctx5 = document.getElementById('f1ScoreChart').getContext('2d');
-    new Chart(ctx5, {
-        type: 'doughnut',
-        data: {
-            labels: ['F1 Score', 'Remaining'],
-            datasets: [{
-                data: [f1Score, 100 - f1Score],
-                backgroundColor: ['#34D399', '#A7F3D0']
-            }]
-        },
-        options: {
-            responsive: true,
-            cutout: '50%', 
-            rotation: -90, 
-            circumference: 180, 
-            plugins: {
-                legend: {
-                    display: false
+                axisBorder: {
+                    show: false,
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + context.raw + '%';
-                        }
+                axisTicks: {
+                    show: false,
+                },
+            },
+            yaxis: {
+                show: true,
+                labels: {
+                    show: true,
+                    style: {
+                        fontFamily: "Inter, sans-serif",
+                        cssClass: 'text-xs font-normal fill-gray-500'
+                    },
+                    formatter: function (value) {
+                        return value + '%';
                     }
-                },
-                centerText: {
-                    display: true,
-                    text: `${f1Score}%`
-                }
-            }
-        }
-    });
-
-    // Feature Importance Bar Chart
-    const ctx6 = document.getElementById('featureImportanceChart').getContext('2d');
-    new Chart(ctx6, {
-        type: 'bar',
-        data: {
-            labels: featureImportanceData.labels,
-            datasets: [{
-                label: 'Feature Importance',
-                data: featureImportanceData.values,
-                backgroundColor: '#34D399'
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + context.raw;
-                        }
-                    }
-                },
-                centerText: {
-                    display: false 
                 }
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return value;
-                        }
-                    }
-                }
-            }
+            series: [
+                {
+                    name: "National Passing Rate",
+                    data: ['45.36', '49.49', '48.92', '49.43', '29.69', '33.49', '29.69'],
+                    color: "#10b981",
+                },
+                {
+                    name: "PLP Passing Rate",
+                    data: ['53.85', '61.11', '33.33', '66.67', '16.67', '20.00', '16.67'],
+                    color: "#6ee7b7",
+                },
+            ],
+            chart: {
+                sparkline: {
+                    enabled: false
+                },
+                height: "100%",
+                width: "100%",
+                type: "area",
+                fontFamily: "Inter, sans-serif",
+                dropShadow: {
+                    enabled: false,
+                },
+                toolbar: {
+                    show: false,
+                },
+            },
+            tooltip: {
+                enabled: true,
+                x: {
+                    show: false,
+                },
+            },
+            fill: {
+                type: "gradient",
+                gradient: {
+                    opacityFrom: 0.55,
+                    opacityTo: 0,
+                    shade: "#1C64F2",
+                    gradientToColors: ["#1C64F2"],
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                width: 6,
+            },
+            legend: {
+                show: false
+            },
+            grid: {
+                show: false,
+            },
+        };
+    
+        if (document.getElementById("labels-chart") && typeof ApexCharts !== 'undefined') {
+            const chart = new ApexCharts(document.getElementById("labels-chart"), PLPoptions);
+            chart.render();
         }
+
     });
-});
 
 document.addEventListener('DOMContentLoaded', function () {
     const passPercentage = (passFailData.pass / (passFailData.pass + passFailData.fail) * 100).toFixed(2);
