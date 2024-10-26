@@ -278,102 +278,102 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         
-        if (document.getElementById("metrics-chart") && typeof ApexCharts !== 'undefined') {
-            const chart = new ApexCharts(document.querySelector("#metrics-chart"), getRadialChartOptions());
-            chart.render();
-        }
+    if (document.getElementById("metrics-chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.querySelector("#metrics-chart"), getRadialChartOptions());
+        chart.render();
+    }
     
-        const PLPoptions = {
-            xaxis: {
+    const PLPoptions = {
+        xaxis: {
+            show: true,
+            categories: ['Apr, 2018', 'Oct, 2018', 'Apr, 2019', 'Oct, 2019', 'Oct, 2022', 'Apr, 2023', 'Oct, 2023'],
+            labels: {
                 show: true,
-                categories: ['Apr, 2018', 'Oct, 2018', 'Apr, 2019', 'Oct, 2019', 'Oct, 2022', 'Apr, 2023', 'Oct, 2023'],
-                labels: {
-                    show: true,
-                    style: {
-                        fontFamily: "Inter, sans-serif",
-                        cssClass: 'text-xs font-normal fill-gray-500'
-                    }
-                },
-                axisBorder: {
-                    show: false,
-                },
-                axisTicks: {
-                    show: false,
-                },
-            },
-            yaxis: {
-                show: true,
-                labels: {
-                    show: true,
-                    style: {
-                        fontFamily: "Inter, sans-serif",
-                        cssClass: 'text-xs font-normal fill-gray-500'
-                    },
-                    formatter: function (value) {
-                        return value + '%';
-                    }
+                style: {
+                    fontFamily: "Inter, sans-serif",
+                    cssClass: 'text-xs font-normal fill-gray-500'
                 }
             },
-            series: [
-                {
-                    name: "National Passing Rate",
-                    data: ['45.36', '49.49', '48.92', '49.43', '29.69', '33.49', '29.69'],
-                    color: "#10b981",
-                },
-                {
-                    name: "PLP Passing Rate",
-                    data: ['53.85', '61.11', '33.33', '66.67', '16.67', '20.00', '16.67'],
-                    color: "#6ee7b7",
-                },
-            ],
-            chart: {
-                sparkline: {
-                    enabled: false
-                },
-                height: "100%",
-                width: "100%",
-                type: "area",
-                fontFamily: "Inter, sans-serif",
-                dropShadow: {
-                    enabled: false,
-                },
-                toolbar: {
-                    show: false,
-                },
-            },
-            tooltip: {
-                enabled: true,
-                x: {
-                    show: false,
-                },
-            },
-            fill: {
-                type: "gradient",
-                gradient: {
-                    opacityFrom: 0.55,
-                    opacityTo: 0,
-                    shade: "#1C64F2",
-                    gradientToColors: ["#1C64F2"],
-                },
-            },
-            dataLabels: {
-                enabled: false,
-            },
-            stroke: {
-                width: 6,
-            },
-            legend: {
-                show: false
-            },
-            grid: {
+            axisBorder: {
                 show: false,
             },
-        };
-    
-        if (document.getElementById("labels-chart") && typeof ApexCharts !== 'undefined') {
-            const chart = new ApexCharts(document.getElementById("labels-chart"), PLPoptions);
-            chart.render();
-        }
+            axisTicks: {
+                show: false,
+            },
+        },
+        yaxis: {
+            show: true,
+            labels: {
+                show: true,
+                style: {
+                    fontFamily: "Inter, sans-serif",
+                    cssClass: 'text-xs font-normal fill-gray-500'
+                },
+                formatter: function (value) {
+                    return value + '%';
+                }
+            }
+        },
+        series: [
+            {
+                name: "National Passing Rate",
+                data: ['45.36', '49.49', '48.92', '49.43', '29.69', '33.49', '29.69'],
+                color: "#10b981",
+            },
+            {
+                name: "PLP Passing Rate",
+                data: ['53.85', '61.11', '33.33', '66.67', '16.67', '20.00', '16.67'],
+                color: "#6ee7b7",
+            },
+        ],
+        chart: {
+            sparkline: {
+                enabled: false
+            },
+            height: "100%",
+            width: "100%",
+            type: "area",
+            fontFamily: "Inter, sans-serif",
+            dropShadow: {
+                enabled: false,
+            },
+            toolbar: {
+                show: false,
+            },
+        },
+        tooltip: {
+            enabled: true,
+            x: {
+                show: false,
+            },
+        },
+        fill: {
+            type: "gradient",
+            gradient: {
+                opacityFrom: 0.55,
+                opacityTo: 0,
+                shade: "#1C64F2",
+                gradientToColors: ["#1C64F2"],
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            width: 6,
+        },
+        legend: {
+            show: false
+        },
+        grid: {
+            show: false,
+        },
+    };
+
+    if (document.getElementById("labels-chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById("labels-chart"), PLPoptions);
+        chart.render();
+    }
 
     });
 
@@ -409,6 +409,250 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
+    const genderOptions = {
+        series: [
+            {
+                name: "Males",
+                color: "#31C48D",
+                data: [7], // Total count for males
+            },
+            {
+                name: "Females",
+                data: [5], // Total count for females
+                color: "#F05252",
+            }
+            ],
+            chart: {
+            sparkline: {
+                enabled: false,
+            },
+            type: "bar",
+            width: "100%",
+            height: 250,
+            toolbar: {
+                show: false,
+            }
+            },
+            fill: {
+            opacity: 1,
+            },
+            plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: "100%",
+                borderRadiusApplication: "end",
+                borderRadius: 6,
+                dataLabels: {
+                position: "top",
+                },
+            },
+            },
+            legend: {
+            show: true,
+            position: "bottom",
+            },
+            tooltip: {
+            shared: true,
+            intersect: false,
+            formatter: function (value) {
+                return value + " students"; // Display student count
+            }
+            },
+            xaxis: {
+            labels: {
+                show: true,
+                style: {
+                fontFamily: "Inter, sans-serif",
+                cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                }
+            },
+            categories: ["Students"], // Only one category for the total
+            axisTicks: {
+                show: true,
+            },
+            axisBorder: {
+                show: true,
+            },
+            },
+            yaxis: {
+            labels: {
+                show: true,
+                style: {
+                fontFamily: "Inter, sans-serif",
+                cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                }
+            }
+            },
+            grid: {
+            show: true,
+            strokeDashArray: 4,
+            },
+            fill: {
+            opacity: 1,
+            }
+        }
+        
+        if (document.getElementById("gender-chart") && typeof ApexCharts !== 'undefined') {
+            const chart = new ApexCharts(document.getElementById("gender-chart"), genderOptions);
+            chart.render();
+        }
+
+        const aveperCourseoptions = {
+            colors: ["#10b981", "#6ee7b7"], // Original colors (if needed, they can be removed)
+            series: [
+                {
+                    name: "Average Per Course",
+                    data: [
+                        { x: "ECE 111", y: 3.0 },
+                        { x: "ECE 112", y: 4.0 },
+                        { x: "ECE 114", y: 2.5 },
+                        { x: "ECE 121", y: 3.8 },
+                        { x: "ECE 122", y: 4.2 },
+                        { x: "ECE 131", y: 3.5 },
+                        { x: "ECE 132", y: 4.0 },
+                        { x: "ECE 133", y: 3.2 },
+                        { x: "ECE 141", y: 4.1 },
+                        { x: "ECE 143", y: 2.9 },
+                        { x: "ECE 142", y: 3.6 },
+                        { x: "ECE 146", y: 4.3 },
+                        { x: "ECE 152", y: 3.7 },
+                        { x: "ECE 153", y: 4.5 },
+                        { x: "ECE 156", y: 3.0 },
+                        { x: "ECE 151", y: 4.8 },
+                        { x: "ECE 154", y: 3.9 },
+                        { x: "ECE 158", y: 4.1 },
+                        { x: "ECE 155", y: 3.4 },
+                        { x: "ECE 162", y: 4.6 },
+                        { x: "ECE 160", y: 3.1 },
+                        { x: "ECE 163", y: 4.0 },
+                        { x: "ECE 164", y: 2.8 },
+                        { x: "ECE 166", y: 4.9 },
+                        { x: "ECE 167", y: 3.3 },
+                        { x: "ECE 168", y: 2.7 },
+                        { x: "ECE 202", y: 3.6 },
+                    ],
+                },
+            ],
+            chart: {
+                type: "bar",
+                height: "300px",
+                toolbar: {
+                    show: false,
+                },
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: "70%",
+                    borderRadiusApplication: "end",
+                    borderRadius: 1,
+                },
+            },
+            tooltip: {
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: function(value) {
+                        return value.toFixed(2); // Format to 2 decimal places
+                    },
+                },
+            },
+            states: {
+                hover: {
+                    filter: {
+                        type: "darken",
+                        value: 1,
+                    },
+                },
+            },
+            stroke: {
+                show: true,
+                width: 0,
+                colors: ["transparent"],
+            },
+            grid: {
+                show: true,
+                strokeDashArray: 4,
+                padding: {
+                    left: 2,
+                    right: 2,
+                    top: -14,
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            legend: {
+                show: true,
+                position: "top", // Positioning legend at the top
+                horizontalAlign: "center", // Centering legend horizontally
+            },
+            xaxis: {
+                floating: false,
+                labels: {
+                    show: true,
+                    style: {
+                        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400',
+                    },
+                },
+                axisBorder: {
+                    show: false,
+                },
+                axisTicks: {
+                    show: false,
+                },
+                title: {
+                    text: "Courses", // Label for x-axis
+                    style: {
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                    },
+                },
+            },
+            fill: {
+                type: "gradient", // Enable gradient fill
+                gradient: {
+                    shade: "light", // Specify light or dark shade
+                    type: "horizontal", // Horizontal gradient
+                    gradientToColors: ["#6ee7b7"], // Emerald green for the gradient end
+                    stops: [0, 100], // Start and end stops for the gradient
+                },
+            },
+        };
+        
+        if (document.getElementById("aveperCourse-chart") && typeof ApexCharts !== 'undefined') {
+            const chart = new ApexCharts(document.getElementById("aveperCourse-chart"), aveperCourseoptions);
+            chart.render();
+        }
+        
+        const subjects = [
+            { name: "ECE 143", needsSupport: "True" },
+            { name: "ECE 122", needsSupport: "False" },
+            { name: "ECE 131", needsSupport: "True" },
+            { name: "ECE 114", needsSupport: "False" },
+            { name: "ECE 152", needsSupport: "True" },
+            // Add more subjects as needed
+        ];
+        
+        const tableBody = document.getElementById("support-table-body");
+        
+        subjects.forEach(subject => {
+            const row = document.createElement("tr");
+            row.className = "border-b dark:border-slate-600";
+            
+            const subjectCell = document.createElement("td");
+            subjectCell.className = "py-2 px-4";
+            subjectCell.textContent = subject.name;
+        
+            const supportCell = document.createElement("td");
+            supportCell.className = "py-2 px-4";
+            supportCell.textContent = subject.needsSupport;
+        
+            row.appendChild(subjectCell);
+            row.appendChild(supportCell);
+            tableBody.appendChild(row);
+        });        
 
     const passFailLegend = document.getElementById('passFailLegend');
     passFailLegend.innerHTML = `

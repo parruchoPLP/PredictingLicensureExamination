@@ -9,13 +9,13 @@
 @if ($errors->any())
     <x-error_alert />
 @endif
-<section id="report" class="bg-slate-100 dark:bg-slate-800 min-h-screen pr-9 pl-36 py-36 font-arial space-y-8">
+<section id="report" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 min-h-screen pr-9 pl-36 py-36 font-arial space-y-8">
     <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700 dark:text-slate-200">
         <p class="text-xl text-slate-800 font-bold dark:text-slate-200"> 
             <i class="fas fa-table mr-6"></i> 
             Electronics Engineers Licensure Examination Performance Prediction Report
         </p>
-        <div class="pt-8 flex flex-col sm:flex-row justify-between min-w-full text-sm text-slate-800 dark:text-slate-200 overflow-hidden">
+        <div class="pt-8 flex flex-col sm:flex-row justify-between min-w-full text-sm overflow-hidden">
             <p class="flex items-center mb-2 sm:mb-0">
                 <i class="fa fa-file mr-2"></i>
                 <span>{{ $filename }}</span>
@@ -63,7 +63,7 @@
 
         <div class="overflow-x-auto scrollable relative">
             <table class="min-w-full bg-white text-sm border border-collapse">
-                <thead class="bg-emerald-200 dark:bg-emerald-700 text-slate-800 dark:text-slate-200 text-left uppercase font-bold sticky top-0 z-10">
+                <thead class="bg-emerald-200 dark:bg-emerald-700 text-left uppercase font-bold sticky top-0 z-10">
                     <tr>
                         @foreach($headers as $index => $header)
                         <th class="py-2 px-4 whitespace-nowrap @if($loop->first) sticky left-0 z-20 bg-emerald-200 dark:bg-emerald-700 @endif @if($loop->last) sticky right-0 z-20 bg-emerald-200 dark:bg-emerald-700 @endif"
@@ -94,7 +94,7 @@
                         @endforeach
                     </tr>
                 </thead>
-                <tbody class="text-gray-700 dark:text-slate-200 dark:bg-slate-800">
+                <tbody class=" dark:bg-slate-800">
                     @foreach($paginator as $row)
                     @php
                         $lastValue = end($row);
@@ -115,9 +115,9 @@
             {{ $paginator->links() }}
         </div>
     </div>
-    <h1 class="text-xl font-bold text-slate-800 dark:text-slate-200"> Report Summary: </h1>
-    <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700 text-slate-800 dark:text-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="border-r">
+    <h1 class="text-xl font-bold"> Report Summary: </h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700">
             <h2 class="text-md font-bold">Pass/Fail Rate</h2>
                 <div class="flex items-center justify-center p-6">
                     <canvas id="passFailRateChart" class="max-w-[180px] max-h-[180px]"></canvas>
@@ -128,11 +128,32 @@
                     </div>
                 </div>
         </div>
-        <div class="pl-4"> 
-            <h2 class="text-md font-bold">Suggested interventions:</h2>
-            <p class="mt-6 text-sm">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper eleifend. Cras interdum, ipsum sit amet facilisis efficitur, turpis dolor pretium augue, a feugiat nisl felis non risus. Nam ac tortor euismod, fermentum arcu et, dapibus nisl. Etiam condimentum ligula ac tellus lacinia, id tristique arcu vestibulum. Mauris sollicitudin dui a ligula ultrices vestibulum.
-            </p>
+        <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700"> 
+            <h2 class="text-md font-bold mb-4">Gender Distribution</h2>
+            <div id="gender-chart"></div>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700"> 
+        <h2 class="text-md font-bold mb-8">Average Grade per Course</h2>
+        <div id="aveperCourse-chart"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700">
+            <h2 class="text-md font-bold mb-4">Course/s Needing Support</h2>
+            <table class="min-w-full bg-white dark:bg-slate-800 text-sm overflow-hidden shadow-md">
+                <thead>
+                    <tr class="bg-emerald-200 dark:bg-slate-600 text-left">
+                        <th class="py-2 px-4 font-semibold">Subject</th>
+                        <th class="py-2 px-4 font-semibold">Needing Support</th>
+                    </tr>
+                </thead>
+                <tbody id="support-table-body">
+                    <!-- Rows will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700">
+            <h2 class="text-md font-bold mb-8">Suggested Interventions</h2>
         </div>
     </div>
 </section>
