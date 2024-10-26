@@ -277,11 +277,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    const passFailData = {
-        pass: 16, // Example number of passes
-        fail: 24,  // Example number of fails
-    };
-    
     const passPercentage = (passFailData.pass / (passFailData.pass + passFailData.fail) * 100).toFixed(2);
     const failPercentage = (passFailData.fail / (passFailData.pass + passFailData.fail) * 100).toFixed(2);
 

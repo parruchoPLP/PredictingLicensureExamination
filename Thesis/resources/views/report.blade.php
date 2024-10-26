@@ -3,6 +3,9 @@
 @section('title', 'Prediction Report')
 
 @section('content')
+<script>
+    const passFailData = @json($passFailData);
+</script>
 @if ($errors->any())
     <x-error_alert />
 @endif
@@ -112,7 +115,7 @@
             {{ $paginator->links() }}
         </div>
     </div>
-    <h1 class="text-xl font-bold text-slate-800 dark:text-slate-200"> Report summary: </h1>
+    <h1 class="text-xl font-bold text-slate-800 dark:text-slate-200"> Report Summary: </h1>
     <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700 text-slate-800 dark:text-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="border-r">
             <h2 class="text-md font-bold">Pass/Fail Rate</h2>

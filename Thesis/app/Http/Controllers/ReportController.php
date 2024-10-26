@@ -82,6 +82,18 @@ class ReportController extends Controller
             'query' => $request->query(),
         ]);
 
-        return view('report', compact('paginator', 'headers', 'filename', 'courseDictionary'));
+        $totalRecords = $paginator->total();
+
+        // Calculate pass and fail counts
+        $passCount = $collection->where('EXPECTED_PERFORMANCE', 'Pass')->count();
+        $failCount = $collection->where('EXPECTED_PERFORMANCE', 'Fail')->count();
+
+        $passFailData = [
+            'pass' => $passCount,
+            'fail' => $failCount,
+            'total' => $totalRecords,
+        ];
+
+        return view('report', compact('paginator', 'headers', 'filename', 'passFailData', 'courseDictionary'));
     }
 }
