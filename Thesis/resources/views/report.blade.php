@@ -3,9 +3,6 @@
 @section('title', 'Prediction Report')
 
 @section('content')
-<script>
-    const passFailData = @json($passFailData);
-</script>
 @if ($errors->any())
     <x-error_alert />
 @endif
@@ -143,8 +140,8 @@
             <table class="min-w-full bg-white dark:bg-slate-800 text-sm overflow-hidden shadow-md">
                 <thead>
                     <tr class="bg-emerald-200 dark:bg-slate-600 text-left">
-                        <th class="py-2 px-4 font-semibold">Subject</th>
-                        <th class="py-2 px-4 font-semibold">Needing Support</th>
+                        <th class="py-2 px-4 font-semibold">Course</th>
+                        <th class="py-2 px-4 font-semibold">Average</th>
                     </tr>
                 </thead>
                 <tbody id="support-table-body">
@@ -154,7 +151,14 @@
         </div>
         <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700">
             <h2 class="text-md font-bold mb-8">Suggested Interventions</h2>
+            <p>The table to the left identifies courses where students may benefit from additional support. These courses, which show lower average performance, indicate potential areas where targeted intervention could be impactful. It is recommended to enhance student resources and provide supplementary instructional materials for these subjects. Additionally, faculty collaboration on teaching strategies and the introduction of peer mentoring could further aid students in achieving improved outcomes in these areas.</p>
         </div>
     </div>
 </section>
+<script>
+    const passFailData = @json($passFailData);
+    const genderData = @json($genderData);
+    const averageGrades = @json($averageGrades);
+    const courseSupport = @json($courseSupport);
+</script>
 @endsection

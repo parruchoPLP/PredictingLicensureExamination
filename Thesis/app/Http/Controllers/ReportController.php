@@ -94,6 +94,32 @@ class ReportController extends Controller
             'total' => $totalRecords,
         ];
 
-        return view('report', compact('paginator', 'headers', 'filename', 'passFailData', 'courseDictionary'));
+        $maleCount = $collection->where('GENDER', 'M')->count();
+        $femaleCount = $collection->where('GENDER', 'F')->count();
+
+        $genderData = [
+            'male' => $maleCount,
+            'female' => $femaleCount,
+        ];
+
+        $averageGrades = [];
+        foreach ($courseDictionary as $code => $subjectName) {
+            $formattedCode = str_replace(' ', '_', $code);
+
+            if ($collection->pluck($formattedCode)->isNotEmpty()) {
+                $averageGrades[$code] = $collection->avg($formattedCode);
+            } else {
+                $averageGrades[$code] = null;
+            }
+        }
+
+        $courseSupport = [];
+        foreach ($averageGrades as $code => $average) {
+            if ($average >= 2.50) {
+                $courseSupport[$code] = $average;
+            }
+        }
+
+        return view('report', compact('paginator', 'headers', 'filename', 'passFailData', 'genderData', 'averageGrades', 'courseSupport', 'courseDictionary'));
     }
 }

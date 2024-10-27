@@ -415,11 +415,11 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 name: "Males",
                 color: "#31C48D",
-                data: [7], // Total count for males
+                data: [genderData.male], // Total count for males
             },
             {
                 name: "Females",
-                data: [5], // Total count for females
+                data: [genderData.female], // Total count for females
                 color: "#F05252",
             }
             ],
@@ -498,40 +498,17 @@ document.addEventListener('DOMContentLoaded', function () {
             chart.render();
         }
 
+        const averageData = Object.entries(averageGrades).map(([courseCode, average]) => ({
+            x: courseCode,
+            y: average,
+        }));
+
         const aveperCourseoptions = {
             colors: ["#10b981", "#6ee7b7"], // Original colors (if needed, they can be removed)
             series: [
                 {
                     name: "Average Per Course",
-                    data: [
-                        { x: "ECE 111", y: 3.0 },
-                        { x: "ECE 112", y: 4.0 },
-                        { x: "ECE 114", y: 2.5 },
-                        { x: "ECE 121", y: 3.8 },
-                        { x: "ECE 122", y: 4.2 },
-                        { x: "ECE 131", y: 3.5 },
-                        { x: "ECE 132", y: 4.0 },
-                        { x: "ECE 133", y: 3.2 },
-                        { x: "ECE 141", y: 4.1 },
-                        { x: "ECE 143", y: 2.9 },
-                        { x: "ECE 142", y: 3.6 },
-                        { x: "ECE 146", y: 4.3 },
-                        { x: "ECE 152", y: 3.7 },
-                        { x: "ECE 153", y: 4.5 },
-                        { x: "ECE 156", y: 3.0 },
-                        { x: "ECE 151", y: 4.8 },
-                        { x: "ECE 154", y: 3.9 },
-                        { x: "ECE 158", y: 4.1 },
-                        { x: "ECE 155", y: 3.4 },
-                        { x: "ECE 162", y: 4.6 },
-                        { x: "ECE 160", y: 3.1 },
-                        { x: "ECE 163", y: 4.0 },
-                        { x: "ECE 164", y: 2.8 },
-                        { x: "ECE 166", y: 4.9 },
-                        { x: "ECE 167", y: 3.3 },
-                        { x: "ECE 168", y: 2.7 },
-                        { x: "ECE 202", y: 3.6 },
-                    ],
+                    data: averageData,
                 },
             ],
             chart: {
@@ -555,6 +532,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 y: {
                     formatter: function(value) {
                         return value.toFixed(2); // Format to 2 decimal places
+                    },
+                },
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toFixed(2); // Format to 2 decimal places on the y-axis labels
                     },
                 },
             },
@@ -626,14 +610,12 @@ document.addEventListener('DOMContentLoaded', function () {
             chart.render();
         }
         
-        const subjects = [
-            { name: "ECE 143", needsSupport: "True" },
-            { name: "ECE 122", needsSupport: "False" },
-            { name: "ECE 131", needsSupport: "True" },
-            { name: "ECE 114", needsSupport: "False" },
-            { name: "ECE 152", needsSupport: "True" },
-            // Add more subjects as needed
-        ];
+        const supportData = Object.entries(courseSupport).map(([code, average]) => ({
+            name: code,
+            average: average.toFixed(2),
+        }));
+
+        const subjects = supportData;
         
         const tableBody = document.getElementById("support-table-body");
         
@@ -647,7 +629,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
             const supportCell = document.createElement("td");
             supportCell.className = "py-2 px-4";
-            supportCell.textContent = subject.needsSupport;
+            supportCell.textContent = subject.average;
         
             row.appendChild(subjectCell);
             row.appendChild(supportCell);
