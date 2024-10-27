@@ -70,7 +70,9 @@ class ReportController extends Controller
 
         // Search by ID if not null or an empty string
         if ($request->has('id') && $request->query('id') !== null && $request->query('id') !== '') {
-            $collection = $collection->where('STUDENT_ID', $request->query('id'));
+            $collection = $collection->filter(function ($item) use ($request) {
+                return stripos($item['STUDENT_ID'], $request->query('id')) !== false;
+            });
         }
 
         // Paginate the filtered data
