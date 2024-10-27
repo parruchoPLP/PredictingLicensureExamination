@@ -148,6 +148,7 @@ class ReportController extends Controller
         $featureImportance = [];
         $modelMetrics = [];
         $averageCourse = [];
+        $passingRate = [];
 
         // Process each row based on the "Metric" column
         foreach ($collection as $row) {
@@ -160,6 +161,8 @@ class ReportController extends Controller
                 $featureImportance[$feature] = (float) $value;
             } elseif ($metric === 'Average Grade per Course') {
                 $averageCourse[$feature] = (float) $value;
+            } elseif ($metric === 'Total Passed' || $metric === 'Total Failed') {
+                $passingRate[strtolower(str_replace(' ', '_', $metric))] = (float) $value;
             } else {
                 // For model metrics (Accuracy, Precision, Recall, F1 Score)
                 $modelMetrics[strtolower(str_replace(' ', '_', $metric))] = number_format((float) $value * 100, 4);
@@ -170,6 +173,6 @@ class ReportController extends Controller
         arsort($featureDupe);
         $topPredictors = array_keys(array_slice($featureDupe, 0, 5, true));
 
-        return view('dashboard', compact('collection', 'featureImportance', 'averageCourse', 'modelMetrics', 'topPredictors'));
+        return view('dashboard', compact('collection', 'featureImportance', 'averageCourse', 'modelMetrics', 'topPredictors', 'passingRate'));
     }
 }

@@ -87,5 +87,6 @@
     const modelMetrics = @json($modelMetrics);
     const averageCourse = @json($averageCourse);
     const topPredictors = @json($topPredictors);
+    const passingRate = @json($passingRate);
 </script>
 @endsection

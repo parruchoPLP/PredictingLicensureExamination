@@ -5,10 +5,14 @@ document.addEventListener('DOMContentLoaded', function () {
         topPredictorsList.appendChild(listItem);
     });
 
+    const totalTakers = passingRate.total_passed + passingRate.total_failed;
+    const pass = (passingRate.total_passed / totalTakers * 100).toFixed(2);
+    const fail = (passingRate.total_failed / totalTakers * 100).toFixed(2);
+
     const getChartOptions = () => {
         return {
-            series: [75, 25], // 75% passing, 25% failing
-            colors: ["#10b981", "#6ee7b7"], // Color for passing and failing
+            series: [parseFloat(pass), parseFloat(fail)], // Passing and failing rates formatted
+            colors: ["#10b981", "#6ee7b7"], // Colors for passing and failing
             chart: {
                 height: 420,
                 width: "100%",
@@ -32,14 +36,14 @@ document.addEventListener('DOMContentLoaded', function () {
                                 show: true,
                                 label: "Passing Rate",
                                 formatter: function () {
-                                    return "75%"; // Display only the passing rate
+                                    return pass + "%"; // Display passing rate with 2 decimal places
                                 },
                             },
                             value: {
                                 show: true,
                                 offsetY: -20,
                                 formatter: function (value) {
-                                    return value + "%"; // Show each section's value as a percentage
+                                    return parseFloat(value).toFixed(2) + "%"; // Show each section's value as a percentage with 2 decimals
                                 },
                             },
                         },
@@ -62,14 +66,14 @@ document.addEventListener('DOMContentLoaded', function () {
             yaxis: {
                 labels: {
                     formatter: function (value) {
-                        return value + "%";
+                        return parseFloat(value).toFixed(2) + "%";
                     },
                 },
             },
             xaxis: {
                 labels: {
                     formatter: function (value) {
-                        return value + "%";
+                        return parseFloat(value).toFixed(2) + "%";
                     },
                 },
                 axisTicks: {
