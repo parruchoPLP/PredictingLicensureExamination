@@ -41,14 +41,14 @@
         <form action="/authenticate" method="POST">
             @csrf
             <div class="relative mb-3">
-                <input type="text" id="username" name="username" class="peer bg-slate-100 dark:bg-gray-700 rounded-full p-4 text-slate-800 dark:text-slate-200 text-md form-input min-w-[350px] focus:outline-none focus:ring-2 focus:ring-emerald-600" placeholder=" " required autofocus>
+                <input type="text" id="username" name="username" class="peer bg-slate-100 dark:bg-gray-700 dark:border-emerald-400 rounded-full p-4 text-slate-800 dark:text-slate-200 text-md min-w-[350px] focus:outline-none focus:ring-2 focus:ring-emerald-600" placeholder=" " required autofocus>
                 <label for="username" class="absolute text-md left-4 top-4 text-slate-600 dark:text-slate-400 duration-300 transform -translate-y-4 scale-75 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">Username</label>
                 <div class="absolute inset-y-0 right-0 flex items-center pr-4">
                     <i class="fas fa-user text-slate-800 dark:text-slate-200"></i>
                 </div>
             </div>
             <div class="relative mb-3">
-                <input type="password" id="password" name="password" class="peer bg-slate-100 dark:bg-gray-700 rounded-full p-4 text-slate-800 dark:text-slate-200 text-md min-w-[350px] focus:outline-none focus:ring-2 focus:ring-emerald-600" placeholder=" " required>
+                <input type="password" id="password" name="password" class="peer bg-slate-100 dark:bg-gray-700 dark:border-emerald-400 rounded-full p-4 text-slate-800 dark:text-slate-200 text-md min-w-[350px] focus:outline-none focus:ring-2 focus:ring-emerald-600" placeholder=" " required>
                 <label for="password" class="absolute text-md left-4 top-4 text-slate-600 dark:text-slate-400 duration-300 transform -translate-y-4 scale-75 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">Password</label>
                 <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-4 flex items-center h-full focus:outline-none">
                     <i class="fas fa-eye text-slate-800 dark:text-slate-200 hover:text-emerald-600"></i>

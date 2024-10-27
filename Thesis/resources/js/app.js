@@ -2,6 +2,26 @@ import './bootstrap';
 import 'flowbite';
 import Chart from 'chart.js/auto';
 
+document.addEventListener('DOMContentLoaded', () => {
+    const popovers = document.querySelectorAll('[data-popover-target]');
+    
+    popovers.forEach(button => {
+        const popoverId = button.getAttribute('data-popover-target');
+        const popover = document.getElementById(popoverId);
+
+        button.addEventListener('mouseover', (event) => {
+            popover.style.left = `${event.currentTarget.offsetLeft}px`;
+            popover.style.top = `${event.currentTarget.offsetTop + event.currentTarget.offsetHeight}px`;
+            popover.classList.remove('invisible', 'opacity-0');
+        });
+
+        button.addEventListener('mouseout', () => {
+            popover.classList.add('invisible', 'opacity-0');
+        });
+    });
+});
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const topPredictors = ['ECE 111', 'ECE 151', 'ECE 114', 'ECE 162', 'ECE 143']; // Example top 3 predictors
 
@@ -172,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 left: 2,
                 right: 2,
                 top: -14,
-            },
+            }
         },
         dataLabels: {
             enabled: false,
@@ -201,6 +221,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 style: {
                     fontSize: '14px',
                     fontWeight: 'bold',
+                    cssClass: 'fill-gray-500 dark:fill-gray-400'
+                },
+            },
+        },
+        yaxis: {
+            labels: {
+                show: true,
+                style: {
+                    cssClass: 'fill-gray-500 dark:fill-gray-400',
                 },
             },
         },
@@ -286,11 +315,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const PLPoptions = {
         xaxis: {
             show: true,
-            categories: ['Apr, 2018', 'Oct, 2018', 'Apr, 2019', 'Oct, 2019', 'Oct, 2022', 'Apr, 2023', 'Oct, 2023'],
+            categories: ['Apr, 2017', 'Oct, 2017', 'Apr, 2018', 'Oct, 2018', 'Apr, 2019', 'Oct, 2019', 'Oct, 2022', 'Apr, 2023', 'Oct, 2023'],
             labels: {
                 show: true,
                 style: {
-                    fontFamily: "Inter, sans-serif",
                     cssClass: 'text-xs font-normal fill-gray-500'
                 }
             },
@@ -306,7 +334,6 @@ document.addEventListener('DOMContentLoaded', function () {
             labels: {
                 show: true,
                 style: {
-                    fontFamily: "Inter, sans-serif",
                     cssClass: 'text-xs font-normal fill-gray-500'
                 },
                 formatter: function (value) {
@@ -317,12 +344,12 @@ document.addEventListener('DOMContentLoaded', function () {
         series: [
             {
                 name: "National Passing Rate",
-                data: ['45.36', '49.49', '48.92', '49.43', '29.69', '33.49', '29.69'],
+                data: ['41.27', '46.72', '45.36', '49.49', '48.92', '49.43', '29.69', '33.49', '29.69'],
                 color: "#10b981",
             },
             {
                 name: "PLP Passing Rate",
-                data: ['53.85', '61.11', '33.33', '66.67', '16.67', '20.00', '16.67'],
+                data: ['58.33', '41.67', '53.85', '61.11', '33.33', '66.67', '16.67', '20.00', '16.67'],
                 color: "#6ee7b7",
             },
         ],
@@ -333,7 +360,6 @@ document.addEventListener('DOMContentLoaded', function () {
             height: "100%",
             width: "100%",
             type: "area",
-            fontFamily: "Inter, sans-serif",
             dropShadow: {
                 enabled: false,
             },
@@ -463,7 +489,6 @@ document.addEventListener('DOMContentLoaded', function () {
             labels: {
                 show: true,
                 style: {
-                fontFamily: "Inter, sans-serif",
                 cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
                 }
             },
@@ -479,7 +504,6 @@ document.addEventListener('DOMContentLoaded', function () {
             labels: {
                 show: true,
                 style: {
-                fontFamily: "Inter, sans-serif",
                 cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
                 }
             }
@@ -558,6 +582,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                 },
             },
+<<<<<<< Updated upstream
+=======
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toFixed(2); // Format to 2 decimal places on the y-axis labels
+                    },
+                    style: {
+                        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400',
+                    }
+                },
+            },
+>>>>>>> Stashed changes
             states: {
                 hover: {
                     filter: {
@@ -607,6 +644,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     style: {
                         fontSize: '14px',
                         fontWeight: 'bold',
+                        cssClass: 'fill-gray-500 dark:fill-gray-400',
                     },
                 },
             },

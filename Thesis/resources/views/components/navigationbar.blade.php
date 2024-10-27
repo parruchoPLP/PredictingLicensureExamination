@@ -8,10 +8,6 @@
     <x-error_alert />
 @endif
 
-<button id="darkmode-toggle" class="fixed bottom-4 right-4 z-20 py-3 px-4 text-2xl text-slate-600 bg-white dark:bg-slate-900 dark:text-slate-100 shadow-lg rounded-xl hover:bg-slate-200 hover:dark:bg-slate-600 transition-transform transform hover:scale-105">
-    <i id="darkmode-icon" class="fa fa-moon"></i>
-</button>
-
 <nav id="navbar" class="fixed top-4 left-4 bottom-4 w-auto hover:w-64 rounded-xl shadow-lg bg-white dark:bg-slate-700 flex flex-col items-center font-arial text-md z-50 transition-all duration-300 ease-in-out" tabindex="-1" aria-labelledby="navbar-label">
     <ul class="mt-8 p-4 w-full space-y-2 text-slate-800 dark:text-slate-200">
         <li class="group">

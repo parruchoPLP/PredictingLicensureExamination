@@ -29,37 +29,41 @@
         </div>
         <br>
         <form method="GET" action="{{ route('report.show') }}" class="mb-3 text-sm w-full max-w-full overflow-hidden" id="filterForm">
-            <input type="hidden" name="file" value="{{ $filename }}">
+    <input type="hidden" name="file" value="{{ $filename }}">
 
-            <div class="flex flex-wrap gap-4">
-                <!-- Gender Filter -->
-                <div class="w-full sm:w-auto flex items-center">
-                    <label for="gender" class="block font-semibold mr-3">Gender:</label>
-                    <select name="gender" id="gender" onchange="document.getElementById('filterForm').submit();" class="w-full text-sm dark:bg-slate-800 rounded-full border-slate-300 focus:ring-emerald-500 focus:bg-emerald-50 focus:border-emerald-200 dark:text-slate-300 dark:focus:bg-transparent">
-                        <option value="All" {{ request('gender') == 'All' ? 'selected' : '' }}>All</option>
-                        <option value="M" {{ request('gender') == 'M' ? 'selected' : '' }}>Male</option>
-                        <option value="F" {{ request('gender') == 'F' ? 'selected' : '' }}>Female</option>
-                    </select>
-                </div>
+    <div class="flex flex-wrap gap-4">
+        <!-- Gender Filter -->
+        <div class="w-full sm:w-auto flex items-center">
+            <label for="gender" class="block font-semibold mr-3">Gender:</label>
+            <select name="gender" id="gender" onchange="document.getElementById('filterForm').submit();" class="w-full text-sm dark:bg-slate-800 rounded-full border-slate-300 focus:ring-emerald-500 focus:bg-emerald-50 focus:border-emerald-200 dark:text-slate-300 dark:focus:bg-transparent">
+                <option value="All" {{ request('gender') == 'All' ? 'selected' : '' }}>All</option>
+                <option value="M" {{ request('gender') == 'M' ? 'selected' : '' }}>Male</option>
+                <option value="F" {{ request('gender') == 'F' ? 'selected' : '' }}>Female</option>
+            </select>
+        </div>
 
-                <!-- Result Filter -->
-                <div class="w-full sm:w-auto flex items-center">
-                    <label for="result" class="block font-semibold mr-3">Result:</label>
-                    <select name="result" id="result" onchange="document.getElementById('filterForm').submit();" class="w-full text-sm dark:bg-slate-800 rounded-full border-slate-300 focus:ring-emerald-500 focus:bg-emerald-50 focus:border-emerald-200 dark:text-slate-300 dark:focus:bg-transparent">
-                        <option value="All" {{ request('result') == 'All' ? 'selected' : '' }}>All</option>
-                        <option value="Pass" {{ request('result') == 'Pass' ? 'selected' : '' }}>Pass</option>
-                        <option value="Fail" {{ request('result') == 'Fail' ? 'selected' : '' }}>Fail</option>
-                    </select>
-                </div>
+        <!-- Result Filter -->
+        <div class="w-full sm:w-auto flex items-center">
+            <label for="result" class="block font-semibold mr-3">Result:</label>
+            <select name="result" id="result" onchange="document.getElementById('filterForm').submit();" class="w-full text-sm dark:bg-slate-800 rounded-full border-slate-300 focus:ring-emerald-500 focus:bg-emerald-50 focus:border-emerald-200 dark:text-slate-300 dark:focus:bg-transparent">
+                <option value="All" {{ request('result') == 'All' ? 'selected' : '' }}>All</option>
+                <option value="Pass" {{ request('result') == 'Pass' ? 'selected' : '' }}>Pass</option>
+                <option value="Fail" {{ request('result') == 'Fail' ? 'selected' : '' }}>Fail</option>
+            </select>
+        </div>
 
-                <!-- Search by ID -->
-                <div class="w-full sm:w-auto flex items-center">
-                    <label for="id" class="block font-semibold mr-3 whitespace-nowrap">Search by ID:</label>
-                    <input type="text" name="id" id="id" value="{{ request('id') }}" placeholder="Enter ID" oninput="document.getElementById('filterForm').submit();"
-                        class="w-full text-sm dark:bg-slate-800 rounded-full border-slate-300 focus:ring-emerald-500 focus:bg-emerald-50 focus:border-emerald-200 dark:text-slate-300 dark:focus:bg-transparent">
-                </div>
-            </div>
-        </form>
+        <!-- Search by ID -->
+        <div class="w-full sm:w-auto flex items-center">
+            <label for="id" class="block font-semibold mr-3 whitespace-nowrap">Search by ID:</label>
+            <input type="text" name="id" id="id" value="{{ request('id') }}" placeholder="Enter ID"
+                class="w-full text-sm dark:bg-slate-800 rounded-full border-slate-300 focus:ring-emerald-500 focus:bg-emerald-50 focus:border-emerald-200 dark:text-slate-300 dark:focus:bg-transparent">
+        </div>
+
+        <button type="submit" class="px-4 py-3 text-sm font-semibold whitespace-nowrap dark:text-slate-800 bg-emerald-200 rounded-full hover:bg-emerald-600">
+                Search ID
+            </button>
+    </div>
+</form>
 
         <div class="overflow-x-auto scrollable relative">
             <table class="min-w-full bg-white text-sm border border-collapse">
@@ -142,9 +146,15 @@
             <h2 class="text-md font-bold mb-4">Course/s Needing Support</h2>
             <table class="min-w-full bg-white dark:bg-slate-800 text-sm overflow-hidden shadow-md">
                 <thead>
+<<<<<<< Updated upstream
                     <tr class="bg-emerald-200 dark:bg-slate-600 text-left">
                         <th class="py-2 px-4 font-semibold">Subject</th>
                         <th class="py-2 px-4 font-semibold">Needing Support</th>
+=======
+                    <tr class="bg-emerald-200 dark:bg-emerald-700 text-left">
+                        <th class="py-2 px-4 font-semibold">Course</th>
+                        <th class="py-2 px-4 font-semibold">Average</th>
+>>>>>>> Stashed changes
                     </tr>
                 </thead>
                 <tbody id="support-table-body">
