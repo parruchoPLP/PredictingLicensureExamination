@@ -242,14 +242,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                 },
             },
-            yaxis: {
-                labels: {
-                    show: true,
-                    style: {
-                        cssClass: 'fill-gray-500 dark:fill-gray-400',
-                    },
-                },
-            },
             fill: {
                 type: "gradient", // Enable gradient fill
                 gradient: {

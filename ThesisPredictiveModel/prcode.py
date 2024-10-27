@@ -64,6 +64,7 @@ print(combined_df.head())
 print("Head of the DataFrame:")
 print(combined_df.head())
 
+performance = combined_df['PERFORMANCE']
 combined_df = pd.concat([combined_df, combined_df], ignore_index=True)
 
 # Calculate the average per course
@@ -168,6 +169,14 @@ output_data.append({"Metric": "Accuracy", "Feature": "", "Value": accuracy})
 output_data.append({"Metric": "Precision", "Feature": "", "Value": classification_rep['weighted avg']['precision']})
 output_data.append({"Metric": "Recall", "Feature": "", "Value": classification_rep['weighted avg']['recall']})
 output_data.append({"Metric": "F1 Score", "Feature": "", "Value": classification_rep['weighted avg']['f1-score']})
+
+# Calculate the total passed and failed in the y_resampled dataset
+total_passed = sum(performance == 1)  # Adjust as needed for the actual 'Pass' label
+total_failed = sum(performance == 0)  # Adjust as needed for the actual 'Fail' label
+
+# Append these metrics to the output_data list
+output_data.append({"Metric": "Total Passed", "Feature": "", "Value": total_passed})
+output_data.append({"Metric": "Total Failed", "Feature": "", "Value": total_failed})
 
 # Add Average per Course
 for course, avg_grade in average_per_course.items():

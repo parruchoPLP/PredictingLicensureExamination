@@ -36,7 +36,7 @@
         </div>  
         <div class="bg-white p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col mid-lg:grid-cols-1 overflow-auto">
             <div class=""> 
-                <h2 class="text-xl font-bold">Top 3 Licensure Outcome Predictors
+                <h2 class="text-xl font-bold">Top 5 Licensure Outcome Predictors
                     <button 
                         class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2"
                         aria-label="Help"

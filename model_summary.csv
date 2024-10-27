@@ -30,6 +30,8 @@ Accuracy,,0.9672131147540983
 Precision,,0.9696417729204615
 Recall,,0.9672131147540983
 F1 Score,,0.9673752477031166
+Total Passed,,57
+Total Failed,,76
 Average Grade per Course,ECE 111,2.659774436090226
 Average Grade per Course,ECE 112,2.790977443609023
 Average Grade per Course,ECE 114,2.387593984962406
