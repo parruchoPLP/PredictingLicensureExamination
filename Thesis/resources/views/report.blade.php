@@ -146,15 +146,9 @@
             <h2 class="text-md font-bold mb-4">Course/s Needing Support</h2>
             <table class="min-w-full bg-white dark:bg-slate-800 text-sm overflow-hidden shadow-md">
                 <thead>
-<<<<<<< Updated upstream
-                    <tr class="bg-emerald-200 dark:bg-slate-600 text-left">
-                        <th class="py-2 px-4 font-semibold">Subject</th>
-                        <th class="py-2 px-4 font-semibold">Needing Support</th>
-=======
                     <tr class="bg-emerald-200 dark:bg-emerald-700 text-left">
                         <th class="py-2 px-4 font-semibold">Course</th>
                         <th class="py-2 px-4 font-semibold">Average</th>
->>>>>>> Stashed changes
                     </tr>
                 </thead>
                 <tbody id="support-table-body">

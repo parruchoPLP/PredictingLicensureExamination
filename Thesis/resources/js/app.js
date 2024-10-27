@@ -582,19 +582,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                 },
             },
-<<<<<<< Updated upstream
-=======
-            yaxis: {
-                labels: {
-                    formatter: function(value) {
-                        return value.toFixed(2); // Format to 2 decimal places on the y-axis labels
-                    },
-                    style: {
-                        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400',
-                    }
-                },
-            },
->>>>>>> Stashed changes
             states: {
                 hover: {
                     filter: {
@@ -644,6 +631,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     style: {
                         fontSize: '14px',
                         fontWeight: 'bold',
+                        cssClass: 'fill-gray-500 dark:fill-gray-400',
+                    },
+                },
+            },
+            yaxis: {
+                labels: {
+                    show: true,
+                    style: {
                         cssClass: 'fill-gray-500 dark:fill-gray-400',
                     },
                 },

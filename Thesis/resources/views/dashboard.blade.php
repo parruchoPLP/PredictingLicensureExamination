@@ -13,7 +13,7 @@
                         aria-label="Help"
                         data-popover-target="popover1"
                     ></button>
-                    @include('components.popover', ['id' => 'popover1']) <!-- Unique ID for each popover -->
+                    @include('components.popover', ['id' => 'popover1']) 
                 </h2>
             </div>
             <div class="flex justify-center pt-8">
