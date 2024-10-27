@@ -36,9 +36,7 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/report', [ReportController::class, 'showReport'])->name('report.show');
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [ReportController::class, 'dashboard'])->name('dashboard');
     Route::get('/acctmanagement', function () {
         return view('acctmanagement');
     });

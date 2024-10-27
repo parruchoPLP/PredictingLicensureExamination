@@ -3,6 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
+@vite(['resources/js/dashboard.js'])
 <section id="dashboard" class="bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100 min-h-screen pr-9 pl-36 py-36 space-y-8 font-arial">
     <div class="grid grid-cols-1 lg:grid-cols-5 mid-lg:grid-cols-1 gap-4">
         <div class="bg-emerald-50 p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col mid-lg:grid-cols-1 overflow-auto">
@@ -23,12 +24,16 @@
         </div>  
         <div class="bg-white p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col mid-lg:grid-cols-1 overflow-auto">
             <div class="flex justify-between"> 
-                <h2 class="text-xl font-bold">Top 3 Licensure Outcome Predictors</h2>
+                <h2 class="text-xl font-bold">Top 5 Licensure Outcome Predictors</h2>
                 <i class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2"></i>
             </div>
             <ul id="topPredictorsList" class="list-decimal list-inside text-md mt-10 space-y-2">
             </ul>
         </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700"> 
+        <h2 class="text-md font-bold mb-8">Average Grade per Course</h2>
+        <div id="overallaveperCourse-chart"></div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-7 mid-lg:grid-cols-1 gap-4">
         <div class="bg-white p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col md:col-span-5 overflow-auto">
@@ -47,4 +52,10 @@
         </div>
     </div>
 </section>
+<script>
+    const featureImportance = @json($featureImportance);
+    const modelMetrics = @json($modelMetrics);
+    const averageCourse = @json($averageCourse);
+    const topPredictors = @json($topPredictors);
+</script>
 @endsection

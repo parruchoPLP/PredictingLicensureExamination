@@ -59,6 +59,8 @@ class ReportController extends Controller
             return array_change_key_case(array_map('trim', $item), CASE_UPPER);
         });
 
+        $report = $collection;
+
         // Apply filters
         if ($request->has('gender') && $request->query('gender') !== 'All') {
             $collection = $collection->where('GENDER', $request->query('gender'));
@@ -87,8 +89,8 @@ class ReportController extends Controller
         $totalRecords = $paginator->total();
 
         // Calculate pass and fail counts
-        $passCount = $collection->where('EXPECTED_PERFORMANCE', 'Pass')->count();
-        $failCount = $collection->where('EXPECTED_PERFORMANCE', 'Fail')->count();
+        $passCount = $report->where('EXPECTED_PERFORMANCE', 'Pass')->count();
+        $failCount = $report->where('EXPECTED_PERFORMANCE', 'Fail')->count();
 
         $passFailData = [
             'pass' => $passCount,
@@ -96,8 +98,8 @@ class ReportController extends Controller
             'total' => $totalRecords,
         ];
 
-        $maleCount = $collection->where('GENDER', 'M')->count();
-        $femaleCount = $collection->where('GENDER', 'F')->count();
+        $maleCount = $report->where('GENDER', 'M')->count();
+        $femaleCount = $report->where('GENDER', 'F')->count();
 
         $genderData = [
             'male' => $maleCount,
@@ -108,8 +110,8 @@ class ReportController extends Controller
         foreach ($courseDictionary as $code => $subjectName) {
             $formattedCode = str_replace(' ', '_', $code);
 
-            if ($collection->pluck($formattedCode)->isNotEmpty()) {
-                $averageGrades[$code] = $collection->avg($formattedCode);
+            if ($report->pluck($formattedCode)->isNotEmpty()) {
+                $averageGrades[$code] = $report->avg($formattedCode);
             } else {
                 $averageGrades[$code] = null;
             }
@@ -123,5 +125,51 @@ class ReportController extends Controller
         }
 
         return view('report', compact('paginator', 'headers', 'filename', 'passFailData', 'genderData', 'averageGrades', 'courseSupport', 'courseDictionary'));
+    }
+
+    public function dashboard(){
+        $modelSummary = base_path('../model_summary.csv');
+
+        // Load the file and parse its contents
+        $data = Excel::toArray(new DataImport, $modelSummary);
+        
+        // Assuming the first sheet and first row is the header
+        $headers = !empty($data[0]) ? array_keys($data[0][0]) : [];
+
+        // Convert the first sheet data to a collection for easier filtering
+        $collection = collect($data[0]);
+
+        // Normalize column names for filtering
+        $collection = $collection->map(function ($item) {
+            return array_change_key_case(array_map('trim', $item), CASE_UPPER);
+        });
+
+        // Initialize arrays to hold the processed data
+        $featureImportance = [];
+        $modelMetrics = [];
+        $averageCourse = [];
+
+        // Process each row based on the "Metric" column
+        foreach ($collection as $row) {
+            $metric = $row['METRIC'];
+            $feature = $row['FEATURE'];
+            $value = $row['VALUE'];
+
+            // Distribute data into arrays based on the "Metric" type
+            if ($metric === 'Feature Importance') {
+                $featureImportance[$feature] = (float) $value;
+            } elseif ($metric === 'Average Grade per Course') {
+                $averageCourse[$feature] = (float) $value;
+            } else {
+                // For model metrics (Accuracy, Precision, Recall, F1 Score)
+                $modelMetrics[strtolower(str_replace(' ', '_', $metric))] = number_format((float) $value * 100, 4);
+            }
+        }
+
+        $featureDupe = $featureImportance;
+        arsort($featureDupe);
+        $topPredictors = array_keys(array_slice($featureDupe, 0, 5, true));
+
+        return view('dashboard', compact('collection', 'featureImportance', 'averageCourse', 'modelMetrics', 'topPredictors'));
     }
 }

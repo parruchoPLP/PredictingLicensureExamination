@@ -66,6 +66,9 @@ print(combined_df.head())
 
 combined_df = pd.concat([combined_df, combined_df], ignore_index=True)
 
+# Calculate the average per course
+average_per_course = combined_df[grade_columns].mean()
+
 columns_to_standardize = grade_columns
 
 # Initialize the scaler
@@ -136,9 +139,6 @@ importance_df = pd.DataFrame({
     'Importance': feature_importances
 })
 
-# Sort the DataFrame by importance
-importance_df = importance_df.sort_values(by='Importance', ascending=False)
-
 # Print the top predictors
 print("\nTop predictors based on feature importance:")
 print(importance_df)
@@ -146,6 +146,50 @@ print(importance_df)
 # Print the most important predictor
 top_predictor = importance_df.iloc[0]
 print(f"\nThe top predictor is '{top_predictor['Feature']}' with an importance score of {top_predictor['Importance']:.4f}")
+
+import csv
+
+# Calculate model metrics
+classification_rep = classification_report(y_test, y_pred, output_dict=True)
+
+# Prepare data to save to CSV
+output_data = []
+
+# Add Feature Importance
+for _, row in importance_df.iterrows():
+    output_data.append({
+        "Metric": "Feature Importance",
+        "Feature": row['Feature'],
+        "Value": row['Importance']
+    })
+
+# Add Model Metrics
+output_data.append({"Metric": "Accuracy", "Feature": "", "Value": accuracy})
+output_data.append({"Metric": "Precision", "Feature": "", "Value": classification_rep['weighted avg']['precision']})
+output_data.append({"Metric": "Recall", "Feature": "", "Value": classification_rep['weighted avg']['recall']})
+output_data.append({"Metric": "F1 Score", "Feature": "", "Value": classification_rep['weighted avg']['f1-score']})
+
+# Add Average per Course
+for course, avg_grade in average_per_course.items():
+    output_data.append({
+        "Metric": "Average Grade per Course",
+        "Feature": course,
+        "Value": avg_grade
+    })
+
+# Define the CSV file path
+output_file_path = os.path.join(os.getcwd(), "model_summary.csv")
+
+# Write data to CSV
+try:
+    with open(output_file_path, mode='w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=["Metric", "Feature", "Value"])
+        writer.writeheader()
+        writer.writerows(output_data)
+    
+    print("Model summary saved successfully as 'model_summary.csv'")
+except Exception as e:
+    print(f"An error occurred while saving the model summary: {e}")
 
 '''
 # Generate the confusion matrix
