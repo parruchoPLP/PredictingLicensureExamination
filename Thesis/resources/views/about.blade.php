@@ -114,11 +114,10 @@
     const options = {
         xaxis: {
             show: true,
-            categories: ['Apr, 2018', 'Oct, 2018', 'Apr, 2019', 'Oct, 2019', 'Oct, 2022', 'Apr, 2023', 'Oct, 2023'],
+            categories: ['Apr, 2017', 'Oct, 2017', 'Apr, 2018', 'Oct, 2018', 'Apr, 2019', 'Oct, 2019', 'Oct, 2022', 'Apr, 2023', 'Oct, 2023'],
             labels: {
                 show: true,
                 style: {
-                    fontFamily: "Inter, sans-serif",
                     cssClass: 'text-xs font-normal fill-gray-500'
                 }
             },
@@ -134,7 +133,6 @@
             labels: {
                 show: true,
                 style: {
-                    fontFamily: "Inter, sans-serif",
                     cssClass: 'text-xs font-normal fill-gray-500'
                 },
                 formatter: function (value) {
@@ -145,12 +143,12 @@
         series: [
             {
                 name: "National Passing Rate",
-                data: ['45.36', '49.49', '48.92', '49.43', '29.69', '33.49', '29.69'],
+                data: ['41.27', '46.72', '45.36', '49.49', '48.92', '49.43', '29.69', '33.49', '29.69'],
                 color: "#34d399",
             },
             {
                 name: "PLP Passing Rate",
-                data: ['53.85', '61.11', '33.33', '66.67', '16.67', '20.00', '16.67'],
+                data: ['58.33', '41.67', '53.85', '61.11', '33.33', '66.67', '16.67', '20.00', '16.67'],
                 color: "#22d3ee",
             },
         ],
@@ -161,7 +159,6 @@
             height: "100%",
             width: "100%",
             type: "area",
-            fontFamily: "Inter, sans-serif",
             dropShadow: {
                 enabled: false,
             },

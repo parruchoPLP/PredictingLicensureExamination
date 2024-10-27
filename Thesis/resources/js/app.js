@@ -2,6 +2,26 @@ import './bootstrap';
 import 'flowbite';
 import Chart from 'chart.js/auto';
 
+document.addEventListener('DOMContentLoaded', () => {
+    const popovers = document.querySelectorAll('[data-popover-target]');
+    
+    popovers.forEach(button => {
+        const popoverId = button.getAttribute('data-popover-target');
+        const popover = document.getElementById(popoverId);
+
+        button.addEventListener('mouseover', (event) => {
+            popover.style.left = `${event.currentTarget.offsetLeft}px`;
+            popover.style.top = `${event.currentTarget.offsetTop + event.currentTarget.offsetHeight}px`;
+            popover.classList.remove('invisible', 'opacity-0');
+        });
+
+        button.addEventListener('mouseout', () => {
+            popover.classList.add('invisible', 'opacity-0');
+        });
+    });
+});
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const passPercentage = (passFailData.pass / (passFailData.pass + passFailData.fail) * 100).toFixed(2);
     const failPercentage = (passFailData.fail / (passFailData.pass + passFailData.fail) * 100).toFixed(2);
@@ -88,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
             labels: {
                 show: true,
                 style: {
-                fontFamily: "Inter, sans-serif",
                 cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
                 }
             },
@@ -104,7 +123,6 @@ document.addEventListener('DOMContentLoaded', function () {
             labels: {
                 show: true,
                 style: {
-                fontFamily: "Inter, sans-serif",
                 cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
                 }
             }
@@ -220,6 +238,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     style: {
                         fontSize: '14px',
                         fontWeight: 'bold',
+                        cssClass: 'fill-gray-500 dark:fill-gray-400',
+                    },
+                },
+            },
+            yaxis: {
+                labels: {
+                    show: true,
+                    style: {
+                        cssClass: 'fill-gray-500 dark:fill-gray-400',
                     },
                 },
             },
