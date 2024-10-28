@@ -3,23 +3,41 @@ import 'flowbite';
 import Chart from 'chart.js/auto';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const popovers = document.querySelectorAll('[data-popover-target]');
-    
-    popovers.forEach(button => {
-        const popoverId = button.getAttribute('data-popover-target');
-        const popover = document.getElementById(popoverId);
+    const overlay = document.getElementById('popoverOverlay');
+    const popoverCards = [ 
+        document.getElementById('popover1'),
+        document.getElementById('popover2'),
+        document.getElementById('popover3'),
+        document.getElementById('popover4'),
+        document.getElementById('popover5'),
+    ];
 
-        button.addEventListener('mouseover', (event) => {
-            popover.style.left = `${event.currentTarget.offsetLeft}px`;
-            popover.style.top = `${event.currentTarget.offsetTop + event.currentTarget.offsetHeight}px`;
-            popover.classList.remove('invisible', 'opacity-0');
-        });
+    popoverCards.forEach((popoverCard, index) => {
+        const helpButton = document.getElementById(`helpButton${index + 1}`);
 
-        button.addEventListener('mouseout', () => {
-            popover.classList.add('invisible', 'opacity-0');
+        helpButton.addEventListener('click', (event) => {
+            event.preventDefault(); 
+            popoverCards.forEach(card => {
+                card.classList.add('invisible', 'opacity-0');
+            });
+
+            overlay.classList.remove('hidden');
+            popoverCard.classList.remove('invisible', 'opacity-0');
+
+            popoverCard.style.left = `50%`;
+            popoverCard.style.top = `50%`;
+            popoverCard.style.transform = `translate(-50%, -50%)`;
         });
     });
+
+    overlay.addEventListener('click', () => {
+        popoverCards.forEach(card => {
+            card.classList.add('invisible', 'opacity-0');
+        });
+        overlay.classList.add('hidden');
+    });
 });
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -54,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
 
     const genderOptions = {
         series: [

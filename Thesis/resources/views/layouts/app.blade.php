@@ -18,7 +18,7 @@
     <header>
         <x-navigationbar />
         @if(!Request::is('acctmanagement'))
-        <div class="flex items-center fixed top-14 right-8 z-20 space-x-8 font-arial dark:text-slate-100 after-nav-div"> 
+        <div class="flex items-center fixed top-14 right-8 z-9 space-x-8 font-arial dark:text-slate-100 after-nav-div"> 
             <div class="flex items-center space-x-8 fixed left-36"> 
                 @if(Request::is('dashboard'))
                     <h1 class="text-3xl font-bold"> Dashboard </h1>
