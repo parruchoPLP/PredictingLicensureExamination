@@ -144,10 +144,6 @@ importance_df = pd.DataFrame({
 print("\nTop predictors based on feature importance:")
 print(importance_df)
 
-# Print the most important predictor
-top_predictor = importance_df.iloc[0]
-print(f"\nThe top predictor is '{top_predictor['Feature']}' with an importance score of {top_predictor['Importance']:.4f}")
-
 import csv
 
 # Calculate model metrics
