@@ -1,3 +1,42 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('popoverOverlay');
+    const popoverCards = [ 
+        document.getElementById('popOverallPass'),
+        document.getElementById('popFeature'),
+        document.getElementById('popTopPredictors'),
+        document.getElementById('popAveCourse'),
+        document.getElementById('popMetrics'),
+    ];
+
+    overlay.style.position = "fixed";
+    overlay.style.zIndex = "50";
+
+    popoverCards.forEach((popoverCard, index) => {
+        const helpButton = document.getElementById(`helpButton${index + 1}`);
+
+        helpButton.addEventListener('click', (event) => {
+            event.preventDefault(); 
+            popoverCards.forEach(card => {
+                card.classList.add('invisible', 'opacity-0');
+            });
+
+            overlay.classList.remove('hidden');
+            popoverCard.classList.remove('invisible', 'opacity-0');
+
+            popoverCard.style.left = `50%`;
+            popoverCard.style.top = `50%`;
+            popoverCard.style.transform = `translate(-50%, -50%)`;
+        });
+    });
+
+    overlay.addEventListener('click', () => {
+        popoverCards.forEach(card => {
+            card.classList.add('invisible', 'opacity-0');
+        });
+        overlay.classList.add('hidden');
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     topPredictors.forEach(predictor => {
         const listItem = document.createElement('li');
@@ -163,6 +202,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 formatter: function(value) {
                     return value.toFixed(2); // Format to 2 decimal places on the y-axis labels
                 },
+                style: {
+                    cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400',
+                },
             },
         },
         xaxis: {
@@ -184,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 style: {
                     fontSize: '14px',
                     fontWeight: 'bold',
+                    cssClass: 'fill-gray-500 dark:fill-gray-400',
                 },
             },
         },
@@ -266,98 +309,6 @@ document.addEventListener('DOMContentLoaded', function () {
         chart.render();
     }
     
-    const PLPoptions = {
-        xaxis: {
-            show: true,
-            categories: ['Apr, 2018', 'Oct, 2018', 'Apr, 2019', 'Oct, 2019', 'Oct, 2022', 'Apr, 2023', 'Oct, 2023'],
-            labels: {
-                show: true,
-                style: {
-                    fontFamily: "Inter, sans-serif",
-                    cssClass: 'text-xs font-normal fill-gray-500'
-                }
-            },
-            axisBorder: {
-                show: false,
-            },
-            axisTicks: {
-                show: false,
-            },
-        },
-        yaxis: {
-            show: true,
-            labels: {
-                show: true,
-                style: {
-                    fontFamily: "Inter, sans-serif",
-                    cssClass: 'text-xs font-normal fill-gray-500'
-                },
-                formatter: function (value) {
-                    return value + '%';
-                }
-            }
-        },
-        series: [
-            {
-                name: "National Passing Rate",
-                data: ['45.36', '49.49', '48.92', '49.43', '29.69', '33.49', '29.69'],
-                color: "#10b981",
-            },
-            {
-                name: "PLP Passing Rate",
-                data: ['53.85', '61.11', '33.33', '66.67', '16.67', '20.00', '16.67'],
-                color: "#6ee7b7",
-            },
-        ],
-        chart: {
-            sparkline: {
-                enabled: false
-            },
-            height: "100%",
-            width: "100%",
-            type: "area",
-            fontFamily: "Inter, sans-serif",
-            dropShadow: {
-                enabled: false,
-            },
-            toolbar: {
-                show: false,
-            },
-        },
-        tooltip: {
-            enabled: true,
-            x: {
-                show: false,
-            },
-        },
-        fill: {
-            type: "gradient",
-            gradient: {
-                opacityFrom: 0.55,
-                opacityTo: 0,
-                shade: "#1C64F2",
-                gradientToColors: ["#1C64F2"],
-            },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        stroke: {
-            width: 6,
-        },
-        legend: {
-            show: false
-        },
-        grid: {
-            show: false,
-        },
-    };
-
-    if (document.getElementById("labels-chart") && typeof ApexCharts !== 'undefined') {
-        const chart = new ApexCharts(document.getElementById("labels-chart"), PLPoptions);
-        chart.render();
-    }
-
 
     const courseData = Object.entries(averageCourse).map(([courseCode, average]) => ({
         x: courseCode,
@@ -400,6 +351,9 @@ document.addEventListener('DOMContentLoaded', function () {
             labels: {
                 formatter: function(value) {
                     return value.toFixed(2); // Format to 2 decimal places on the y-axis labels
+                },
+                style: {
+                    cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400',
                 },
             },
         },
@@ -452,6 +406,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 style: {
                     fontSize: '14px',
                     fontWeight: 'bold',
+                    cssClass: 'fill-gray-500 dark:fill-gray-400',
                 },
             },
         },

@@ -5,17 +5,17 @@ import Chart from 'chart.js/auto';
 document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('popoverOverlay');
     const popoverCards = [ 
-        document.getElementById('popover1'),
-        document.getElementById('popover2'),
-        document.getElementById('popover3'),
-        document.getElementById('popover4'),
-        document.getElementById('popover5'),
+        document.getElementById('popAveCourse'),
+        document.getElementById('popCourseSupport'),
     ];
 
-    popoverCards.forEach((popoverCard, index) => {
-        const helpButton = document.getElementById(`helpButton${index + 1}`);
+    overlay.style.position = "fixed";
+    overlay.style.zIndex = "50";
 
-        helpButton.addEventListener('click', (event) => {
+    popoverCards.forEach((popoverCard, index) => {
+        const infoButton = document.getElementById(`infoButton${index + 1}`);
+
+        infoButton.addEventListener('click', (event) => {
             event.preventDefault(); 
             popoverCards.forEach(card => {
                 card.classList.add('invisible', 'opacity-0');
@@ -37,8 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.classList.add('hidden');
     });
 });
-
-
 
 document.addEventListener('DOMContentLoaded', function () {
     const passPercentage = (passFailData.pass / (passFailData.pass + passFailData.fail) * 100).toFixed(2);

@@ -13,7 +13,7 @@ export default {
         'arial': ['Arial', 'sans-serif'],
       },
       screens: {
-        'mid-lg': '800px',  // Custom screen breakpoint
+        'mid-lg': '950px',  // Custom screen breakpoint
       },
     },
   },

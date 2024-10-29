@@ -94,24 +94,27 @@
     <div id="upFiles" class="mt-10 bg-white dark:bg-slate-700 rounded-xl shadow-lg p-8 text-slate-800 dark:text-slate-200 overflow-x-auto">
         <p class="font-bold text-xl"> <i class="fas fa-upload mr-6"></i> Upload file/s </p> 
         <p class="italic mt-7 text-sm"> *Please upload only Excel (xls/csv) files in the specified format. </p> <br>
-        <table class="min-w-full bg-white text-sm border border-collapse dark:bg-slate-800">
-            <thead class="bg-emerald-200 text-slate-800 dark:bg-emerald-700 dark:text-slate-200 text-left uppercase font-bold sticky top-0 z-10">
-                <tr>
-                    @foreach($titles as $title)
-                    <th class="py-2 px-4 whitespace-nowrap">{{ $title }}</th>
+        <div class="overflow-x-auto"> 
+            <table class="min-w-full bg-white text-sm border border-collapse dark:bg-slate-800">
+                <thead class="bg-emerald-200 text-slate-800 dark:bg-emerald-700 dark:text-slate-200 text-left uppercase font-bold sticky top-0 z-10">
+                    <tr>
+                        @foreach($titles as $title)
+                        <th class="py-2 px-4 whitespace-nowrap">{{ $title }}</th>
+                        @endforeach
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 dark:text-slate-200">
+                    @foreach($file as $row)
+                    <tr class="border-b">
+                        <td class="py-2 px-4">{{ $row['id'] }} <i class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600" data-popover-target="popStudNo"> </i> @include('components.popover', ['id' => 'popStudNo'])</td>
+                        <td class="py-2 px-4">{{ $row['courseCode'] }} <i class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600" data-popover-target="popCourse"> </i> @include('components.popover', ['id' => 'popCourse']) </td>
+                        <td class="py-2 px-4">{{ $row['passed'] }} <i class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600" data-popover-target="popPassed"> </i> @include('components.popover', ['id' => 'popPassed']) </td>
+                    </tr>
                     @endforeach
-                </tr>
-            </thead>
-            <tbody class="text-gray-700 dark:text-slate-200">
-                @foreach($file as $row)
-                <tr class="border-b">
-                    <td class="py-2 px-4 whitespace-nowrap">{{ $row['id'] }} <i class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600" data-popover-target="popStudNo"> </i> @include('components.popover', ['id' => 'popStudNo'])</td>
-                    <td class="py-2 px-4 whitespace-nowrap">{{ $row['courseCode'] }} <i class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600" data-popover-target="popCourse"> </i> @include('components.popover', ['id' => 'popCourse']) </td>
-                    <td class="py-2 px-4 whitespace-nowrap">{{ $row['passed'] }} <i class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600" data-popover-target="popPassed"> </i> @include('components.popover', ['id' => 'popPassed']) </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table> <br>
+                </tbody>
+            </table> 
+        </div>
+        <br>
         <form action="{{ route('upload.systemfile') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="file" name="file" class="text-sm" required><br>
@@ -119,41 +122,45 @@
         </form> <br>
         <hr>
         <p class="italic mt-7 text-sm"> *Use the following course codes for each course.</p> <br>
-        <div class="grid grid-cols-2 gap-8">
-            <table class="min-w-full bg-white text-sm border border-collapse dark:bg-slate-800">
-                <thead class="bg-emerald-200 text-slate-800 dark:bg-emerald-700 dark:text-slate-200 text-left uppercase font-bold sticky top-0 z-10">
-                    <tr>
-                        @foreach($headers as $header)
-                        <th class="py-2 px-4 w-1/2 whitespace-nowrap">{{ $header }}</th>
+        <div class="grid grid-cols-1 mid-lg:grid-cols-2 gap-4 overflow-x-auto">
+            <div>
+                <table class="bg-white min-w-full text-sm border border-collapse dark:bg-slate-800">
+                    <thead class="bg-emerald-200 text-slate-800 dark:bg-emerald-700 dark:text-slate-200 text-left uppercase font-bold">
+                        <tr>
+                            @foreach($headers as $header)
+                            <th class="py-2 px-4 whitespace-nowrap">{{ $header }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 dark:text-slate-200">
+                        @foreach($infoPart1 as $row)
+                        <tr class="border-b">
+                            <td class="py-2 px-4">{{ $row['course'] }}</td>
+                            <td class="py-2 px-4">{{ $row['courseDesc'] }}</td>
+                        </tr>
                         @endforeach
-                    </tr>
-                </thead>
-                <tbody class="text-gray-700 dark:text-slate-200">
-                    @foreach($infoPart1 as $row)
-                    <tr class="border-b">
-                        <td class="py-2 px-4 w-1/2 whitespace-nowrap">{{ $row['course'] }}</td>
-                        <td class="py-2 px-4 w-1/2 whitespace-nowrap">{{ $row['courseDesc'] }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <table class="min-w-full bg-white text-sm border border-collapse dark:bg-slate-800">
-                <thead class="bg-emerald-200 text-slate-800 dark:bg-emerald-700 dark:text-slate-200 text-left uppercase font-bold sticky top-0 z-10">
-                    <tr>
-                        @foreach($headers as $header)
-                        <th class="py-2 px-4 w-1/2 whitespace-nowrap">{{ $header }}</th>
+                    </tbody>
+                </table>
+            </div>
+            <div> 
+                <table class="bg-white min-w-full text-sm border border-collapse dark:bg-slate-800">
+                    <thead class="bg-emerald-200 text-slate-800 dark:bg-emerald-700 dark:text-slate-200 text-left uppercase font-bold">
+                        <tr>
+                            @foreach($headers as $header)
+                            <th class="py-2 px-4 whitespace-nowrap">{{ $header }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 dark:text-slate-200">
+                        @foreach($infoPart2 as $row)
+                        <tr class="border-b">
+                            <td class="py-2 px-4">{{ $row['course'] }}</td>
+                            <td class="py-2 px-4">{{ $row['courseDesc'] }}</td>
+                        </tr>
                         @endforeach
-                    </tr>
-                </thead>
-                <tbody class="text-gray-700 dark:text-slate-200">
-                    @foreach($infoPart2 as $row)
-                    <tr class="border-b">
-                        <td class="py-2 px-4 w-1/2 whitespace-nowrap">{{ $row['course'] }}</td>
-                        <td class="py-2 px-4 w-1/2 whitespace-nowrap">{{ $row['courseDesc'] }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div> <br>
     </div>
 </section>
