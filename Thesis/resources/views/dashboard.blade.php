@@ -18,7 +18,7 @@
                     ></button> @include('components.popover', ['id' => 'popOverallPass'])
                 </h2>
             </div>
-            <div class="justify-center pt-8">
+            <div class="flex justify-center pt-8">
                 <div class="max-w-[180px]" id="passingRate-chart"></div>
             </div>
         </div>

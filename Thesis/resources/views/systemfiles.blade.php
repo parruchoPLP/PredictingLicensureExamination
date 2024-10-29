@@ -9,11 +9,11 @@
         <p class="italic mt-7 text-sm"> *Please make sure to reload the predictive model after any changes to the data files. </p>
         @php
             $titles = [
-                'Student ID', 'Course Code', 'Performance'
+                'Course Code', 'Performance'
             ];
 
             $file = [
-                ['id' => '21-000001', 'courseCode' => '1.25', 'passed' => '1',],
+                ['courseCode' => '1.25', 'passed' => '1',],
             ];
 
             $headers = [
@@ -106,7 +106,6 @@
                 <tbody class="text-gray-700 dark:text-slate-200">
                     @foreach($file as $row)
                     <tr class="border-b">
-                        <td class="py-2 px-4">{{ $row['id'] }} <i class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600" data-popover-target="popStudNo"> </i> @include('components.popover', ['id' => 'popStudNo'])</td>
                         <td class="py-2 px-4">{{ $row['courseCode'] }} <i class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600" data-popover-target="popCourse"> </i> @include('components.popover', ['id' => 'popCourse']) </td>
                         <td class="py-2 px-4">{{ $row['passed'] }} <i class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600" data-popover-target="popPassed"> </i> @include('components.popover', ['id' => 'popPassed']) </td>
                     </tr>
