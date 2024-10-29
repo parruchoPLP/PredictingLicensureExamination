@@ -120,9 +120,9 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700">
             <h2 class="text-md font-bold">Pass/Fail Rate</h2>
-                <div class="flex items-center justify-center p-6">
-                    <canvas id="passFailRateChart" class="max-w-[180px] max-h-[180px]"></canvas>
-                    <div class="ml-8">
+                <div class="flex flex-col items-center justify-center p-6">
+                    <canvas id="passFailRateChart" class="max-w-[150px] max-h-[150px]"></canvas>
+                    <div class="mt-8">
                         <ul id="passFailLegend" class="text-sm">
                             <!-- Legends will be added by JavaScript -->
                         </ul>
@@ -134,13 +134,25 @@
             <div id="gender-chart"></div>
         </div>
     </div>
-    <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700"> 
-        <h2 class="text-md font-bold mb-8">Average Grade per Course</h2>
-        <div id="aveperCourse-chart"></div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 mid-lg:grid-cols-3 gap-4">
+        <div class="bg-white rounded-xl shadow-md mid-lg:col-span-2 p-8 dark:bg-slate-700"> 
+            <h2 class="text-md font-bold mb-4">Average Grade per Course 
+                <button 
+                    id="infoButton1"  
+                    class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2 bg-transparent border-none"
+                    aria-label="Help"
+                ></button> @include('components.popover', ['id' => 'popAveCourse'])
+            </h2>
+            <div id="aveperCourse-chart"></div>
+        </div>
         <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700">
-            <h2 class="text-md font-bold mb-4">Course/s Needing Support</h2>
+            <h2 class="text-md font-bold mb-8">Course/s Needing Support 
+                <button 
+                    id="infoButton2"  
+                    class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2 bg-transparent border-none"
+                    aria-label="Help"
+                ></button> @include('components.popover', ['id' => 'popCourseSupport'])
+            </h2>
             <table class="min-w-full bg-white dark:bg-slate-800 text-sm overflow-hidden shadow-md">
                 <thead>
                     <tr class="bg-emerald-200 dark:bg-emerald-700 text-left">
@@ -152,10 +164,6 @@
                     <!-- Rows will be dynamically inserted here -->
                 </tbody>
             </table>
-        </div>
-        <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700">
-            <h2 class="text-md font-bold mb-8">Suggested Interventions</h2>
-            <p>The table to the left identifies courses where students may benefit from additional support. These courses, which show lower average performance, indicate potential areas where targeted intervention could be impactful. It is recommended to enhance student resources and provide supplementary instructional materials for these subjects. Additionally, faculty collaboration on teaching strategies and the introduction of peer mentoring could further aid students in achieving improved outcomes in these areas.</p>
         </div>
     </div>
 </section>

@@ -8,7 +8,7 @@
     <x-error_alert />
 @endif
 
-<nav id="navbar" class="fixed top-4 left-4 bottom-4 w-auto hover:w-64 rounded-xl shadow-lg bg-white dark:bg-slate-700 flex flex-col items-center font-arial text-md z-50 transition-all duration-300 ease-in-out" tabindex="-1" aria-labelledby="navbar-label">
+<nav id="navbar" class="fixed top-4 left-4 bottom-4 w-auto hover:w-64 rounded-xl shadow-lg bg-white dark:bg-slate-700 flex flex-col items-center font-arial text-md z-20 transition-all duration-300 ease-in-out" tabindex="-1" aria-labelledby="navbar-label">
     <ul class="mt-8 p-4 w-full space-y-2 text-slate-800 dark:text-slate-200">
         <li class="group">
             <a href="/dashboard" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-800 hover:font-bold {{ request()->is('dashboard') ? 'text-emerald-500 font-bold' : '' }}">

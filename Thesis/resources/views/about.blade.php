@@ -10,7 +10,7 @@
 <section id="titlePage" class="relative bg-cover bg-center bg-no-repeat font-arial" style="background-image: url('{{ asset('images/bsece.jpg') }}');">
     <div class="absolute inset-0 bg-gradient-to-t from-slate-100 to-slate-100/40 dark:from-slate-900 dark:to-slate-900/60"></div>
     <div class="relative px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-48">
-        <h1 class="my-8 text-4xl text-slate-900 dark:text-white font-extrabold md:text-5xl lg:text-6xl">Predicting Electronics Engineers Licensure Exam Performance</h1>
+        <h1 class="my-8 text-4xl text-slate-900 dark:text-white font-extrabold md:text-5xl lg:text-6xl">Forecasting Electronics Engineers Licensure Exam Performance</h1>
         <p class="mb-14 text-lg text-slate-800 dark:text-gray-200 lg:text-xl sm:px-16 lg:px-48">Empowering electronics engineering students with early insights, targeted support, and enhanced success.</p>
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
             <a href="/login" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center bg-slate-800 text-emerald-400 rounded-lg dark:bg-emerald-300 dark:text-slate-900 transition-transform transform hover:scale-105 cursor-pointer">

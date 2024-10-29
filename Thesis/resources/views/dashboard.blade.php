@@ -5,83 +5,86 @@
 @section('content')
 @vite(['resources/js/dashboard.js'])
 <section id="dashboard" class="bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100 min-h-screen pr-9 pl-36 py-36 space-y-8 font-arial">
-    <div class="grid grid-cols-1 lg:grid-cols-5 mid-lg:grid-cols-1 gap-4">
-        <div class="bg-emerald-50 p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col mid-lg:grid-cols-1 overflow-auto">
-            <div class=""> 
+    <!-- First grid for Passing Rate, Feature Importance, and Top Predictors -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 mid-lg:grid-cols-5 gap-4">
+        <!-- Overall Passing Rate -->
+        <div class="bg-emerald-50 p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col overflow-auto">
+            <div>
                 <h2 class="text-xl font-bold">Overall Passing Rate
                     <button 
+                        id="helpButton1"  
                         class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2 bg-transparent border-none"
                         aria-label="Help"
-                        data-popover-target="popover1"
-                    ></button>
-                    @include('components.popover', ['id' => 'popover1']) 
+                    ></button> @include('components.popover', ['id' => 'popOverallPass'])
                 </h2>
             </div>
-            <div class="flex justify-center pt-8">
+            <div class="justify-center pt-8">
                 <div class="max-w-[180px]" id="passingRate-chart"></div>
             </div>
-        </div>  
-        <div class="bg-white p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col md:col-span-3 mid-lg:grid-cols-1 overflow-auto">
-            <div class=""> 
+        </div>
+
+        <!-- Feature Importance -->
+        <div class="bg-white p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col mid-lg:col-span-3 overflow-auto">
+            <div>
                 <h2 class="text-xl font-bold mb-10">Feature Importance
                     <button 
-                        class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2"
+                        id="helpButton2"  
+                        class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2 bg-transparent border-none"
                         aria-label="Help"
-                        data-popover-target="popover2"
-                    ></button>
-                    @include('components.popover', ['id' => 'popover2']) 
+                    ></button> @include('components.popover', ['id' => 'popFeature'])
                 </h2>
             </div>
-            <div id="feature-chart" class=""></div>
+            <div id="feature-chart"></div>
         </div>  
-        <div class="bg-white p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col mid-lg:grid-cols-1 overflow-auto">
-            <div class=""> 
+
+        <!-- Top 5 Licensure Outcome Predictors -->
+        <div class="bg-white p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col overflow-auto">
+            <div>
                 <h2 class="text-xl font-bold">Top 5 Licensure Outcome Predictors
                     <button 
-                        class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2"
+                        id="helpButton3"  
+                        class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2 bg-transparent border-none"
                         aria-label="Help"
-                        data-popover-target="popover3"
-                    ></button>
-                    @include('components.popover', ['id' => 'popover3']) 
+                    ></button> @include('components.popover', ['id' => 'popTopPredictors'])
                 </h2>
             </div>
             <ul id="topPredictorsList" class="list-decimal list-inside text-md mt-10 space-y-2">
             </ul>
         </div>
     </div>
-    <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700"> 
-        <h2 class="text-md font-bold mb-8">Average Grade per Course</h2>
-        <div id="overallaveperCourse-chart"></div>
-    </div>
-    <div class="grid grid-cols-1 lg:grid-cols-7 mid-lg:grid-cols-1 gap-4">
-        <div class="bg-white p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col md:col-span-5 overflow-auto">
-            <div class=""> 
-                <h2 class="text-xl font-bold">PLP CoENG Electronics Engineers Licensure Exam Performance
+
+    <!-- Second grid for Average Grade per Course and Performance Metrics -->
+    <div class="grid grid-cols-1 lg:grid-cols-7 mid-lg:grid-cols-7 gap-4">
+        <!-- Average Grade per Course -->
+        <div class="bg-white p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col mid-lg:col-span-5 overflow-auto">
+            <div>
+                <h2 class="text-xl font-bold">Average Grade per Course
                     <button 
-                        class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2"
+                        id="helpButton4"  
+                        class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2 bg-transparent border-none"
                         aria-label="Help"
-                        data-popover-target="popover4"
-                    ></button>
-                    @include('components.popover', ['id' => 'popover4'])
+                    ></button> @include('components.popover', ['id' => 'popAveCourse'])
                 </h2>
-            </div>
-            <div id="labels-chart" class="px-2.5"></div>
+            </div>   
+            <div id="overallaveperCourse-chart"></div>
         </div>
-        <div class="bg-emerald-50 p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col md:col-span-2 overflow-auto">
-            <div class=""> 
+
+        <!-- Performance Metrics -->
+        <div class="bg-emerald-50 p-8 dark:bg-slate-700 rounded-xl shadow-md flex flex-col mid-lg:col-span-2 overflow-auto">
+            <div>
                 <h2 class="text-xl font-bold">Performance Metrics
                     <button 
-                        class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2"
+                        id="helpButton5"  
+                        class="fa fa-question-circle text-xs hover:text-emerald-400 dark:hover:text-emerald-600 rounded-full p-2 bg-transparent border-none"
                         aria-label="Help"
-                        data-popover-target="popover5"
-                    ></button>
-                    @include('components.popover', ['id' => 'popover5'])
+                    ></button> @include('components.popover', ['id' => 'popMetrics'])
                 </h2>
             </div>    
             <div class="py-6" id="metrics-chart"></div>
         </div>
     </div>
 </section>
+
 <script>
     const featureImportance = @json($featureImportance);
     const modelMetrics = @json($modelMetrics);
@@ -89,4 +92,4 @@
     const topPredictors = @json($topPredictors);
     const passingRate = @json($passingRate);
 </script>
-@endsection
+@endsection 

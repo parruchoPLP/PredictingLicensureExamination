@@ -3,24 +3,40 @@ import 'flowbite';
 import Chart from 'chart.js/auto';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const popovers = document.querySelectorAll('[data-popover-target]');
-    
-    popovers.forEach(button => {
-        const popoverId = button.getAttribute('data-popover-target');
-        const popover = document.getElementById(popoverId);
+    const overlay = document.getElementById('popoverOverlay');
+    const popoverCards = [ 
+        document.getElementById('popAveCourse'),
+        document.getElementById('popCourseSupport'),
+    ];
 
-        button.addEventListener('mouseover', (event) => {
-            popover.style.left = `${event.currentTarget.offsetLeft}px`;
-            popover.style.top = `${event.currentTarget.offsetTop + event.currentTarget.offsetHeight}px`;
-            popover.classList.remove('invisible', 'opacity-0');
-        });
+    overlay.style.position = "fixed";
+    overlay.style.zIndex = "50";
 
-        button.addEventListener('mouseout', () => {
-            popover.classList.add('invisible', 'opacity-0');
+    popoverCards.forEach((popoverCard, index) => {
+        const infoButton = document.getElementById(`infoButton${index + 1}`);
+
+        infoButton.addEventListener('click', (event) => {
+            event.preventDefault(); 
+            popoverCards.forEach(card => {
+                card.classList.add('invisible', 'opacity-0');
+            });
+
+            overlay.classList.remove('hidden');
+            popoverCard.classList.remove('invisible', 'opacity-0');
+
+            popoverCard.style.left = `50%`;
+            popoverCard.style.top = `50%`;
+            popoverCard.style.transform = `translate(-50%, -50%)`;
         });
     });
-});
 
+    overlay.addEventListener('click', () => {
+        popoverCards.forEach(card => {
+            card.classList.add('invisible', 'opacity-0');
+        });
+        overlay.classList.add('hidden');
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function () {
     const passPercentage = (passFailData.pass / (passFailData.pass + passFailData.fail) * 100).toFixed(2);
@@ -54,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
 
     const genderOptions = {
         series: [
