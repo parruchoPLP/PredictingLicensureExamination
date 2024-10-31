@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-@vite(['resources/js/dashboard.js'])
+
 <section id="dashboard" class="bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100 min-h-screen pr-9 pl-36 py-36 space-y-8 font-arial">
     <!-- First grid for Passing Rate, Feature Importance, and Top Predictors -->
     <div class="grid grid-cols-1 lg:grid-cols-5 mid-lg:grid-cols-5 gap-4">

@@ -1,6 +1,7 @@
 import './bootstrap';
 import 'flowbite';
 import Chart from 'chart.js/auto';
+import './dashboard';
 
 document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('popoverOverlay');
