@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+from io import StringIO
+from flask import Flask, request, jsonify, send_file, make_response
 import pandas as pd
 import joblib
 from sklearn.preprocessing import LabelEncoder, StandardScaler
@@ -31,15 +32,13 @@ def batch_predict():
         return jsonify({'error': 'Model not loaded!'}), 500
 
     try:
-        # Get file path from the request
-        file_path = request.json.get('file_path')
-        if not file_path:
-            return jsonify({'error': 'File path is required'}), 400
+         # Check if a file is in the request
+        if 'file' not in request.files:
+            return jsonify({'error': 'File is required'}), 400
 
-        # Use raw strings or escape backslashes
-        file_path = file_path.replace("\\", "\\\\")
-        df_input = pd.read_csv(file_path)
-        app.logger.info("Received file: %s", file_path)
+        # Read the file from the request
+        file = request.files['file']
+        df_input = pd.read_csv(file)
 
         # Check if all required fields are present in the input data
         required_fields = [
@@ -71,10 +70,17 @@ def batch_predict():
         df_input['PERFORMANCE'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions]
         df_input[columns_to_standardize] = scaler.inverse_transform(df_input[columns_to_standardize])
         df_input.rename(columns={'PERFORMANCE':'EXPECTED PERFORMANCE'}, inplace=True)
-        df_input.to_csv(file_path, index=False)
-        app.logger.info("Predictions saved to %s", file_path)
+        # Convert DataFrame to CSV in-memory
+        output = StringIO()
+        df_input.to_csv(output, index=False)
+        output.seek(0)
 
-        return jsonify({'message': 'Predictions made successfully!', 'output_file': file_path})
+        # Send as a downloadable file
+        response = make_response(output.getvalue())
+        response.headers['Content-Disposition'] = 'attachment; filename=predictions.csv'
+        response.headers['Content-Type'] = 'text/csv'
+
+        return response
     except Exception as e:
         app.logger.error("Prediction error: %s", e)
         return jsonify({'error': f'Prediction error: {e}'}), 400

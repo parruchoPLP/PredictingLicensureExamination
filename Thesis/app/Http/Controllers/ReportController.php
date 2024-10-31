@@ -128,7 +128,7 @@ class ReportController extends Controller
     }
 
     public function dashboard(){
-        $modelSummary = base_path('../model_summary.csv');
+        $modelSummary = base_path('./public/model_summary.csv');
 
         // Load the file and parse its contents
         $data = Excel::toArray(new DataImport, $modelSummary);

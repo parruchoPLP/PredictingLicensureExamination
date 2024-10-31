@@ -19,47 +19,40 @@ class FileController extends Controller
 {
     public function upload(Request $request)
     {
-        // Validate the request to ensure a file is provided and is of the correct type
         $request->validate([
             'file' => 'required|mimes:xls,xlsx,csv'
         ]);
-    
-        // Handle the file upload
+
         if ($request->hasFile('file')) {
-            // Get the uploaded file
             $file = $request->file('file');
-    
-            // Get the original filename
             $originalName = $file->getClientOriginalName();
-    
-            // Define the relative path
             $relativePath = 'public/uploads/' . $originalName;
-    
-            // Check if the file already exists
+
             if (Storage::exists($relativePath)) {
                 return back()->withErrors(['failed_upload' => 'A file with the same name already exists.']);
             }
-    
-            // Store the file in the 'uploads' directory within the 'public' disk
+
             $file->storeAs('public/uploads', $originalName);
-    
-            // Get the full path of the stored file
             $fullPath = storage_path('app/' . $relativePath);
-    
-            // Make a POST request to the Flask app for predictions
-            $response = Http::post('http://localhost:5000/batchpredict', [
-                'file_path' => $fullPath
-            ]);
-    
-            // Handle the response
+
+            // Send the file to Flask for processing
+            $response = Http::attach(
+                'file', file_get_contents($file->getPathname()), $originalName
+            )->post('http://localhost:5000/batchpredict');
+
             if ($response->successful()) {
-                return back()->with(['success_title' => 'Success', 'success_info' => 'File uploaded successfully', 'full_path' => $fullPath]);
+                $csvContent = $response->body();
+    
+                // Overwrite the uploaded CSV file with the processed data
+                Storage::disk('local')->put($relativePath, $csvContent);
+    
+                return back()->with(['success_title' => 'Success', 'success_info' => 'File uploaded and processed successfully']);
             } else {
-                File::delete($fullPath);
+                Storage::delete($relativePath);
                 return back()->withErrors(['failed_upload' => 'Error! Check the file format and attributes.']);
             }
         }
-    
+
         return back()->withErrors(['failed_upload' => 'No file uploaded']);
     }
 
