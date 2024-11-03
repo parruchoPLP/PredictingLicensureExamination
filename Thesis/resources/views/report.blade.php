@@ -75,6 +75,8 @@
                                     <h3 class="font-semibold text-gray-900 dark:text-white">
                                         @if (in_array(strtoupper(str_replace('_', ' ', $header)), ['STUDENT ID', 'GENDER', 'EXPECTED PERFORMANCE']))
                                             FEATURE
+                                        @elseif (in_array(strtoupper(str_replace('_', ' ', $header)), ['SUB1', 'SUB2', 'SUB3', 'SUB4']))
+                                            EXPECTED PERFORMANCE
                                         @else
                                             {{ strtoupper(str_replace('_', ' ', $header)) }}
                                         @endif
@@ -83,6 +85,8 @@
                                 <div class="px-3 py-2">
                                     <p>
                                         @if (in_array(strtoupper(str_replace('_', ' ', $header)), ['STUDENT ID', 'GENDER', 'EXPECTED PERFORMANCE']))
+                                            {{ strtoupper(str_replace('_', ' ', $header)) }}
+                                        @elseif (in_array(strtoupper(str_replace('_', ' ', $header)), ['SUB1', 'SUB2', 'SUB3', 'SUB4']))
                                             {{ strtoupper(str_replace('_', ' ', $header)) }}
                                         @else
                                             {{ $courseDictionary[strtoupper(trim(str_replace('_', ' ', $header)))] ?? 'Unknown Feature' }}
