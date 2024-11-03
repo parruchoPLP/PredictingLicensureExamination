@@ -172,29 +172,51 @@ class FileController extends Controller
 
     public function showSystemFiles()
     {
-        // Define the path to the external directory
-        $directoryPath = base_path('../ThesisPredictiveModel/TrainingData');
-
+        // Define the path within storage/app/public
+        $directoryPath = 'public/TrainingData';
+    
         // Initialize an array to hold file information
         $data = [];
-
-        // Check if the directory exists
-        if (is_dir($directoryPath)) {
-            // Scan the directory for files
-            $files = array_diff(scandir($directoryPath), ['..', '.']); // Exclude '.' and '..'
-
-            // Process each file
-            foreach ($files as $file) {
-                if (is_file($directoryPath . '/' . $file)) {
-                    $data[] = ['file' => $file];
+    
+        // Check if the directory exists and scan for files
+        if (Storage::exists($directoryPath)) {
+            // Retrieve the files in the directory
+            $files = Storage::files($directoryPath);
+            $fileNames = array_map(fn($file) => basename($file), $files);
+    
+            // Send the file list to the Flask side for comparison
+            $flaskUrl = 'http://localhost:5000/check-missing-files';
+            $downloadUrl = 'http://localhost:5000/download/';
+            
+            $response = Http::post($flaskUrl, ['current_files' => $fileNames]);
+    
+            // Check if the response contains any missing files
+            if ($response->ok() && isset($response['missing_files'])) {
+                foreach ($response['missing_files'] as $missingFile) {
+                    // Download each missing file from Flask and store it in storage/app/public/TrainingData
+                    $fileResponse = Http::get($downloadUrl . $missingFile);
+                    
+                    if ($fileResponse->ok()) {
+                        Storage::put($directoryPath . '/' . $missingFile, $fileResponse->body());
+                        $data[] = ['file' => $missingFile]; // Add to the data array
+                    }
                 }
             }
+    
+            // Add existing files to the data array
+            foreach ($fileNames as $file) {
+                $data[] = ['file' => $file];
+            }
+    
         } else {
-            // Handle the case where the directory does not exist
-            // You might want to log an error or provide a message to the user
-            $data = ['error' => 'Directory does not exist.'];
+            $data = [['error' => 'Directory does not exist.']]; // Enforce array structure
         }
-
+    
+        // Ensure data is always treated as an array
+        if (!is_array($data)) {
+            $data = [$data];
+        }
+    
         // Return the view with the file data
         return view('systemfiles', compact('data'));
     }
@@ -203,26 +225,36 @@ class FileController extends Controller
     {
         $fileName = $request->input('file');
 
-        // Define the path to the external directory
-        $directoryPath = base_path('../ThesisPredictiveModel/TrainingData');
+        // Define the path within storage/app/public
+        $directoryPath = 'public/TrainingData';
         
         // Check if the directory exists
-        if (is_dir($directoryPath)) {
+        if (Storage::exists($directoryPath)) {
             // Path to the file
             $filePath = $directoryPath . "/" . $fileName;
 
             // Get all files in the directory
-            $files = array_diff(scandir($directoryPath), ['..', '.']); // Exclude '.' and '..'
+            $files = Storage::files($directoryPath);
 
             // Check if there is only one file in the directory
             if (count($files) <= 1) {
                 return redirect()->back()->withErrors(['failed_delete' => 'Cannot delete the file. Directory must have at least one file.']);
             }
 
-            // Check if file exists and delete it
-            if (File::exists($filePath)) {
-                File::delete($filePath);
-                return redirect()->back()->with(['success_title' => 'Delete Success', 'success_info' => 'File deleted successfully!']);
+            // Check if file exists locally
+            if (Storage::exists($filePath)) {
+                // Send delete request to Flask
+                $flaskUrl = 'http://localhost:5000/delete-file';
+                $response = Http::post($flaskUrl, ['file_name' => $fileName]);
+
+                // Check if Flask deleted the file successfully
+                if ($response->ok() && $response->json('status') === 'success') {
+                    // Delete the file locally
+                    Storage::delete($filePath);
+                    return redirect()->back()->with(['success_title' => 'Delete Success', 'success_info' => 'File deleted successfully!']);
+                } else {
+                    return redirect()->back()->withErrors(['failed_delete' => 'Failed to delete file on Flask server.']);
+                }
             }
         } else {
             return redirect()->back()->withErrors(['failed_delete' => 'Directory does not exist.']);
@@ -232,25 +264,18 @@ class FileController extends Controller
 
     public function uploadSystemFile(Request $request)
     {
+        // Validate the file type
         $request->validate([
             'file' => 'required|mimes:xls,xlsx,csv'
         ]);
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-
+            
             // Get the original filename
             $originalName = $file->getClientOriginalName();
 
-            // Define the path to the external directory
-            $directoryPath = base_path('../ThesisPredictiveModel/TrainingData');
-            
-            // Check if the directory exists
-            if (!is_dir($directoryPath)) {
-                return redirect()->back()->withErrors(['failed_upload' => 'Directory does not exist.']);
-            }
-
-            // Load the file using PhpSpreadsheet
+            // Load the file using PhpSpreadsheet to check for required columns and missing data
             $spreadsheet = IOFactory::load($file->getPathname());
             $sheet = $spreadsheet->getActiveSheet();
             $data = $sheet->toArray();
@@ -265,7 +290,7 @@ class FileController extends Controller
             ];
 
             // Check if the required columns exist in the header row
-            $header = array_map('strtoupper', $data[0]); // Convert header to lowercase for case-insensitive comparison
+            $header = array_map('strtoupper', $data[0]); // Convert header to uppercase for case-insensitive comparison
             foreach ($requiredColumns as $column) {
                 if (!in_array($column, $header)) {
                     return redirect()->back()->withErrors(['failed_upload' => "Missing required column: $column"]);
@@ -283,9 +308,21 @@ class FileController extends Controller
                 }
             }
 
-            // Move the file to the specified directory
-            $file->move($directoryPath, $originalName);
-            return redirect()->back()->with(['success_title' => 'Upload Success', 'success_info' => 'File uploaded successfully!']);
+            // Define the Flask server URL
+            $flaskUrl = 'http://localhost:5000/upload-file';
+
+            // Send the file to Flask as a multipart form-data request
+            $response = Http::attach(
+                'file', file_get_contents($file->getPathname()), $originalName
+            )->post($flaskUrl);
+
+            // Check the response from Flask
+            if ($response->ok()) {
+                return redirect()->back()->with(['success_title' => 'Upload Success', 'success_info' => 'File uploaded successfully!']);
+            } else {
+                $errorMessage = $response->json('message') ?? 'Failed to upload file to Flask';
+                return redirect()->back()->withErrors(['failed_upload' => $errorMessage]);
+            }
         }
 
         return redirect()->back()->withErrors(['failed_upload' => 'No file uploaded']);
@@ -295,20 +332,14 @@ class FileController extends Controller
     {
         $fileName = $request->query('file');
 
-        // Define the path to the external directory
-        $directoryPath = base_path('../ThesisPredictiveModel/TrainingData');
+        // Path to the file relative to the 'public' disk
+        $filePath = 'TrainingData/' . $fileName;
 
-        // Check if the directory exists
-        if (!is_dir($directoryPath)) {
-            return redirect()->back()->withErrors(['failed_download' => 'Directory does not exist.']);
-        }
-
-        // Path to the file
-        $filePath = $directoryPath . '/' . $fileName;
-
-        // Check if file exists and download
-        if (File::exists($filePath)) {
-            return response()->download($filePath);
+        // Check if the file exists on the 'public' disk
+        if (Storage::disk('public')->exists($filePath)) {
+            /** @var \Illuminate\Filesystem\FilesystemAdapter */
+            $fileSystem = Storage::disk('public');
+            return $fileSystem->download($filePath);
         }
 
         return redirect()->back()->withErrors(['failed_download' => 'File not found.']);
@@ -316,26 +347,25 @@ class FileController extends Controller
 
     public function reloadModel(Request $request)
     {
-        // Define the path to the batch file
-        $batchFilePath = base_path('../reload_model.bat');
+        // Define the Flask endpoint URL
+        $flaskUrl = 'http://localhost:5000/reload-model';
 
-        // Check if the batch file exists
-        if (!file_exists($batchFilePath)) {
-            return redirect()->back()->withErrors(['failed_reload' => 'Batch file does not exist.']);
-        }
+        try {
+            // Make a POST request to the Flask endpoint
+            $response = Http::post($flaskUrl);
 
-        // Execute the batch file
-        $output = [];
-        $returnVar = 0;
-        exec("cd " . escapeshellarg(base_path('../ThesisPredictiveModel')) . " && reload_model.bat 2>&1", $output, $returnVar);
-
-        // Check the result
-        if ($returnVar === 0) {
-            return redirect()->back()->with(['success_title' => 'Model Reload Success', 'success_info' => 'Predictive model reloaded successfully!']);
-        } else {
-            // Capture and log the output for debugging
-            Log::error('Model reload failed', ['output' => $output, 'return_var' => $returnVar]);
-            return redirect()->back()->withErrors(['failed_reload' => 'Failed to reload the predictive model.']);
+            // Check if the request was successful
+            if ($response->successful()) {
+                return redirect()->back()->with(['success_title' => 'Model Reload Success', 'success_info' => 'Predictive model reloaded successfully!']);
+            } else {
+                // Log the error for further debugging
+                Log::error('Model reload failed', ['response' => $response->body()]);
+                return redirect()->back()->withErrors(['failed_reload' => 'Failed to reload the predictive model.']);
+            }
+        } catch (\Exception $e) {
+            // Capture and log any exceptions that occur
+            Log::error('Exception while reloading model', ['error' => $e->getMessage()]);
+            return redirect()->back()->withErrors(['failed_reload' => 'An error occurred while trying to reload the predictive model.']);
         }
     }
 

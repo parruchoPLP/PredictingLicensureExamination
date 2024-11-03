@@ -128,6 +128,90 @@ def batch_predict():
     except Exception as e:
         app.logger.error("Prediction error: %s", e)
         return jsonify({'error': f'Prediction error: {e}'}), 400
+    
+# Endpoint to check for missing files
+@app.route('/check-missing-files', methods=['POST'])
+def check_missing_files():
+    current_files = request.json.get('current_files', [])
+    training_data_dir = 'TrainingData'
+    existing_files = os.listdir(training_data_dir)
+    
+    # Determine missing files
+    missing_files = [file for file in existing_files if file not in current_files]
+    
+    return jsonify({'missing_files': missing_files})
+
+# Endpoint to download a specific file
+@app.route('/download/<filename>', methods=['GET'])
+def download_file(filename):
+    training_data_dir = 'TrainingData'
+    file_path = os.path.join(training_data_dir, filename)
+    
+    if os.path.exists(file_path):
+        return send_file(file_path, as_attachment=True)
+    else:
+        return jsonify({'error': 'File not found'}), 404
+    
+# New endpoint to delete a file
+@app.route('/delete-file', methods=['POST'])
+def delete_file():
+    # Path to your TrainingData directory
+    TrainingDataPath = 'TrainingData'
+    data = request.get_json()
+    file_name = data.get('file_name')
+
+    # Verify file_name is provided
+    if not file_name:
+        return jsonify({'status': 'error', 'message': 'No file name provided.'}), 400
+
+    # Construct the full path to the file
+    file_path = os.path.join(TrainingDataPath, file_name)
+
+    # Check if the file exists
+    if os.path.exists(file_path):
+        try:
+            # Delete the file
+            os.remove(file_path)
+            return jsonify({'status': 'success', 'message': 'File deleted successfully.'}), 200
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': f'Error deleting file: {str(e)}'}), 500
+    else:
+        return jsonify({'status': 'error', 'message': 'File not found.'}), 404
+    
+@app.route('/upload-file', methods=['POST'])
+def upload_file():
+    # Path to your TrainingData directory
+    TrainingDataPath = 'TrainingData'
+
+    # Check if file part is in the request
+    if 'file' not in request.files:
+        return jsonify({'status': 'error', 'message': 'No file part in the request'}), 400
+
+    file = request.files['file']
+
+    # Check if a file was uploaded
+    if file.filename == '':
+        return jsonify({'status': 'error', 'message': 'No selected file'}), 400
+
+    # Ensure the TrainingData directory exists
+    os.makedirs(TrainingDataPath, exist_ok=True)
+
+    # Save the file to the TrainingData directory
+    file_path = os.path.join(TrainingDataPath, file.filename)
+    file.save(file_path)
+
+    return jsonify({'status': 'success', 'message': 'File uploaded successfully'}), 200
+
+# Reload model endpoint
+@app.route('/reload-model', methods=['POST'])
+def reload_model():
+    global model
+    try:
+        # Reload the model by running the code in prcode.py
+        exec(open("prcode.py").read())
+        return jsonify({'status': 'success', 'message': 'Model reloaded successfully'}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'Failed to reload model: {str(e)}'}), 500
 
 # Route for the root URL
 @app.route('/')
