@@ -18,7 +18,7 @@
 
 <div id="informational-banner" tabindex="-1" class="fixed top-0 start-0 z-20 flex flex-col font-arial shadow-sm justify-between w-full p-8 border-b border-gray-200 md:flex-row bg-slate-200 dark:bg-gray-700 dark:border-gray-600">
     <div class="mb-4 md:mb-0 md:me-4">
-        <h2 class="mb-1 text-xl font-semibold text-gray-900 dark:text-white">Predicting Electronics Engineers Licensure Exam Performance</h2>
+        <h2 class="mb-1 text-xl font-semibold text-gray-900 dark:text-white">Forecasting Electronics Engineers Licensure Exam Performance</h2>
         <p class="flex items-center font-normal text-gray-500 dark:text-gray-400">Empowering electronics engineering students with early insights, targeted support, and enhanced success.</p>
     </div>
     <div class="flex items-center flex-shrink-0">

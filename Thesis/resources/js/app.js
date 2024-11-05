@@ -5,39 +5,72 @@ import './dashboard';
 
 document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('popoverOverlay');
-    const popoverCards = [ 
-        document.getElementById('popAveCourse'),
-        document.getElementById('popCourseSupport'),
+    const popoverCards = [
+        { card: document.getElementById('popAveCourse'), buttonId: 'infoButton1' },
+        { card: document.getElementById('popCourseSupport'), buttonId: 'infoButton2' },
+        { card: document.getElementById('popReport'), buttonId: 'infoButton3' },
+        { card: document.getElementById('popIndiv'), buttonId: 'infoButton4' }
     ];
+    
+    // Adding indivReport to display when clicking on any infoButton5- button
+    const indivReportCard = document.getElementById('indivReport');
 
     overlay.style.position = "fixed";
     overlay.style.zIndex = "50";
 
-    popoverCards.forEach((popoverCard, index) => {
-        const infoButton = document.getElementById(`infoButton${index + 1}`);
+    popoverCards.forEach(({ card, buttonId }) => {
+        const infoButton = document.getElementById(buttonId);
 
-        infoButton.addEventListener('click', (event) => {
-            event.preventDefault(); 
-            popoverCards.forEach(card => {
+        if (infoButton) {
+            infoButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                
+                popoverCards.forEach(({ card }) => {
+                    card.classList.add('invisible', 'opacity-0');
+                });
+
+                overlay.classList.remove('hidden');
+                card.classList.remove('invisible', 'opacity-0');
+
+                card.style.left = `50%`;
+                card.style.top = `50%`;
+                card.style.transform = `translate(-50%, -50%)`;
+            });
+        }
+    });
+
+    // Add event listeners to individual student buttons to show indivReport
+    document.querySelectorAll('[id^="infoButton5-"]').forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            
+            // Hide all other popover cards
+            popoverCards.forEach(({ card }) => {
                 card.classList.add('invisible', 'opacity-0');
             });
 
+            // Show the overlay and the indivReport card
             overlay.classList.remove('hidden');
-            popoverCard.classList.remove('invisible', 'opacity-0');
+            indivReportCard.classList.remove('invisible', 'opacity-0');
 
-            popoverCard.style.left = `50%`;
-            popoverCard.style.top = `50%`;
-            popoverCard.style.transform = `translate(-50%, -50%)`;
+            // Center the indivReport card on the screen
+            indivReportCard.style.left = `50%`;
+            indivReportCard.style.top = `50%`;
+            indivReportCard.style.transform = `translate(-50%, -50%)`;
         });
     });
 
+    // Hide popover cards and overlay when clicking on the overlay
     overlay.addEventListener('click', () => {
-        popoverCards.forEach(card => {
+        popoverCards.forEach(({ card }) => {
             card.classList.add('invisible', 'opacity-0');
         });
+        indivReportCard.classList.add('invisible', 'opacity-0');
         overlay.classList.add('hidden');
     });
 });
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const passPercentage = (passFailData.pass / (passFailData.pass + passFailData.fail) * 100).toFixed(2);
