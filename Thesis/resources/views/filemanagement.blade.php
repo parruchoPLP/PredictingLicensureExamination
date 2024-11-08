@@ -67,9 +67,12 @@
                     <tbody class="text-gray-700 dark:text-slate-200">
                         @foreach($data as $row)
                         <tr class="border-b hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                            @php
+                                $hreflink = url('/report?file=' . urlencode($row['file']));
+                            @endphp
                             <td class="py-2 px-4">{{ $row['file'] }}</td>
                             <td class="py-2 px-4">
-                                <button id="infoButton3" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">View Report</button> @include('components.popover', ['id' => 'popReport'])
+                                <button id="infoButton3" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">View Report</button> @include('components.popover', ['id' => 'popReport', 'link' => $hreflink])
                             </td>
                             <td class="py-2 px-4">
                                 <form action="{{ route('archive.file') }}" method="POST" onsubmit="return confirm('Are you sure you want to archive this file?');">

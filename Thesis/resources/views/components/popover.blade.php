@@ -66,10 +66,12 @@
 @endforeach
 
 <div id="popReport" role="tooltip" class="fixed flex flex-row space-x-14 z-50 p-16 w-auto text-sm text-slate-800 dark:text-white transition-opacity duration-300 bg-white border border-gray-200 rounded-xl shadow-lg opacity-0 invisible dark:border-gray-600 dark:bg-gray-800">
+    <a href="{{ $hreflink ?? '#' }}">
     <button class="flex flex-col justify-center items-center rounded-xl w-44 h-40 bg-transparent border-2 border-emerald-200 dark:border-emerald-700 hover:bg-emerald-200 dark:hover:bg-emerald-700">
         <i class="fa fa-file-lines fa-4x mb-4"></i>
         Overview
     </button>
+    </a>
     <button id="infoButton4" class="flex flex-col justify-center items-center rounded-xl w-44 h-40 bg-transparent border-2 border-emerald-200 dark:border-emerald-700 hover:bg-emerald-200 dark:hover:bg-emerald-700">
         <i class="fa fa-user fa-4x mb-4"></i>
         Individual
