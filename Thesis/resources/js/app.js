@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const popoverCards = [
         { card: document.getElementById('popAveCourse'), buttonId: 'infoButton1' },
         { card: document.getElementById('popCourseSupport'), buttonId: 'infoButton2' },
-        { card: document.getElementById('popReport'), buttonId: 'infoButton3' },
-        { card: document.getElementById('popIndiv'), buttonId: 'infoButton4' }
     ];
     
     // Adding indivReport to display when clicking on any infoButton5- button
@@ -70,7 +68,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const reportDiv = document.getElementById('studReport');
+    const studentIdDisplay = document.getElementById('studentIdDisplay');
+    const buttons = document.querySelectorAll('.report-toggle-button');
 
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const studentId = this.getAttribute('data-student-id');
+            studentIdDisplay.textContent = studentId;
+
+            if (reportDiv.classList.contains('hidden')) {
+                reportDiv.classList.remove('hidden');
+            }
+        });
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function () {
     const passPercentage = (passFailData.pass / (passFailData.pass + passFailData.fail) * 100).toFixed(2);

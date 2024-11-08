@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Exceptions\ReportableHandler;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ReportController;
@@ -35,6 +36,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/report', [ReportController::class, 'showReport'])->name('report.show');
+    Route::get('/indivReport', [ReportController::class, 'indivReport'])->name('indivReport');
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [ReportController::class, 'dashboard'])->name('dashboard');
     Route::get('/acctmanagement', function () {
