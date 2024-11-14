@@ -9,39 +9,12 @@ app = Flask(__name__)
 
 # Load the pre-trained model
 model_file_path = 'random_forest_licensure_model.pkl'
-model1_file_path = 'category_1_model.pkl'
-model2_file_path = 'category_2_model.pkl'
-model3_file_path = 'category_3_model.pkl'
-model4_file_path = 'category_4_model.pkl'
+
 try:
     model = joblib.load(model_file_path)
 except Exception as e:
     print(f"An error occurred while loading the model: {e}")
     model = None
-
-try:
-    model1 = joblib.load(model1_file_path)
-except Exception as e:
-    print(f"An error occurred while loading the model: {e}")
-    model1 = None
-
-try:
-    model2 = joblib.load(model2_file_path)
-except Exception as e:
-    print(f"An error occurred while loading the model: {e}")
-    model2 = None
-
-try:
-    model3 = joblib.load(model3_file_path)
-except Exception as e:
-    print(f"An error occurred while loading the model: {e}")
-    model3 = None
-
-try:
-    model4 = joblib.load(model4_file_path)
-except Exception as e:
-    print(f"An error occurred while loading the model: {e}")
-    model4 = None
 
 # Load label encoders
 label_encoder_gender = LabelEncoder()
@@ -58,14 +31,6 @@ label_encoder_gender.fit(df['PERFORMANCE'])
 def batch_predict():
     if model is None:
         return jsonify({'error': 'Model not loaded!'}), 500
-    if model1 is None:
-        return jsonify({'error': 'Model for Category 1 not loaded!'}), 500
-    if model2 is None:
-        return jsonify({'error': 'Model for Category 2 not loaded!'}), 500
-    if model3 is None:
-        return jsonify({'error': 'Model for Category 3 not loaded!'}), 500
-    if model4 is None:
-        return jsonify({'error': 'Model for Category 4 not loaded!'}), 500
 
     try:
          # Check if a file is in the request
@@ -101,16 +66,8 @@ def batch_predict():
 
         # Make predictions for new data
         predictions = model.predict(df_input[required_fields])
-        predictions1 = model1.predict(df_input[required_fields])
-        predictions2 = model2.predict(df_input[required_fields])
-        predictions3 = model3.predict(df_input[required_fields])
-        predictions4 = model4.predict(df_input[required_fields])
 
         # Mapping numeric labels to categories (assuming binary classification: 0 - Fail, 1 - Pass)
-        df_input['SUB1'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions1]
-        df_input['SUB2'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions2]
-        df_input['SUB3'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions3]
-        df_input['SUB4'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions4]
         df_input['PERFORMANCE'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions]
         df_input[columns_to_standardize] = scaler.inverse_transform(df_input[columns_to_standardize])
         df_input.rename(columns={'PERFORMANCE':'EXPECTED PERFORMANCE'}, inplace=True)
