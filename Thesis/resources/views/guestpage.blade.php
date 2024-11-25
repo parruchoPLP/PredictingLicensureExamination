@@ -9,7 +9,7 @@
 </button>
 
 <section class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 flex justify-center items-center min-h-screen font-arial">
-    <div class="bg-white dark:bg-slate-700 rounded-xl shadow-lg flex flex-col max-w-3xl w-full">
+    <div class="bg-white dark:bg-slate-700 rounded-xl shadow-lg flex flex-col max-w-4xl w-full">
         <div id="dynamic-section">
             <div id="intro-section" class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
                 <p class="text-xl font-bold text-emerald-600 dark:text-emerald-400">Enter Your Grades</p>
@@ -91,7 +91,7 @@
                                     <td class="px-4 border-b border-r border-slate-300 dark:border-slate-600">${subject}</td>
                                     <td class="px-4 border-b border-slate-300 dark:border-slate-600">
                                         <select class="grade-select border-transparent focus:ring-transparent focus:border-emerald-300 w-full focus:rounded-lg dark:bg-transparent">
-                                            ${gradeOptions.map(grade => `<option class="bg-slate-800">${grade}</option>`).join('')}
+                                            ${gradeOptions.map(grade => `<option class="dark:bg-slate-800">${grade}</option>`).join('')}
                                         </select>
                                     </td>
                                 </tr>
