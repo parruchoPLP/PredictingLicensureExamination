@@ -4,66 +4,87 @@ import Chart from 'chart.js/auto';
 import './dashboard';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const studentIds = ["21-00133", "21-00134", "21-00135"]; // Example student IDs
+    const searchInput = document.getElementById('simple-search');
+    const suggestionList = document.getElementById('suggestion-list');
+    const studReport = document.getElementById('studReport');
+    const studentIdDisplay = document.getElementById('studentIdDisplay');
+    const searchBtn = document.getElementById('search-btn');
+
+    if (searchInput && suggestionList && studReport && studentIdDisplay && searchBtn) {
+        // Show suggestions while typing
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            suggestionList.innerHTML = '';
+            if (query) {
+                suggestionList.classList.remove('hidden');
+                studentIds.filter(id => id.includes(query)).forEach(id => {
+                    const li = document.createElement('li');
+                    li.textContent = id;
+                    li.className = 'px-4 py-2 cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-600';
+                    li.addEventListener('click', () => {
+                        searchInput.value = id;
+                        suggestionList.classList.add('hidden');
+                        studentIdDisplay.textContent = id;
+                        studReport.classList.remove('hidden');
+                    });
+                    suggestionList.appendChild(li);
+                });
+            } else {
+                suggestionList.classList.add('hidden');
+            }
+        });
+
+        // Search button click handler
+        searchBtn.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (studentIds.includes(query)) {
+                studentIdDisplay.textContent = query;
+                studReport.classList.remove('hidden');
+            } else {
+                alert('Student ID not found.');
+            }
+        });
+
+        // Hide suggestions when input loses focus
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => suggestionList.classList.add('hidden'), 200);
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('popoverOverlay');
-    const popoverCards = [
-        { card: document.getElementById('popAveCourse'), buttonId: 'infoButton1' },
-        { card: document.getElementById('popCourseSupport'), buttonId: 'infoButton2' },
+    const popoverCards = [ 
+        document.getElementById('popAveCourse'),
+        document.getElementById('popCourseSupport'),
     ];
-    
-    // Adding indivReport to display when clicking on any infoButton5- button
-    const indivReportCard = document.getElementById('indivReport');
 
     overlay.style.position = "fixed";
     overlay.style.zIndex = "50";
 
-    popoverCards.forEach(({ card, buttonId }) => {
-        const infoButton = document.getElementById(buttonId);
+    popoverCards.forEach((popoverCard, index) => {
+        const helpButton = document.getElementById(`infoButton${index + 1}`);
 
-        if (infoButton) {
-            infoButton.addEventListener('click', (event) => {
-                event.preventDefault();
-                
-                popoverCards.forEach(({ card }) => {
-                    card.classList.add('invisible', 'opacity-0');
-                });
-
-                overlay.classList.remove('hidden');
-                card.classList.remove('invisible', 'opacity-0');
-
-                card.style.left = `50%`;
-                card.style.top = `50%`;
-                card.style.transform = `translate(-50%, -50%)`;
-            });
-        }
-    });
-
-    // Add event listeners to individual student buttons to show indivReport
-    document.querySelectorAll('[id^="infoButton5-"]').forEach(button => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            
-            // Hide all other popover cards
-            popoverCards.forEach(({ card }) => {
+        helpButton.addEventListener('click', (event) => {
+            event.preventDefault(); 
+            popoverCards.forEach(card => {
                 card.classList.add('invisible', 'opacity-0');
             });
 
-            // Show the overlay and the indivReport card
             overlay.classList.remove('hidden');
-            indivReportCard.classList.remove('invisible', 'opacity-0');
+            popoverCard.classList.remove('invisible', 'opacity-0');
 
-            // Center the indivReport card on the screen
-            indivReportCard.style.left = `50%`;
-            indivReportCard.style.top = `50%`;
-            indivReportCard.style.transform = `translate(-50%, -50%)`;
+            popoverCard.style.left = `50%`;
+            popoverCard.style.top = `50%`;
+            popoverCard.style.transform = `translate(-50%, -50%)`;
         });
     });
 
-    // Hide popover cards and overlay when clicking on the overlay
     overlay.addEventListener('click', () => {
-        popoverCards.forEach(({ card }) => {
+        popoverCards.forEach(card => {
             card.classList.add('invisible', 'opacity-0');
         });
-        indivReportCard.classList.add('invisible', 'opacity-0');
         overlay.classList.add('hidden');
     });
 });

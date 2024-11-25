@@ -65,41 +65,6 @@
     </div>
 @endforeach
 
-<div id="popReport" role="tooltip" class="fixed flex flex-row space-x-14 z-50 p-16 w-auto text-sm text-slate-800 dark:text-white transition-opacity duration-300 bg-white border border-gray-200 rounded-xl shadow-lg opacity-0 invisible dark:border-gray-600 dark:bg-gray-800">
-    <a href="{{ $hreflink ?? '#' }}">
-    <button class="flex flex-col justify-center items-center rounded-xl w-44 h-40 bg-transparent border-2 border-emerald-200 dark:border-emerald-700 hover:bg-emerald-200 dark:hover:bg-emerald-700">
-        <i class="fa fa-file-lines fa-4x mb-4"></i>
-        Overview
-    </button>
-    </a>
-    <button id="infoButton4" class="flex flex-col justify-center items-center rounded-xl w-44 h-40 bg-transparent border-2 border-emerald-200 dark:border-emerald-700 hover:bg-emerald-200 dark:hover:bg-emerald-700">
-        <i class="fa fa-user fa-4x mb-4"></i>
-        Individual
-    </button>
-</div>
-
-<?php
-$studentIds = [
-    '21-00133',
-    '21-00134',
-    '21-00135',
-    '21-00136',
-    '21-00137',
-    '21-00138',
-    '21-00139',
-    '21-00140',
-    '21-00141',
-    '21-00142'
-];
-?>
-
-<div id="popIndiv" role="tooltip" class="fixed grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 z-50 p-16 w-auto text-md text-slate-800 dark:text-white transition-opacity duration-300 bg-white border border-gray-200 rounded-xl shadow-lg opacity-0 invisible dark:border-gray-600 dark:bg-gray-800"> 
-    @foreach($studentIds as $index => $studId)    
-        <button id="infoButton5-{{ $index }}" class="px-5 py-3 rounded-lg bg-emerald-200 hover:bg-emerald-300 dark:bg-emerald-700 dark:hover:bg-emerald-600">
-            {{ $studId }}
-        </button>
-    @endforeach
-</div>
 
 
 

@@ -21,6 +21,9 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::get('/guestpage', function () {
+    return view('guestpage');
+})->name('guestpage');
 Route::post('/authenticate', [UserController::class, 'authenticate'])->name('authenticate');
 Route::get('/about', function () {
     return view('about');

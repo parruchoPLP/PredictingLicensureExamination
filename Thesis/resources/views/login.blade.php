@@ -18,7 +18,7 @@
 
 <div id="informational-banner" tabindex="-1" class="fixed top-0 start-0 z-20 flex flex-col font-arial shadow-sm justify-between w-full p-8 border-b border-gray-200 md:flex-row bg-slate-200 dark:bg-gray-700 dark:border-gray-600">
     <div class="mb-4 md:mb-0 md:me-4">
-        <h2 class="mb-1 text-xl font-semibold text-gray-900 dark:text-white">Forecasting Electronics Engineers Licensure Exam Performance</h2>
+        <h2 class="mb-1 text-xl font-semibold text-gray-900 dark:text-white">Predicting Electronics Engineers Licensure Exam Performance</h2>
         <p class="flex items-center font-normal text-gray-500 dark:text-gray-400">Empowering electronics engineering students with early insights, targeted support, and enhanced success.</p>
     </div>
     <div class="flex items-center flex-shrink-0">
@@ -35,7 +35,7 @@
 </div>
 
 <section class="bg-slate-100 dark:bg-slate-800 flex justify-center items-center min-h-screen font-arial">
-    <div class="bg-white dark:bg-slate-700 p-12 rounded-xl shadow-lg">
+    <div class="bg-white dark:bg-slate-700 p-12 rounded-xl shadow-lg flex flex-col items-center">
         <p class="font-bold text-4xl text-emerald-600 text-center mb-3 dark:text-emerald-400">Welcome!</p>
         <p class="text-md text-emerald-600 text-center mb-16 dark:text-emerald-300">Log in to your account.</p>
         <form action="/authenticate" method="POST">
@@ -58,6 +58,7 @@
                 <button type="submit" name="submit" class="bg-emerald-400 text-slate-900 dark:text-black font-bold p-4 px-6 text-md rounded-full mt-5 min-w-[350px] hover:bg-emerald-600 dark:hover:bg-emerald-600 dark:hover:text-slate-200 hover:text-slate-200">Log in</button>
             </div>
         </form>
+        <a href="/guestpage" class="text-md text-emerald-600 mt-4 dark:text-emerald-300 hover:underline">Continue as guest.</a>
     </div>
 </section>
 <script>
