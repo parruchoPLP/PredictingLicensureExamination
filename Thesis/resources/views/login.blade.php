@@ -35,7 +35,7 @@
 </div>
 
 <section class="bg-slate-100 dark:bg-slate-800 flex justify-center items-center min-h-screen font-arial">
-    <div class="bg-white dark:bg-slate-700 p-12 rounded-xl shadow-lg">
+    <div class="bg-white dark:bg-slate-700 p-12 rounded-xl shadow-lg flex flex-col items-center">
         <p class="font-bold text-4xl text-emerald-600 text-center mb-3 dark:text-emerald-400">Welcome!</p>
         <p class="text-md text-emerald-600 text-center mb-16 dark:text-emerald-300">Log in to your account.</p>
         <form action="/authenticate" method="POST">
@@ -58,6 +58,7 @@
                 <button type="submit" name="submit" class="bg-emerald-400 text-slate-900 dark:text-black font-bold p-4 px-6 text-md rounded-full mt-5 min-w-[350px] hover:bg-emerald-600 dark:hover:bg-emerald-600 dark:hover:text-slate-200 hover:text-slate-200">Log in</button>
             </div>
         </form>
+        <a href="/guestpage" class="text-md text-emerald-600 mt-4 dark:text-emerald-300 hover:underline">Continue as guest.</a>
     </div>
 </section>
 <script>

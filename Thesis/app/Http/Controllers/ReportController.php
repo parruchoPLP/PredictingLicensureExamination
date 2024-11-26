@@ -175,4 +175,9 @@ class ReportController extends Controller
 
         return view('dashboard', compact('collection', 'featureImportance', 'averageCourse', 'modelMetrics', 'topPredictors', 'passingRate'));
     }
+    public function indivReport()
+    {
+        return view('indivReport');
+    }
+
 }

@@ -10,7 +10,7 @@
 <section id="titlePage" class="relative bg-cover bg-center bg-no-repeat font-arial" style="background-image: url('{{ asset('images/bsece.jpg') }}');">
     <div class="absolute inset-0 bg-gradient-to-t from-slate-100 to-slate-100/40 dark:from-slate-900 dark:to-slate-900/60"></div>
     <div class="relative px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-48">
-        <h1 class="my-8 text-4xl text-slate-900 dark:text-white font-extrabold md:text-5xl lg:text-6xl">Forecasting Electronics Engineers Licensure Exam Performance</h1>
+        <h1 class="my-8 text-4xl text-slate-900 dark:text-white font-extrabold md:text-5xl lg:text-6xl">Predicting Electronics Engineers Licensure Exam Performance</h1>
         <p class="mb-14 text-lg text-slate-800 dark:text-gray-200 lg:text-xl sm:px-16 lg:px-48">Empowering electronics engineering students with early insights, targeted support, and enhanced success.</p>
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
             <a href="/login" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center bg-slate-800 text-emerald-400 rounded-lg dark:bg-emerald-300 dark:text-slate-900 transition-transform transform hover:scale-105 cursor-pointer">
@@ -19,9 +19,12 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                 </svg>
             </a>
+            <a href="/guestpage" class="inline-flex justify-center items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-slate-800 dark:text-emerald-200 rounded-lg border-2 border-slate-800 dark:border-emerald-200 hover:text-emerald-400 dark:hover:text-slate-800 hover:bg-slate-800 dark:hover:bg-emerald-300 transition-transform transform hover:scale-105 cursor-pointer">
+                Continue as guest
+            </a> 
             <a href="#aboutUs" id="learnMoreLink" class="inline-flex justify-center items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-slate-800 dark:text-emerald-200 rounded-lg border-2 border-slate-800 dark:border-emerald-200 hover:text-emerald-400 dark:hover:text-slate-800 hover:bg-slate-800 dark:hover:bg-emerald-300 transition-transform transform hover:scale-105 cursor-pointer">
                 Learn more
-            </a>  
+            </a>   
         </div>
     </div>
 </section>
@@ -46,55 +49,56 @@
         <p class="text-lg">This system is designed to help the College of Engineering (CoENG) consistently outperform the national average in the Electronics Engineers Licensure Examination. By using a predictive model that analyzes academic performance, demographics, and other key factors, the system seeks to identify promising candidates early on. This will enable targeted interventions to enhance their chances of success and support students who face greater challenges.<br><br>Leveraging advanced machine learning techniques, specifically the Random Forest algorithm, the system provides actionable insights. In doing so, it aims to contribute to PLP’s goal of maintaining high performance and supporting the overall development of its Electronics Engineering students.</p>
     </div>
 <div class="mx-36 border-t border-gray-600 my-24"></div>
-    <div class="px-36 space-y-10">
-        <h1 class="text-5xl font-bold">Our Team</h1>
-        <p class="text-lg text-justify">
+<div class="px-6 md:px-12 lg:px-36 space-y-10">
+    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center">Our Team</h1>
+    <p class="text-base md:text-lg text-justify">
         Our team is dedicated to the development of a predictive system designed to enhance the performance of Electronics Engineering students at PLP in the Electronics Engineers Licensure Examination. Our objective is to ensure that the College of Engineering (CoENG) consistently surpasses the national average by leveraging advanced data analysis techniques.
-        </p>
-        <div class="flip-card-container space-x-14">
-            <div class="flip-card transition-transform transform hover:scale-105 cursor-pointer">
-                <div class="flip-card-inner bg-slate-200 dark:bg-slate-700 shadow-xl">
-                        <div class="flip-card-front">
-                            <img src="{{ asset('images/lovely.png') }}" alt="Lovely Ann Baylon">
-                        </div>
-                        <div class="flip-card-back">
-                            <p class="text-sm text-center">
-                            Lovely Ann Baylon focuses on the design aspects of our system. Her role involves creating a user-friendly interface that facilitates easy interaction with the system and ensures that the visual presentation of data is clear and effective.
-                            </p>
-                        </div>
-                    </div>
-                    <p class="name__h1 text-xl text-center font-bold mt-8">Lovely Ann Baylon</p>
+    </p>
+    <div class="flip-card-container flex flex-wrap justify-center gap-y-10 lg:gap-y-20 lg:gap-x-14 md:gap-x-4 md:gap-y-20">
+        <div class="flip-card w-full sm:w-64 lg:w-64 transition-transform transform hover:scale-105 cursor-pointer">
+            <div class="flip-card-inner bg-slate-200 dark:bg-slate-700 shadow-xl">
+                <div class="flip-card-front">
+                    <img src="{{ asset('images/lovely.png') }}" alt="Lovely Ann Baylon" class="w-full h-64 object-cover">
                 </div>
-
-                <div class="flip-card transition-transform transform hover:scale-105 cursor-pointer">
-                    <div class="flip-card-inner bg-slate-200 dark:bg-slate-700 shadow-xl">
-                        <div class="flip-card-front">
-                            <img src="{{ asset('images/ede.png') }}" alt="Edelyn Carable">
-                        </div>
-                        <div class="flip-card-back">
-                            <p class="text-sm text-center">
-                                Edelyn Carable also contributes to the design and usability of the system. Her expertise helps ensure that the system is both functional and aesthetically pleasing, enhancing the user experience.
-                            </p>
-                        </div>
-                    </div>
-                    <p class="name__h1 text-xl text-center font-bold mt-8">Edelyn Carable</p>
-                </div>
-
-                <div class="flip-card transition-transform transform hover:scale-105 cursor-pointer">
-                    <div class="flip-card-inner bg-slate-200 dark:bg-slate-700 shadow-xl">
-                        <div class="flip-card-front">
-                            <img src="{{ asset('images/maine.png') }}" alt="Jhermaine Parrucho">
-                        </div>
-                        <div class="flip-card-back">
-                            <p class="text-sm text-center">
-                            Jhermaine Parrucho specializes in machine learning and is responsible for developing and refining the predictive algorithms used in our system. His work is crucial to the accuracy and reliability of the predictive models.
-                            </p>
-                        </div>
-                    </div>
-                    <p class="name__h1 text-xl text-center font-bold mt-8">Jhermaine Parrucho</p>
+                <div class="flip-card-back p-4">
+                    <p class="text-sm md:text-base text-center">
+                        Lovely Ann Baylon focuses on the design aspects of our system. Her role involves creating a user-friendly interface that facilitates easy interaction with the system and ensures that the visual presentation of data is clear and effective.
+                    </p>
                 </div>
             </div>
+            <p class="name__h1 text-lg md:text-xl text-center font-bold mt-4">Lovely Ann Baylon</p>
         </div>
+
+        <div class="flip-card w-full sm:w-64 lg:w-64 transition-transform transform hover:scale-105 cursor-pointer">
+            <div class="flip-card-inner bg-slate-200 dark:bg-slate-700 shadow-xl">
+                <div class="flip-card-front">
+                    <img src="{{ asset('images/ede.png') }}" alt="Edelyn Carable" class="w-full h-64 object-cover">
+                </div>
+                <div class="flip-card-back p-4">
+                    <p class="text-sm md:text-base text-center">
+                        Edelyn Carable also contributes to the design and usability of the system. Her expertise helps ensure that the system is both functional and aesthetically pleasing, enhancing the user experience.
+                    </p>
+                </div>
+            </div>
+            <p class="name__h1 text-lg md:text-xl text-center font-bold mt-4">Edelyn Carable</p>
+        </div>
+
+        <div class="flip-card w-full sm:w-64 lg:w-64 transition-transform transform hover:scale-105 cursor-pointer">
+            <div class="flip-card-inner bg-slate-200 dark:bg-slate-700 shadow-xl">
+                <div class="flip-card-front">
+                    <img src="{{ asset('images/maine.png') }}" alt="Jhermaine Parrucho" class="w-full h-64 object-cover">
+                </div>
+                <div class="flip-card-back p-4">
+                    <p class="text-sm md:text-base text-center">
+                        Jhermaine Parrucho specializes in machine learning and is responsible for developing and refining the predictive algorithms used in our system. His work is crucial to the accuracy and reliability of the predictive models.
+                    </p>
+                </div>
+            </div>
+            <p class="name__h1 text-lg md:text-xl text-center font-bold mt-4">Jhermaine Parrucho</p>
+        </div>
+    </div>
+</div>
+
     <div class="mx-36 border-t border-gray-600 mt-36"></div>
     <div class="text-center"> 
         <a href="https://github.com/parruchoPLP/PredictingLicensureExamination" title="Our Github Repository">

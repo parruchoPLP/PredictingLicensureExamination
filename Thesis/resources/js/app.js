@@ -4,6 +4,56 @@ import Chart from 'chart.js/auto';
 import './dashboard';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const studentIds = ["21-00133", "21-00134", "21-00135"]; // Example student IDs
+    const searchInput = document.getElementById('simple-search');
+    const suggestionList = document.getElementById('suggestion-list');
+    const studReport = document.getElementById('studReport');
+    const studentIdDisplay = document.getElementById('studentIdDisplay');
+    const searchBtn = document.getElementById('search-btn');
+
+    if (searchInput && suggestionList && studReport && studentIdDisplay && searchBtn) {
+        // Show suggestions while typing
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            suggestionList.innerHTML = '';
+            if (query) {
+                suggestionList.classList.remove('hidden');
+                studentIds.filter(id => id.includes(query)).forEach(id => {
+                    const li = document.createElement('li');
+                    li.textContent = id;
+                    li.className = 'px-4 py-2 cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-600';
+                    li.addEventListener('click', () => {
+                        searchInput.value = id;
+                        suggestionList.classList.add('hidden');
+                        studentIdDisplay.textContent = id;
+                        studReport.classList.remove('hidden');
+                    });
+                    suggestionList.appendChild(li);
+                });
+            } else {
+                suggestionList.classList.add('hidden');
+            }
+        });
+
+        // Search button click handler
+        searchBtn.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (studentIds.includes(query)) {
+                studentIdDisplay.textContent = query;
+                studReport.classList.remove('hidden');
+            } else {
+                alert('Student ID not found.');
+            }
+        });
+
+        // Hide suggestions when input loses focus
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => suggestionList.classList.add('hidden'), 200);
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('popoverOverlay');
     const popoverCards = [ 
         document.getElementById('popAveCourse'),
@@ -14,9 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.style.zIndex = "50";
 
     popoverCards.forEach((popoverCard, index) => {
-        const infoButton = document.getElementById(`infoButton${index + 1}`);
+        const helpButton = document.getElementById(`infoButton${index + 1}`);
 
-        infoButton.addEventListener('click', (event) => {
+        helpButton.addEventListener('click', (event) => {
             event.preventDefault(); 
             popoverCards.forEach(card => {
                 card.classList.add('invisible', 'opacity-0');
@@ -36,6 +86,23 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.add('invisible', 'opacity-0');
         });
         overlay.classList.add('hidden');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const reportDiv = document.getElementById('studReport');
+    const studentIdDisplay = document.getElementById('studentIdDisplay');
+    const buttons = document.querySelectorAll('.report-toggle-button');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const studentId = this.getAttribute('data-student-id');
+            studentIdDisplay.textContent = studentId;
+
+            if (reportDiv.classList.contains('hidden')) {
+                reportDiv.classList.remove('hidden');
+            }
+        });
     });
 });
 

@@ -59,24 +59,31 @@
                 <table class="min-w-full bg-white border dark:bg-slate-800">
                     <thead class="bg-emerald-200 text-slate-800 dark:bg-emerald-700 dark:text-slate-200 text-left uppercase font-bold">
                         <tr>
-                            <th class="py-2 px-4 w-3/5">File Name</th>
-                            <th class="py-2 px-4 w-1/5"></th>
-                            <th class="py-2 px-4 w-1/5"></th>
+                            <th class="py-2 px-4 w-1/2">File Name</th>
+                            <th class="py-2 px-4 w-1/6"></th>
+                            <th class="py-2 px-4 w-1/6"></th>
+                            <th class="py-2 px-4 w-1/6"></th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-700 dark:text-slate-200">
                         @foreach($data as $row)
                         <tr class="border-b hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                            @php
+                                $hreflink = url('/report?file=' . urlencode($row['file']));
+                            @endphp
                             <td class="py-2 px-4">{{ $row['file'] }}</td>
-                            <td class="py-2 px-4">
-                                <a href="{{ url('/report?file=' . urlencode($row['file'])) }}" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">View Report</a>
+                            <td class="py-2 px-4 text-center">
+                                <a href="{{ url('/report?file=' . urlencode($row['file'])) }}" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">Overview</a>
                             </td>
-                            <td class="py-2 px-4">
+                            <td class="py-2 px-4 text-center">
+                                <a href="{{ url('/indivReport') }}" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">Individual Report</a>
+                            </td>
+                            <td class="py-2 px-4 text-center">
                                 <form action="{{ route('archive.file') }}" method="POST" onsubmit="return confirm('Are you sure you want to archive this file?');">
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" name="file" value="{{ $row['file'] }}">
-                                    <button type="submit" class="text-red-800 border-b hover:border-red-500 py-1 px-3 hover:text-red-500 dark:text-red-300 hover:dark:text-red-500">Archive</button>
+                                    <button type="submit" class="text-red-800 border-b hover:border-red-500 py-1 hover:text-red-500 dark:text-red-300 hover:dark:text-red-500">Archive</button>
                                 </form>
                             </td>
                         </tr>

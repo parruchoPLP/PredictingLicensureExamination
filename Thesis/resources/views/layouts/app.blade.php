@@ -13,7 +13,7 @@
     @stack('scripts')
     @yield('styles')
 </head>
-@if(!Request::is('login') && !Request::is('about'))
+@if(!Request::is('login') && !Request::is('about') && !Request::is('guestpage'))
 <body class="bg-gray-100 overflow-x-hidden {{ session('darkmode') ? 'dark' : '' }}">
     <header>
         <x-navigationbar />
@@ -70,6 +70,14 @@
 </body>
 @endif
 @if(Request::is('login'))
+<body class="bg-gray-100 overflow-x-hidden {{ session('darkmode') ? 'dark' : '' }}">
+    <main>
+        @yield('content')
+        @stack('scripts')
+    </main>
+</body>
+@endif
+@if(Request::is('guestpage'))
 <body class="bg-gray-100 overflow-x-hidden {{ session('darkmode') ? 'dark' : '' }}">
     <main>
         @yield('content')
