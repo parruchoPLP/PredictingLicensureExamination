@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Guest Page')
@@ -159,15 +160,19 @@
 
         const updateSection = () => {
             if (currentSectionIndex === 0) {
+                // Show the intro section
                 introSection.classList.remove('hidden');
                 dynamicSection.innerHTML = '';
                 progress.classList.add('hidden'); // Hide progress in intro section
-            } else if (currentSectionIndex === courseCategories.length + 1) {  // Adjusted the length check
+                nextBtn.setAttribute('type', 'button'); // Keep as a regular button in intro
+            } else if (currentSectionIndex === courseCategories.length + 1) {
+                // Show the result section
                 resultSection.classList.remove('hidden');
                 progress.classList.add('hidden'); // Hide progress in result section
                 dynamicSection.innerHTML = '';
                 introSection.classList.add('hidden');
             } else {
+                // For dynamic sections with courses, set "Next" to submit
                 introSection.classList.add('hidden');
                 resultSection.classList.add('hidden');
                 const category = courseCategories[currentSectionIndex - 1]; // Ensure correct category
@@ -179,23 +184,17 @@
                     <div class="p-8">${generateTable(subjects)}</div>
                 `;
                 progress.classList.remove('hidden'); // Show progress in course sections
+                nextBtn.setAttribute('type', 'submit'); // Change to submit type for dynamic sections
             }
 
+            // Update progress bar
             const progressValue = (currentSectionIndex / courseCategories.length) * 100; // Adjusted the total count for progress
             progress.style.width = `${progressValue}%`;
 
             progress.classList.remove('bg-gray-200'); // remove any gray background class
             progress.classList.add('bg-emerald-500'); // add the emerald color class
-
-            if (currentSectionIndex === courseCategories.length) {
-                nextBtn.textContent = 'Submit';
-                nextBtn.setAttribute('type', 'submit');
-            } else {
-                nextBtn.textContent = 'Next';
-                nextBtn.setAttribute('type', 'button');
-            }
         };
-
+        
         backBtn.addEventListener('click', () => {
             if (currentSectionIndex === 0) {
                 window.location.href = '/about'; // Navigate to the About page
