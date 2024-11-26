@@ -78,7 +78,7 @@
             "Allied Courses": ["Physics II", "Material Science And Engineering", "Computer Programming", "Environmental Science And Engineering"],
             "Professional Courses": [
                 "Advanced Engineering Mathematics", "Electromagnetics", 
-                "Ece Laws, Contracts, Ethics, Standards And Safety", 
+                "ECE Laws, Contracts, Ethics, Standards And Safety", 
                 "Electronics 1: Electronic Devices And Circuits",
                 "Electronics 2: Electronic Circuit Analysis And Design", 
                 "Signals, Spectra And Signal Processing", 
@@ -88,7 +88,8 @@
                 "Digital Electronics 2: Microprocessor, Microcontroller System And Design", 
                 "Feedback And Control Systems", "Design 1/Capstone Project 1", 
                 "Design 2/ Capstone Project 2", "Seminars/Colloquium"
-            ]
+            ],
+            "Technical Elective Courses:": ["ECE Elective: Industrial Electronics"]
         };
 
         const categoryData = {
@@ -205,20 +206,23 @@
         });
 
         nextBtn.addEventListener('click', () => {
-            // Get all grade select elements in the current section
             const gradeSelects = document.querySelectorAll('#dynamic-section select');
-            
-            // Check if any select element has an empty value
+            gradeSelects.forEach(select => {
+                const subject = select.name;
+                const grade = select.value;
+                if (grade) {
+                    courseGrades[subject] = grade; // Save the selected grade
+                }
+            });
+
             const allGradesFilled = Array.from(gradeSelects).every(select => select.value !== "");
 
             if (allGradesFilled) {
-                // Proceed to the next section if all grades are filled
                 if (currentSectionIndex < courseCategories.length) {
                     currentSectionIndex++;
                     updateSection();
                 }
             } else {
-                // Show error message if any grades are missing
                 alert('Please enter grades for all courses before proceeding to the next page.');
             }
         });
