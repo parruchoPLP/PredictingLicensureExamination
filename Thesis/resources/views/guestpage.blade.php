@@ -9,38 +9,63 @@
 </button>
 
 <section class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 flex justify-center items-center min-h-screen font-arial">
-    <div class="bg-white dark:bg-slate-700 rounded-xl shadow-lg flex flex-col max-w-4xl w-full">
-        <div id="dynamic-section">
-            <div id="intro-section" class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
+    <div class="bg-white dark:bg-slate-700 rounded-xl shadow-lg flex flex-col max-w-4xl w-full relative"> <!-- Added relative positioning here -->
+        <!-- Wrapper container for the custom progress bar -->
+        <div class="w-full bg-gray-200 dark:bg-slate-900 rounded-t-xl overflow-hidden">
+            <!-- Actual progress bar element -->
+            <div id="custom-progress" class="bg-emerald-500 h-2 rounded-t-xl" style="width: 0%;"></div>
+        </div>
+
+        <!-- Intro Section -->
+        <div id="intro-section" class="">
+            <div class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl"> 
                 <p class="text-xl font-bold text-emerald-600 dark:text-emerald-400">Enter Your Grades</p>
             </div>
-            <p class="text-md p-8 text-justify">
+            <p class="text-md px-8 py-6">
                 Please enter your grades in the following technical courses. Answer honestly as the prediction will be based on your inputs.
                 <br><br>
                 <strong>Note:</strong> This prediction is intended for early guidance and support, and should not be seen as a final determination of your performance.
             </p>
         </div>
 
+        <!-- Result Section -->
         <div id="result-section" class="hidden text-justify">
-            <div class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
-                <p class="text-xl font-bold text-emerald-600">Predicted Licensure Exam Performance</p>
+            <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
+                <p class="text-xl font-bold text-emerald-600 dark:text-emerald-400">Predicted Licensure Exam Performance</p>
             </div>
-            <div class="p-8"> 
+            <div class="p-8">
                 <p class="text-md font-medium">Based on your input, your predicted performance in the Electronics Engineers Licensure Exam is:</p>
-                <p id="prediction-result" class="text-2xl font-bold mt-3"></p>
-                <p class="text-sm font-medium mt-3">*This prediction is based on your academic performance and is for guidance purposes only.*</p>
+                <p id="prediction-result" class="text-2xl font-bold my-3"></p>
+                <div id="intervention">
+                    <p class="text-md font-bold inline-block">Potential Areas of Concern: </p>
+                    <p id="potential-areas" class="text-md inline-block"></p>
+                    <br> 
+                    <p class="text-md font-bold inline-block">Recommendations: </p>
+                    <p id="recommendations" class="text-md inline-block"></p>
+                </div>
+                <p class="text-sm font-medium mt-8">*This prediction is based on your academic performance and is for guidance purposes only.*</p>
             </div>
-        </div>
-
-        <div class="flex justify-between px-8 py-6" id="pagination-buttons">
-            <button id="back-btn" class="py-2.5 px-8 text-sm font-medium rounded-lg bg-transparent border border-emerald-200 hover:bg-emerald-300 dark:text-white dark:hover:bg-emerald-600 focus:ring-2 focus:outline-none focus:ring-emerald-300 dark:focus:ring-emerald-800">
-                Back
-            </button>
-            <button id="next-btn" class="py-2.5 px-8 text-sm font-medium rounded-lg bg-emerald-200 hover:bg-emerald-300 dark:bg-emerald-400 dark:hover:bg-emerald-600 focus:ring-2 focus:outline-none focus:ring-emerald-300 dark:focus:ring-emerald-800">
-                Next
+            <button id="email-btn" class="absolute bottom-4 right-4 py-3 px-8 text-sm font-medium rounded-lg bg-emerald-200 hover:bg-emerald-300 dark:bg-emerald-400 dark:hover:bg-emerald-600 focus:ring-2 focus:outline-none focus:ring-emerald-300 dark:focus:ring-emerald-800">
+                Send  Result to Email
             </button>
         </div>
 
+        <!-- Courses Section -->
+        <form id="grades-form" action="javascript:void(0)" method="POST" class="w-full"> <!-- Simulating form submission -->
+            @csrf
+            <div id="dynamic-section">
+            </div>
+
+            <!-- Buttons for Pagination -->
+            <div class="flex justify-between px-8 py-4" id="pagination-buttons">
+                <button type="button" id="back-btn" class="py-2.5 px-8 text-sm font-medium rounded-lg bg-transparent border border-emerald-200 hover:bg-emerald-300 dark:text-white dark:hover:bg-emerald-600 focus:ring-2 focus:outline-none focus:ring-emerald-300 dark:focus:ring-emerald-800">
+                    Back
+                </button>
+                <button type="button" id="next-btn" class="py-2.5 px-8 text-sm font-medium rounded-lg bg-emerald-200 hover:bg-emerald-300 dark:bg-emerald-400 dark:hover:bg-emerald-600 focus:ring-2 focus:outline-none focus:ring-emerald-300 dark:focus:ring-emerald-800">
+                    Next
+                </button>
+            </div>
+        </form>
     </div>
 </section>
 
@@ -66,22 +91,34 @@
             ]
         };
 
+        const categoryData = {
+            "Subj1": "Less Likely to Pass",
+            "Subj2": "Highly Likely to Pass",
+            "Subj3": "Highly Likely to Pass",
+            "Subj4": "Highly Likely to Pass"
+        };
+
+        const courseGrades = {};
         const dynamicSection = document.getElementById('dynamic-section');
         const introSection = document.getElementById('intro-section');
         const resultSection = document.getElementById('result-section');
         const predictionResult = document.getElementById('prediction-result');
+        const backBtn = document.getElementById('back-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const gradesForm = document.getElementById('grades-form');
+        const progress = document.getElementById('custom-progress');
         const courseCategories = Object.keys(courseData);
         let currentSectionIndex = 0;
 
         const gradeOptions = ["1.00", "1.25", "1.50", "1.75", "2.00", "2.25", "2.50", "2.75", "3.00"];
 
-        const generateTable = (subjects) => {
+        const generateTable = (subjects, category) => {
             return `
                 <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg">
                     <table class="table-auto w-full text-slate-800 dark:text-slate-200 border-collapse">
                         <thead>
                             <tr class="bg-emerald-100 dark:bg-emerald-700 border-b-2 border-slate-400 dark:border-slate-700">
-                                <th class="px-4 py-3 font-large text-left border-r border-slate-300 dark:border-slate-600 w-4/5">Course</th>
+                                <th class="px-4 py-3 font-large text-left border-r border-slate-300 dark:border-slate-600 w-2/3">Course</th>
                                 <th class="px-4 py-3 font-large text-left">Grade</th>
                             </tr>
                         </thead>
@@ -90,8 +127,11 @@
                                 <tr>
                                     <td class="px-4 border-b border-r border-slate-300 dark:border-slate-600">${subject}</td>
                                     <td class="px-4 border-b border-slate-300 dark:border-slate-600">
-                                        <select class="grade-select border-transparent focus:ring-transparent focus:border-emerald-300 w-full focus:rounded-lg dark:bg-transparent">
-                                            ${gradeOptions.map(grade => `<option class="dark:bg-slate-800">${grade}</option>`).join('')}
+                                        <select name="${subject}" class="grade-select border-transparent focus:ring-transparent focus:border-emerald-300 w-full focus:rounded-lg dark:bg-transparent" required>
+                                            <option value="" disabled selected>Select Grade</option>
+                                            ${gradeOptions.map(grade => `
+                                                <option value="${grade}" class="dark:bg-slate-800" ${courseGrades[subject] === grade ? 'selected' : ''}>${grade}</option>
+                                            `).join('')}
                                         </select>
                                     </td>
                                 </tr>
@@ -102,12 +142,34 @@
             `;
         };
 
+        // Function to check if there are any "Less Likely to Pass" categories
+        const checkPotentialConcerns = () => {
+            const lessLikelyCategories = Object.keys(categoryData).filter(subject => categoryData[subject] === "Less Likely to Pass");
+            
+            if (lessLikelyCategories.length > 0) {
+                const concernedCategory = lessLikelyCategories[0]; // You can loop or choose any from the list
+                document.getElementById('potential-areas').textContent = concernedCategory;
+                document.getElementById('recommendations').textContent = `Focus on improving in courses under this category.`;
+                document.getElementById('intervention').classList.remove('hidden');
+            } else {
+                document.getElementById('intervention').classList.add('hidden');
+            }
+        };
+
         const updateSection = () => {
             if (currentSectionIndex === 0) {
                 introSection.classList.remove('hidden');
+                dynamicSection.innerHTML = '';
+                progress.classList.add('hidden'); // Hide progress in intro section
+            } else if (currentSectionIndex === courseCategories.length + 1) {  // Adjusted the length check
+                resultSection.classList.remove('hidden');
+                progress.classList.add('hidden'); // Hide progress in result section
+                dynamicSection.innerHTML = '';
+                introSection.classList.add('hidden');
             } else {
                 introSection.classList.add('hidden');
-                const category = courseCategories[currentSectionIndex - 1];
+                resultSection.classList.add('hidden');
+                const category = courseCategories[currentSectionIndex - 1]; // Ensure correct category
                 const subjects = courseData[category];
                 dynamicSection.innerHTML = `
                     <div class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
@@ -115,66 +177,79 @@
                     </div>
                     <div class="p-8">${generateTable(subjects)}</div>
                 `;
+                progress.classList.remove('hidden'); // Show progress in course sections
+            }
 
-                // Change "Next" button to "Submit" for Professional Courses
-                if (currentSectionIndex === courseCategories.length) {
-                    document.getElementById('next-btn').textContent = 'Submit';
-                } else {
-                    document.getElementById('next-btn').textContent = 'Next';
-                }
+            const progressValue = (currentSectionIndex / courseCategories.length) * 100; // Adjusted the total count for progress
+            progress.style.width = `${progressValue}%`;
+
+            progress.classList.remove('bg-gray-200'); // remove any gray background class
+            progress.classList.add('bg-emerald-500'); // add the emerald color class
+
+            if (currentSectionIndex === courseCategories.length) {
+                nextBtn.textContent = 'Submit';
+                nextBtn.setAttribute('type', 'submit');
+            } else {
+                nextBtn.textContent = 'Next';
+                nextBtn.setAttribute('type', 'button');
             }
         };
 
-        document.getElementById('back-btn').addEventListener('click', () => {
+        backBtn.addEventListener('click', () => {
             if (currentSectionIndex === 0) {
-                window.location.href = '/about';
+                window.location.href = '/about'; // Navigate to the About page
             } else {
                 currentSectionIndex--;
                 updateSection();
             }
         });
 
-        document.getElementById('next-btn').addEventListener('click', () => {
-            if (currentSectionIndex === courseCategories.length) {
-                // Show result prediction and hide the "Next" button
-                const prediction = "Highly Likely to Pass"; 
-                
-                predictionResult.textContent = prediction;
-
-                if (prediction === "Highly Likely to Pass") {
-                    predictionResult.classList.add('text-emerald-600');
-                    predictionResult.classList.remove('text-red-400');
-                } else {
-                    predictionResult.classList.add('text-red-400');
-                    predictionResult.classList.remove('text-emerald-600');
-                }
-
-                dynamicSection.classList.add('hidden');
-                resultSection.classList.remove('hidden');
-                // Hide the "Next" button in result section
-                document.getElementById('pagination-buttons').innerHTML = `
-                    <button id="back-btn-result" class="py-2.5 px-8 text-sm font-medium rounded-lg bg-transparent border border-emerald-200 hover:bg-emerald-300 dark:text-white dark:hover:bg-emerald-600 focus:ring-2 focus:outline-none focus:ring-emerald-300 dark:focus:ring-emerald-800">
-                        Back
-                    </button>
-                `;
-            } else {
+        nextBtn.addEventListener('click', () => {
+            if (currentSectionIndex < courseCategories.length) {
                 currentSectionIndex++;
                 updateSection();
             }
         });
 
-        // Back button in result section
-        document.body.addEventListener('click', function(event) {
-            if (event.target.id === 'back-btn-result') {
-                resultSection.classList.add('hidden');
-                dynamicSection.classList.remove('hidden');
-                currentSectionIndex = courseCategories.length - 1; // Stay at the last section
-                updateSection();
+        gradesForm.addEventListener('change', (event) => {
+        const selectElement = event.target;
+        if (selectElement.tagName === 'SELECT') {
+            const subject = selectElement.name;
+            const grade = selectElement.value;
+            courseGrades[subject] = grade;  // Save the selected grade
+        }
+    });
+
+        gradesForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            resultSection.classList.remove('hidden');
+            dynamicSection.innerHTML = '';
+            introSection.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+            backBtn.textContent = 'Home';
+            backBtn.innerHTML = '<i class="fa fa-home"></i>'; // Home icon
+            backBtn.addEventListener('click', () => window.location.href = '/about'); // Navigate back to About page
+
+            const predictionText = 'Less Likely to Pass'; 
+            const isHighlyLikely = predictionText === 'Highly Likely to Pass';
+
+            predictionResult.textContent = predictionText;
+            predictionResult.classList.remove('text-red-600', 'text-emerald-600');
+            predictionResult.classList.add(isHighlyLikely ? 'text-emerald-600' : 'text-red-600');
+
+            checkPotentialConcerns(); // Check and update potential concerns and recommendations
+        });
+
+        // Handle the email button click
+        document.getElementById('email-btn').addEventListener('click', () => {
+            const userEmail = prompt("Enter your email address to receive the result:");
+            if (userEmail) {
+                alert(`Result has been sent to ${userEmail}.`);
+                // Here you can add actual email sending logic or an API call
             }
         });
 
-        updateSection(); // Initialize the first section
+        updateSection();
     });
 </script>
-
 @endsection
