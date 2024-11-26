@@ -227,41 +227,52 @@
             }
         });
 
-        gradesForm.addEventListener('change', (event) => {
-            const selectElement = event.target;
-            if (selectElement.tagName === 'SELECT') {
-                const subject = selectElement.name;
-                const grade = selectElement.value;
-                courseGrades[subject] = grade;  // Save the selected grade
+        gradesForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            // Capture all grades from all sections
+            const gradeSelects = document.querySelectorAll('#dynamic-section select');
+            gradeSelects.forEach(select => {
+                const subject = select.name;
+                const grade = select.value;
+                if (grade) {
+                    courseGrades[subject] = grade; // Save the selected grade
+                }
+            });
+
+            // Log the captured grades to check if all grades are collected
+            console.log('Collected Grades:', courseGrades);
+
+            // Verify that all grades are filled
+            const allGradesFilled = Array.from(gradeSelects).every(select => select.value !== "");
+
+            if (allGradesFilled) {
+                // Once all grades are captured, show the result section
+                resultSection.classList.remove('hidden');
+                dynamicSection.innerHTML = '';
+                introSection.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+                backBtn.textContent = 'Home';
+                backBtn.innerHTML = '<i class="fa fa-home"></i>'; // Home icon
+                backBtn.addEventListener('click', () => window.location.href = '/about'); // Navigate back to About page
+
+                const predictionText = 'Less Likely to Pass'; 
+                const isHighlyLikely = predictionText === 'Highly Likely to Pass';
+
+                predictionResult.textContent = predictionText;
+                predictionResult.classList.remove('text-red-600', 'text-emerald-600');
+                predictionResult.classList.add(isHighlyLikely ? 'text-emerald-600' : 'text-red-600');
+
+                checkPotentialConcerns(); // Check and update potential concerns and recommendations
+            } else {
+                alert('Please enter grades for all courses before submitting.');
             }
         });
 
-        gradesForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            resultSection.classList.remove('hidden');
-            dynamicSection.innerHTML = '';
-            introSection.classList.add('hidden');
-            nextBtn.classList.add('hidden');
-            backBtn.textContent = 'Home';
-            backBtn.innerHTML = '<i class="fa fa-home"></i>'; // Home icon
-            backBtn.addEventListener('click', () => window.location.href = '/about'); // Navigate back to About page
-
-            const predictionText = 'Less Likely to Pass'; 
-            const isHighlyLikely = predictionText === 'Highly Likely to Pass';
-
-            predictionResult.textContent = predictionText;
-            predictionResult.classList.remove('text-red-600', 'text-emerald-600');
-            predictionResult.classList.add(isHighlyLikely ? 'text-emerald-600' : 'text-red-600');
-
-            checkPotentialConcerns(); // Check and update potential concerns and recommendations
-        });
-
-        // Handle the email button click
         document.getElementById('email-btn').addEventListener('click', () => {
             const userEmail = prompt("Enter your email address to receive the result:");
             if (userEmail) {
                 alert(`Result has been sent to ${userEmail}.`);
-                // Here you can add actual email sending logic or an API call
             }
         });
 
