@@ -205,20 +205,32 @@
         });
 
         nextBtn.addEventListener('click', () => {
-            if (currentSectionIndex < courseCategories.length) {
-                currentSectionIndex++;
-                updateSection();
+            // Get all grade select elements in the current section
+            const gradeSelects = document.querySelectorAll('#dynamic-section select');
+            
+            // Check if any select element has an empty value
+            const allGradesFilled = Array.from(gradeSelects).every(select => select.value !== "");
+
+            if (allGradesFilled) {
+                // Proceed to the next section if all grades are filled
+                if (currentSectionIndex < courseCategories.length) {
+                    currentSectionIndex++;
+                    updateSection();
+                }
+            } else {
+                // Show error message if any grades are missing
+                alert('Please enter grades for all courses before proceeding to the next page.');
             }
         });
 
         gradesForm.addEventListener('change', (event) => {
-        const selectElement = event.target;
-        if (selectElement.tagName === 'SELECT') {
-            const subject = selectElement.name;
-            const grade = selectElement.value;
-            courseGrades[subject] = grade;  // Save the selected grade
-        }
-    });
+            const selectElement = event.target;
+            if (selectElement.tagName === 'SELECT') {
+                const subject = selectElement.name;
+                const grade = selectElement.value;
+                courseGrades[subject] = grade;  // Save the selected grade
+            }
+        });
 
         gradesForm.addEventListener('submit', (event) => {
             event.preventDefault();
