@@ -4,7 +4,6 @@ import Chart from 'chart.js/auto';
 import './dashboard';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const studentIds = ["21-00133", "21-00134", "21-00135"]; // Example student IDs
     const searchInput = document.getElementById('simple-search');
     const suggestionList = document.getElementById('suggestion-list');
     const studReport = document.getElementById('studReport');
@@ -27,11 +26,39 @@ document.addEventListener('DOMContentLoaded', () => {
                         suggestionList.classList.add('hidden');
                         studentIdDisplay.textContent = id;
                         studReport.classList.remove('hidden');
+                        filterStudent();
                     });
                     suggestionList.appendChild(li);
                 });
             } else {
                 suggestionList.classList.add('hidden');
+            }
+        });
+
+        searchInput.addEventListener('focus', () => {
+            suggestionList.innerHTML = ''; // Clear any existing suggestions
+            suggestionList.classList.remove('hidden'); // Show the suggestion list
+        
+            // Populate the list with all student IDs
+            studentIds.forEach(id => {
+                const li = document.createElement('li');
+                li.textContent = id;
+                li.className = 'px-4 py-2 cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-600';
+                li.addEventListener('click', () => {
+                    searchInput.value = id;
+                    suggestionList.classList.add('hidden');
+                    studentIdDisplay.textContent = id;
+                    studReport.classList.remove('hidden');
+                    filterStudent();
+                });
+                suggestionList.appendChild(li);
+            });
+        });
+
+        searchInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                filterStudent(); // Trigger the function
+                suggestionList.classList.add('hidden'); // Hide the suggestion list
             }
         });
 

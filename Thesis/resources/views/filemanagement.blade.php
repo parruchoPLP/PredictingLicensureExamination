@@ -76,7 +76,7 @@
                                 <a href="{{ url('/report?file=' . urlencode($row['file'])) }}" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">Overview</a>
                             </td>
                             <td class="py-2 px-4 text-center">
-                                <a href="{{ url('/indivReport') }}" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">Individual Report</a>
+                                <a href="{{ url('/indivReport?file=' . urlencode($row['file'])) }}" class="text-emerald-600 border-b hover:border-emerald-500 py-1 px-3 hover:text-emerald-500 dark:text-emerald-200 hover:dark:text-emerald-500">Individual Report</a>
                             </td>
                             <td class="py-2 px-4 text-center">
                                 <form action="{{ route('archive.file') }}" method="POST" onsubmit="return confirm('Are you sure you want to archive this file?');">
