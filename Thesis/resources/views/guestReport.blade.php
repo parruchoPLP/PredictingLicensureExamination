@@ -17,11 +17,9 @@
             <p class="text-md font-medium">Based on your input, your predicted performance in the Electronics Engineers Licensure Exam is:</p>
             <p class="font-bold text-2xl my-3" id="expectedStatusDisplay"></p>
             
-            <p class="text-md my-3" id="reasonDisplay"></p>
-
-            <p class="text-md my-3" id="interventionDisplay"></p>
-
-            <p class="text-sm font-medium mt-3"><i>This prediction is based on your academic performance and is for guidance purposes only.</i></p>
+            <p class="text-md" id="reasonDisplay"></p>
+            <p class="text-md" id="interventionDisplay"></p>
+            <p class="text-sm font-medium mt-4"><i>This prediction is based on your academic performance and is for guidance purposes only.</i></p>
 
             <p class="text-sm font-medium mt-8">
                 View the latest 
