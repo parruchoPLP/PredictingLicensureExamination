@@ -8,6 +8,8 @@ use App\Imports\DataImport; // Create this import class
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use App\Mail\ResultMail;
+use Illuminate\Support\Facades\Mail;
 
 class ReportController extends Controller
 {
@@ -304,5 +306,51 @@ class ReportController extends Controller
         } else {
             return back()->withErrors(['failed_upload' => 'Error! Check the data format and attributes.']);
         }
+    }
+
+    public function sendResultEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'performance' => 'required|string',
+            'reason' => 'required|string',
+            'intervention' => 'required|string',
+        ]);
+
+        $reason = $request->reason;
+        $intervention = $request->intervention;
+
+        function formatString($string, $conditions) {
+            foreach ($conditions as $condition) {
+                // Check if the string starts with the condition
+                if (strpos($string, $condition) === 0) {
+                    // Extract the highlighted part and the rest of the string
+                    $highlighted = substr($string, 0, strlen($condition));
+                    $remaining = substr($string, strlen($condition) + 1); // +1 to skip the colon and space
+                    // Return formatted string
+                    return "**{$highlighted}** {$remaining}";
+                }
+            }
+            // If no condition matches, return the string as-is
+            return $string;
+        }
+
+        // Conditions for formatting
+        $reasonConditions = ["Potential Areas of Concern:", "Reason:"];
+        $interventionConditions = ["Suggested Action:", "Recommended Intervention:"];
+
+        // Format the variables based on their conditions
+        $reason = formatString($reason, $reasonConditions);
+        $intervention = formatString($intervention, $interventionConditions);
+
+        $emailData = [
+            'performance' => $request->performance,
+            'reason' => $reason,
+            'intervention' => $intervention,
+        ];
+
+        Mail::to($request->email)->send(new ResultMail($emailData));
+
+        return response()->json(['message' => 'Email sent successfully.'], 200);
     }
 }

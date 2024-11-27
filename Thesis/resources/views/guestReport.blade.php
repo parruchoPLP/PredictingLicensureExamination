@@ -117,7 +117,32 @@
         emailBtn.addEventListener('click', () => {
             const userEmail = prompt("Enter your email address to receive the result:");
             if (userEmail) {
-                alert(`Result has been sent to ${userEmail}.`);
+                const emailData = {
+                    email: userEmail,
+                    performance: expectedStatusDisplay.textContent,
+                    reason: reasonDisplay.innerText,
+                    intervention: interventionDisplay.innerText,
+                };
+
+                fetch('/send-result-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify(emailData),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert(`Result has been sent to ${userEmail}.`);
+                    } else {
+                        alert('Failed to send the email. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while sending the email.');
+                });
             }
         });
     });

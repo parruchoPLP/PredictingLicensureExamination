@@ -37,6 +37,7 @@ Route::get('/', function () {
         return redirect()->route('about');
     }
 });
+Route::post('/send-result-email', [ReportController::class, 'sendResultEmail'])->name('sendResultEmail');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/report', [ReportController::class, 'showReport'])->name('report.show');
