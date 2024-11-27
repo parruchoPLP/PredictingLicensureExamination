@@ -24,6 +24,9 @@ Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::get('/guestpage', function () {
     return view('guestpage');
 })->name('guestpage');
+Route::get('/guestReport', function () {
+    return view('guestReport');
+})->name('guestReport');
 Route::post('/authenticate', [UserController::class, 'authenticate'])->name('authenticate');
 Route::get('/about', function () {
     return view('about');
