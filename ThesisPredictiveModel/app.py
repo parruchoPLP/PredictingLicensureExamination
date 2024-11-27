@@ -13,6 +13,10 @@ model1_file_path = 'category_1_model.pkl'
 model2_file_path = 'category_2_model.pkl'
 model3_file_path = 'category_3_model.pkl'
 model4_file_path = 'category_4_model.pkl'
+
+# Load the pre-fitted scaler
+scaler = joblib.load("standard_scaler.pkl")
+
 try:
     model = joblib.load(model_file_path)
 except Exception as e:
@@ -96,8 +100,8 @@ def batch_predict():
             'ECE 155', 'ECE 162', 'ECE 160', 'ECE 163', 'ECE 164', 'ECE 166', 
             'ECE 167', 'ECE 168', 'ECE 202'
         ]
-        scaler = StandardScaler()
-        df_input[columns_to_standardize] = scaler.fit_transform(df_input[columns_to_standardize])
+
+        df_input[columns_to_standardize] = scaler.transform(df_input[columns_to_standardize])
 
         # Make predictions for new data
         predictions = model.predict(df_input[required_fields])
@@ -107,11 +111,11 @@ def batch_predict():
         predictions4 = model4.predict(df_input[required_fields])
 
         # Mapping numeric labels to categories (assuming binary classification: 0 - Fail, 1 - Pass)
-        df_input['SUB1'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions1]
-        df_input['SUB2'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions2]
-        df_input['SUB3'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions3]
-        df_input['SUB4'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions4]
-        df_input['PERFORMANCE'] = ['Pass' if pred == 1 else 'Fail' for pred in predictions]
+        df_input['SUB1'] = ['High' if pred == 1 else 'Low' for pred in predictions1]
+        df_input['SUB2'] = ['High' if pred == 1 else 'Low' for pred in predictions2]
+        df_input['SUB3'] = ['High' if pred == 1 else 'Low' for pred in predictions3]
+        df_input['SUB4'] = ['High' if pred == 1 else 'Low' for pred in predictions4]
+        df_input['PERFORMANCE'] = ['High' if pred == 1 else 'Low' for pred in predictions]
         df_input[columns_to_standardize] = scaler.inverse_transform(df_input[columns_to_standardize])
         df_input.rename(columns={'PERFORMANCE':'EXPECTED PERFORMANCE'}, inplace=True)
         # Convert DataFrame to CSV in-memory
@@ -202,6 +206,68 @@ def upload_file():
 
     return jsonify({'status': 'success', 'message': 'File uploaded successfully'}), 200
 
+# Endpoint for individual prediction
+@app.route('/individualpredict', methods=['POST'])
+def individual_predict():
+    if model is None:
+        return jsonify({'error': 'Model not loaded!'}), 500
+    if model1 is None:
+        return jsonify({'error': 'Model for Category 1 not loaded!'}), 500
+    if model2 is None:
+        return jsonify({'error': 'Model for Category 2 not loaded!'}), 500
+    if model3 is None:
+        return jsonify({'error': 'Model for Category 3 not loaded!'}), 500
+    if model4 is None:
+        return jsonify({'error': 'Model for Category 4 not loaded!'}), 500
+
+    try:
+        # Ensure JSON input is provided
+        if not request.is_json:
+            return jsonify({'error': 'JSON input is required'}), 400
+
+        # Parse JSON input
+        input_data = request.get_json()
+        df_input = pd.DataFrame([input_data])
+
+        # Required fields
+        required_fields = [
+            'ECE 111', 'ECE 112', 'ECE 114', 'ECE 121', 'ECE 122', 'ECE 131', 
+            'ECE 132', 'ECE 133', 'ECE 141', 'ECE 143', 'ECE 142', 'ECE 146', 
+            'ECE 152', 'ECE 153', 'ECE 156', 'ECE 151', 'ECE 154', 'ECE 158', 
+            'ECE 155', 'ECE 162', 'ECE 160', 'ECE 163', 'ECE 164', 'ECE 166', 
+            'ECE 167', 'ECE 168', 'ECE 202'
+        ]
+
+        # Check if all required fields are present
+        if not all(field in df_input.columns for field in required_fields):
+            return jsonify({'error': 'Missing required fields'}), 400
+
+        # Standardize the numerical features
+        columns_to_standardize = required_fields
+        df_input[columns_to_standardize] = scaler.transform(df_input[columns_to_standardize])
+
+        # Make predictions for new data
+        predictions = model.predict(df_input[required_fields])
+        predictions1 = model1.predict(df_input[required_fields])
+        predictions2 = model2.predict(df_input[required_fields])
+        predictions3 = model3.predict(df_input[required_fields])
+        predictions4 = model4.predict(df_input[required_fields])
+
+        # Mapping numeric labels to categories (assuming binary classification: 0 - Fail, 1 - Pass)
+        result = {
+            'SUB1': 'High' if predictions1[0] == 1 else 'Low',
+            'SUB2': 'High' if predictions2[0] == 1 else 'Low',
+            'SUB3': 'High' if predictions3[0] == 1 else 'Low',
+            'SUB4': 'High' if predictions4[0] == 1 else 'Low',
+            'PERFORMANCE': 'High' if predictions[0] == 1 else 'Low'
+        }
+
+        return jsonify(result)
+
+    except Exception as e:
+        app.logger.error("Prediction error: %s", e)
+        return jsonify({'error': f'Prediction error: {e}'}), 400
+    
 # Reload model endpoint
 @app.route('/reload-model', methods=['POST'])
 def reload_model():
@@ -209,6 +275,10 @@ def reload_model():
     try:
         # Reload the model by running the code in prcode.py
         exec(open("prcode.py").read())
+        exec(open("sub1.py").read())
+        exec(open("sub2.py").read())
+        exec(open("sub3.py").read())
+        exec(open("sub4.py").read())
         return jsonify({'status': 'success', 'message': 'Model reloaded successfully'}), 200
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Failed to reload model: {str(e)}'}), 500

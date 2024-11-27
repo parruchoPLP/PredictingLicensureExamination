@@ -57,15 +57,11 @@
             </table>
         </div>
         
-        <p class="<?= $fontColor ?> font-semibold">This student is: <span class="font-normal"><?= $expectedStatus ?></span></p>
+        <p id="expectedStatusDisplay"></p>
 
-        <?php if ($expectedStatus === 'Expected to Fail'): ?>
-            <p class="font-semibold">Reason: <span class="font-normal"><?= $reason ?></span></p>
-            <p class="font-semibold">Recommended Intervention: <span class="font-normal"><?= $recommendedIntervention ?></span></p>
-        <?php else: ?>
-            <p class="font-semibold">Potential Areas of Concern: <span class="font-normal"><?= $reason ?></span></p>
-            <p class="font-semibold">Suggested Actions: <span class="font-normal"><?= $recommendedIntervention ?></span></p>
-        <?php endif; ?>
+        <p id="reasonDisplay"></p>
+
+        <p id="interventionDisplay"></p>
     </div>
 </section>
 <script>
@@ -77,6 +73,9 @@
         const studentReport = document.getElementById('studReport');
         const studentIdDisplay = document.getElementById('studentIdDisplay');
         const coursesTable = document.getElementById('coursesTable');
+        const expectedStatusDisplay = document.getElementById('expectedStatusDisplay');
+        const reasonDisplay = document.getElementById('reasonDisplay');
+        const interventionDisplay = document.getElementById('interventionDisplay');
 
         const student = studentsData.find(student => student.id === studentIdInput);
 
@@ -90,12 +89,64 @@
                 </tr>
             `).join('');
             studentReport.classList.remove('hidden');
-            console.log('Student Courses:', student.courses);
+            
+            // Determine expected status
+            let expectedStatusMessage;
+            let expectedStatusClass;
+            const performance = student.performance;
+            if (performance === 'High') {
+                expectedStatusMessage = "Highly Likely to Pass";
+                expectedStatusClass = "font-semibold text-emerald-600";
+            } else if (performance === 'Low') {
+                expectedStatusMessage = "Less Likely to Pass";
+                expectedStatusClass = "font-semibold text-red-700";
+            }
+            expectedStatusDisplay.textContent = `This student is: ${expectedStatusMessage}`;
+            expectedStatusDisplay.classList = expectedStatusClass;
+
+            // Determine reason/potential areas of concern
+            const lowCategories = Object.entries(student.categories)
+                .filter(([category, value]) => value === 'Low')
+                .map(([category]) => {
+                    // Map SUB1 to "Category 1", SUB2 to "Category 2", etc.
+                    const categoryNumber = category.replace('SUB', '');
+                    return `Category ${categoryNumber}`;
+                });
+
+            // Format the categories list with proper grammar
+            const formattedCategories = lowCategories.length === 1
+                ? lowCategories[0]
+                : lowCategories.slice(0, -1).join(', ') + ' and ' + lowCategories.slice(-1);
+
+            // Generate the message based on performance
+            const reasonTitle = performance === 'High' ? "Potential Areas of Concern:" : "Reason:";
+            const reasonMessage = lowCategories.length > 0
+                ? `Highly Likely to fail in <span class="font-semibold">${formattedCategories}</span> of the exam.`
+                : "None identified.";
+
+            // Set the reason display
+            reasonDisplay.innerHTML = `<span class="font-semibold">${reasonTitle}</span> <span class="font-normal">${reasonMessage}</span>`;
+
+            // Set Suggested Action or Recommended Intervention
+            let interventionTitle;
+            let interventionMessage;
+            if (performance === 'High') {
+                interventionTitle = "Suggested Action:";
+                interventionMessage = lowCategories.length > 0
+                    ? "Focus on improving in the topics and courses under the aforementioned areas."
+                    : "Great job! Keep up the excellent work.";
+            } else {
+                interventionTitle = "Recommended Intervention:";
+                interventionMessage = "It is recommended to focus on improving more in the topics and courses under the aforementioned areas.";
+            }
+            interventionDisplay.innerHTML = `<span class="font-semibold">${interventionTitle}</span> <span class="font-normal">${interventionMessage}</span>`;
         } else {
             studentIdDisplay.textContent = '';
             coursesTable.innerHTML = '<tr><td colspan="3" class="p-2 text-center">No courses found</td></tr>';
+            expectedStatusDisplay.textContent = '';
+            reasonDisplay.textContent = '';
+            interventionDisplay.textContent = '';
             studentReport.classList.add('hidden');
-            console.log('Student Courses:', student);
         }
     }
 </script>

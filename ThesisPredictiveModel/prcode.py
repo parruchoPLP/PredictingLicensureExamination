@@ -78,6 +78,11 @@ scaler = StandardScaler()
 # Standardize the grades and age
 combined_df[columns_to_standardize] = scaler.fit_transform(combined_df[columns_to_standardize])
 
+# Save the fitted scaler
+scaler_file_path = "standard_scaler.pkl"
+joblib.dump(scaler, scaler_file_path)
+print("Scaler saved successfully as 'standard_scaler.pkl'")
+
 # Display the head of the DataFrame
 print("Head of the DataFrame:")
 print(combined_df.head())

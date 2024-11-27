@@ -13,7 +13,7 @@
     @stack('scripts')
     @yield('styles')
 </head>
-@if(!Request::is('login') && !Request::is('about') && !Request::is('guestpage'))
+@if(!Request::is('login') && !Request::is('about') && !Request::is('guestpage') && !Request::is('indivpredict'))
 <body class="bg-gray-100 overflow-x-hidden {{ session('darkmode') ? 'dark' : '' }}">
     <header>
         <x-navigationbar />
@@ -77,7 +77,7 @@
     </main>
 </body>
 @endif
-@if(Request::is('guestpage'))
+@if(Request::is('guestpage') || Request::is('indivpredict'))
 <body class="bg-gray-100 overflow-x-hidden {{ session('darkmode') ? 'dark' : '' }}">
     <main>
         @yield('content')

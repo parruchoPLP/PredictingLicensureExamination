@@ -17,7 +17,7 @@
             </a>
         </li>
         <li class="group">
-            <a href="/filemanagement" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-800 hover:font-bold {{ request()->is('filemanagement', 'report') ? 'text-emerald-500 font-bold' : '' }}">
+            <a href="/filemanagement" class="block p-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-800 hover:font-bold {{ request()->is('filemanagement', 'report', 'indivReport') ? 'text-emerald-500 font-bold' : '' }}">
                 <i class="fa fa-folder"></i>
                 <span class="hidden group-hover:inline ml-4">Files</span>
             </a>

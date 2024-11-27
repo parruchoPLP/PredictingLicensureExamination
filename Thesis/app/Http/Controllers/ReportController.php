@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DataImport; // Create this import class
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 
 class ReportController extends Controller
 {
@@ -37,9 +38,9 @@ class ReportController extends Controller
             'ECE 163' => 'DIGITAL ELECTRONICS 2: MICROPROCESSOR, MICROCONTROLLER SYSTEM AND DESIGN',
             'ECE 164' => 'FEEDBACK AND CONTROL SYSTEMS',
             'ECE 166' => 'DESIGN 1/CAPSTONE PROJECT 1',
-            'ECE 167' => 'ECE ELECTIVE: INDUSTRIAL ELECTRONICS',
-            'ECE 168' => 'DESIGN 2/ CAPSTONE PROJECT 2',
-            'ECE 202' => 'SEMINARS/COLLOQUIUM',
+            'ECE 167' => 'DESIGN 2/ CAPSTONE PROJECT 2',
+            'ECE 168' => 'SEMINARS/COLLOQUIUM',
+            'ECE 202' => 'ECE ELECTIVE: INDUSTRIAL ELECTRONICS',
         ];
 
         $filename = $request->query('file', 'No file selected'); 
@@ -89,8 +90,8 @@ class ReportController extends Controller
         $totalRecords = $paginator->total();
 
         // Calculate pass and fail counts
-        $passCount = $report->where('EXPECTED_PERFORMANCE', 'Pass')->count();
-        $failCount = $report->where('EXPECTED_PERFORMANCE', 'Fail')->count();
+        $passCount = $report->where('EXPECTED_PERFORMANCE', 'High')->count();
+        $failCount = $report->where('EXPECTED_PERFORMANCE', 'Low')->count();
 
         $passFailData = [
             'pass' => $passCount,
@@ -202,9 +203,9 @@ class ReportController extends Controller
             'ECE 163' => 'DIGITAL ELECTRONICS 2: MICROPROCESSOR, MICROCONTROLLER SYSTEM AND DESIGN',
             'ECE 164' => 'FEEDBACK AND CONTROL SYSTEMS',
             'ECE 166' => 'DESIGN 1/CAPSTONE PROJECT 1',
-            'ECE 167' => 'ECE ELECTIVE: INDUSTRIAL ELECTRONICS',
-            'ECE 168' => 'DESIGN 2/ CAPSTONE PROJECT 2',
-            'ECE 202' => 'SEMINARS/COLLOQUIUM',
+            'ECE 167' => 'DESIGN 2/ CAPSTONE PROJECT 2',
+            'ECE 168' => 'SEMINARS/COLLOQUIUM',
+            'ECE 202' => 'ECE ELECTIVE: INDUSTRIAL ELECTRONICS',
         ];
 
         $filename = $request->query('file', 'No file selected'); 
@@ -265,4 +266,43 @@ class ReportController extends Controller
         return view('indivReport', compact('students', 'studentsData'));
     }
 
+    public function getPrediction(Request $request)
+    {
+        $inputData = $request->all();
+
+        // Iterate through the input data and format course codes
+        $formattedData = [];
+        foreach ($inputData as $courseCode => $grade) {
+            // Replace underscores with spaces in the course code
+            $formattedCourseCode = str_replace('_', ' ', $courseCode);
+            $formattedData[$formattedCourseCode] = $grade;
+        }
+
+        // Convert formatted data to JSON format and save to a temporary file
+        $jsonData = json_encode($formattedData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $tempFilePath = storage_path('app/temp_input.json');
+        file_put_contents($tempFilePath, $jsonData);
+
+        // Send the data to Flask for processing
+        $response = Http::withBody($jsonData, 'application/json')
+        ->post('http://localhost:5000/individualpredict');
+
+        if ($response->successful()) {
+            // Decode the JSON response
+            $responseData = $response->json();
+    
+            // Extract categories and performance
+            $categories = [
+                'SUB1' => $responseData['SUB1'],
+                'SUB2' => $responseData['SUB2'],
+                'SUB3' => $responseData['SUB3'],
+                'SUB4' => $responseData['SUB4'],
+            ];
+            $performance = $responseData['PERFORMANCE'];
+    
+            return view('guestReport', compact('categories', 'performance'));
+        } else {
+            return back()->withErrors(['failed_upload' => 'Error! Check the data format and attributes.']);
+        }
+    }
 }

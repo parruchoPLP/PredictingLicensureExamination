@@ -44,8 +44,8 @@
             <label for="result" class="block font-semibold mr-3">Result:</label>
             <select name="result" id="result" onchange="document.getElementById('filterForm').submit();" class="w-full text-sm dark:bg-slate-800 rounded-full border-slate-300 focus:ring-emerald-500 focus:bg-emerald-50 focus:border-emerald-200 dark:text-slate-300 dark:focus:bg-transparent">
                 <option value="All" {{ request('result') == 'All' ? 'selected' : '' }}>All</option>
-                <option value="Pass" {{ request('result') == 'Pass' ? 'selected' : '' }}>Pass</option>
-                <option value="Fail" {{ request('result') == 'Fail' ? 'selected' : '' }}>Fail</option>
+                <option value="High" {{ request('result') == 'High' ? 'selected' : '' }}>High</option>
+                <option value="Low" {{ request('result') == 'Low' ? 'selected' : '' }}>Low</option>
             </select>
         </div>
 
@@ -75,6 +75,8 @@
                                     <h3 class="font-semibold text-gray-900 dark:text-white">
                                         @if (in_array(strtoupper(str_replace('_', ' ', $header)), ['STUDENT ID', 'GENDER', 'EXPECTED PERFORMANCE']))
                                             FEATURE
+                                        @elseif (in_array(strtoupper(str_replace('_', ' ', $header)), ['SUB1', 'SUB2', 'SUB3', 'SUB4']))
+                                            EXPECTED PERFORMANCE
                                         @else
                                             {{ strtoupper(str_replace('_', ' ', $header)) }}
                                         @endif
@@ -83,6 +85,8 @@
                                 <div class="px-3 py-2">
                                     <p>
                                         @if (in_array(strtoupper(str_replace('_', ' ', $header)), ['STUDENT ID', 'GENDER', 'EXPECTED PERFORMANCE']))
+                                            {{ strtoupper(str_replace('_', ' ', $header)) }}
+                                        @elseif (in_array(strtoupper(str_replace('_', ' ', $header)), ['SUB1', 'SUB2', 'SUB3', 'SUB4']))
                                             {{ strtoupper(str_replace('_', ' ', $header)) }}
                                         @else
                                             {{ $courseDictionary[strtoupper(trim(str_replace('_', ' ', $header)))] ?? 'Unknown Feature' }}
@@ -100,9 +104,9 @@
                     @php
                         $lastValue = end($row);
                     @endphp
-                    <tr class="border-b group {{ $lastValue == 'Pass' ? 'hover:bg-emerald-100 dark:hover:bg-slate-800 dark:hover:text-emerald-400' : ($lastValue == 'Fail' ? 'hover:bg-red-100 dark:hover:text-red-400 dark:hover:bg-slate-800' : '') }}">
+                    <tr class="border-b group {{ $lastValue == 'High' ? 'hover:bg-emerald-100 dark:hover:bg-slate-800 dark:hover:text-emerald-400' : ($lastValue == 'Low' ? 'hover:bg-red-100 dark:hover:text-red-400 dark:hover:bg-slate-800' : '') }}">
                         @foreach($row as $key => $value)
-                        <td class="py-2 px-4 whitespace-nowrap @if($loop->first) sticky left-0 z-5 bg-white dark:bg-slate-800 {{ $lastValue == 'Pass' ? 'group-hover:bg-emerald-100 dark:group-hover:bg-slate-800 dark:hover:text-emerald-900 dark:bg-slate-800 dark:group-hover:text-emerald-400' : ($lastValue == 'Fail' ? 'group-hover:bg-red-100 dark:group-hover:bg-slate-800 dark:hover:text-red-900 dark:bg-slate-800 dark:group-hover:text-red-400' : '') }} @endif @if($loop->last) sticky right-0 z-5 {{ $key == 'EXPECTED_PERFORMANCE' && $value == 'Pass' ? 'bg-emerald-100 dark:bg-slate-800 text-black dark:text-emerald-400' : ($key == 'EXPECTED_PERFORMANCE' && $value == 'Fail' ? 'bg-red-100 dark:bg-slate-800 text-black dark:text-red-400' : '') }}@endif">
+                        <td class="py-2 px-4 whitespace-nowrap @if($loop->first) sticky left-0 z-5 bg-white dark:bg-slate-800 {{ $lastValue == 'High' ? 'group-hover:bg-emerald-100 dark:group-hover:bg-slate-800 dark:hover:text-emerald-900 dark:bg-slate-800 dark:group-hover:text-emerald-400' : ($lastValue == 'Low' ? 'group-hover:bg-red-100 dark:group-hover:bg-slate-800 dark:hover:text-red-900 dark:bg-slate-800 dark:group-hover:text-red-400' : '') }} @endif @if($loop->last) sticky right-0 z-5 {{ $key == 'EXPECTED_PERFORMANCE' && $value == 'High' ? 'bg-emerald-100 dark:bg-slate-800 text-black dark:text-emerald-400' : ($key == 'EXPECTED_PERFORMANCE' && $value == 'Low' ? 'bg-red-100 dark:bg-slate-800 text-black dark:text-red-400' : '') }}@endif">
                             {{ $value }}
                         </td>
                         @endforeach
@@ -116,10 +120,19 @@
             {{ $paginator->links() }}
         </div>
     </div>
+
+    <!-- Legend Section -->
+    <div class="mt-4 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-md">
+        <p class="text-sm text-gray-700 dark:text-gray-300 font-medium">Legend:</p>
+        <ul class="text-sm text-gray-600 dark:text-gray-400 mt-2 list-disc list-inside">
+            <li><span class="font-bold">High:</span> Highly Likely to Pass</li>
+            <li><span class="font-bold">Low:</span> Less Likely to Pass</li>
+        </ul>
+    </div>
     <h1 class="text-xl font-bold"> Report Summary: </h1>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-white rounded-xl shadow-md p-8 dark:bg-slate-700">
-            <h2 class="text-md font-bold">Pass/Fail Rate</h2>
+            <h2 class="text-md font-bold">Passing Rate</h2>
                 <div class="flex flex-col items-center justify-center p-6">
                     <canvas id="passFailRateChart" class="max-w-[150px] max-h-[150px]"></canvas>
                     <div class="mt-8">

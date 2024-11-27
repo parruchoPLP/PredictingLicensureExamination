@@ -28,6 +28,7 @@ Route::post('/authenticate', [UserController::class, 'authenticate'])->name('aut
 Route::get('/about', function () {
     return view('about');
 })->name('about');
+Route::post('/indivpredict', [ReportController::class, 'getPrediction'])->name('individual.predict');
 
 Route::get('/', function () {
     if (Auth::check()) {

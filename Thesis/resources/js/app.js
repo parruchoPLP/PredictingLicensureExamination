@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Pass', 'Fail'],
+            labels: ['High', 'Low'],
             datasets: [{
                 data: [passFailData.pass, passFailData.fail],
                 backgroundColor: ['#34D399', '#F87171'],
@@ -400,11 +400,11 @@ document.addEventListener('DOMContentLoaded', function () {
     passFailLegend.innerHTML = `
         <li class="flex items-center">
             <div class="w-4 h-4 bg-[#34D399] mr-2"></div>
-            <span>Predicted to pass: ${passFailData.pass} (${passPercentage}%)</span>
+            <span>Highly Likely to pass: ${passFailData.pass} (${passPercentage}%)</span>
         </li>
         <li class="flex items-center mt-2">
             <div class="w-4 h-4 bg-[#F87171] mr-2"></div>
-            <span>Predicted to fail: ${passFailData.fail} (${failPercentage}%)</span>
+            <span>Less Likely to pass: ${passFailData.fail} (${failPercentage}%)</span>
         </li>
     `;
 });
