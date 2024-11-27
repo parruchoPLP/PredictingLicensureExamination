@@ -93,7 +93,7 @@
         </div>
 
         <!-- Progress Steps -->
-        <div class="flex justify-center mb-6 steps">
+        <div class="flex justify-center steps">
             @for($i = 0; $i < 12; $i++)
                 <div class="step @if($i == 0) step-primary @endif"></div>
             @endfor
@@ -103,10 +103,10 @@
             @csrf
             <!-- Intro Section -->
             <div id="intro-section" class="">
-                <div class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl"> 
+                <div class="border-b border-slate-200 dark:border-slate-800 px-8 pb-6 rounded-t-xl"> 
                     <p class="text-xl font-bold text-emerald-600 dark:text-emerald-400">Enter Your Grades</p>
                 </div>
-                <p class="text-md px-8">
+                <p class="text-md px-8 mt-8">
                     Please enter your grades in the following technical courses. Answer honestly as the prediction will be based on your inputs.
                     <br><br>
                     <strong>Note:</strong> This prediction is intended for early guidance and support, and should not be seen as a final determination of your performance.
@@ -117,7 +117,7 @@
                 <div class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
                     <p class="font-bold text-xl text-emerald-600 dark:text-emerald-400">Mathematics Courses</p>
                 </div>
-                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg p-8">
+                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg m-8">
                     <table class="table-auto w-full text-slate-800 dark:text-slate-200 border-collapse">
                         <thead>
                             <tr class="bg-emerald-100 dark:bg-emerald-700 border-b-2 border-slate-400 dark:border-slate-700">
@@ -135,7 +135,7 @@
                                         <select id="mathcourses" name="{{ $key }}" class="grade-select border-transparent focus:ring-transparent focus:border-emerald-300 w-full focus:rounded-lg dark:bg-transparent" required>
                                         @endif
                                     @endforeach
-                                        <option value="" disabled selected>Select Grade</option>
+                                        <option class="text-slate-900 dark:text-white dark:bg-slate-800" value="" disabled selected>Select Grade</option>
                                         @foreach($grades as $grade)
                                             <option value="{{ $grade }}" class="dark:bg-slate-800" >{{ $grade }}</option>
                                         @endforeach
@@ -149,10 +149,10 @@
             </div>
 
             <div id="step2" class="hidden step-content">
-                <div class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
+                <div class="border-b border-slate-200 dark:border-slate-800 px-8 pb-6 rounded-t-xl">
                     <p class="font-bold text-xl text-emerald-600 dark:text-emerald-400">Natural/Physical Sciences Courses</p>
                 </div>
-                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg p-8">
+                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg m-8">
                     <table class="table-auto w-full text-slate-800 dark:text-slate-200 border-collapse">
                         <thead>
                             <tr class="bg-emerald-100 dark:bg-emerald-700 border-b-2 border-slate-400 dark:border-slate-700">
@@ -170,7 +170,7 @@
                                         <select id="natscicourses" name="{{ $key }}" class="grade-select border-transparent focus:ring-transparent focus:border-emerald-300 w-full focus:rounded-lg dark:bg-transparent" required>
                                         @endif
                                     @endforeach
-                                        <option value="" disabled selected>Select Grade</option>
+                                        <option class="text-slate-900 dark:text-white dark:bg-slate-800" value="" disabled selected>Select Grade</option>
                                         @foreach($grades as $grade)
                                             <option value="{{ $grade }}" class="dark:bg-slate-800" >{{ $grade }}</option>
                                         @endforeach
@@ -184,10 +184,10 @@
             </div>
 
             <div id="step3" class="hidden step-content">
-                <div class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
+                <div class="border-b border-slate-200 dark:border-slate-800 px-8 pb-6 rounded-t-xl">
                     <p class="font-bold text-xl text-emerald-600 dark:text-emerald-400">Basic Engineering Sciences Courses</p>
                 </div>
-                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg p-8">
+                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg m-8">
                     <table class="table-auto w-full text-slate-800 dark:text-slate-200 border-collapse">
                         <thead>
                             <tr class="bg-emerald-100 dark:bg-emerald-700 border-b-2 border-slate-400 dark:border-slate-700">
@@ -205,7 +205,7 @@
                                         <select id="basenscicourses" name="{{ $key }}" class="grade-select border-transparent focus:ring-transparent focus:border-emerald-300 w-full focus:rounded-lg dark:bg-transparent" required>
                                         @endif
                                     @endforeach
-                                        <option value="" disabled selected>Select Grade</option>
+                                        <option class="text-slate-900 dark:text-white dark:bg-slate-800" value="" disabled selected>Select Grade</option>
                                         @foreach($grades as $grade)
                                             <option value="{{ $grade }}" class="dark:bg-slate-800" >{{ $grade }}</option>
                                         @endforeach
@@ -219,10 +219,10 @@
             </div>
 
             <div id="step4" class="hidden step-content">
-                <div class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
+                <div class="border-b border-slate-200 dark:border-slate-800 px-8 pb-6 rounded-t-xl">
                     <p class="font-bold text-xl text-emerald-600 dark:text-emerald-400">Allied Courses</p>
                 </div>
-                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg p-8">
+                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg m-8">
                     <table class="table-auto w-full text-slate-800 dark:text-slate-200 border-collapse">
                         <thead>
                             <tr class="bg-emerald-100 dark:bg-emerald-700 border-b-2 border-slate-400 dark:border-slate-700">
@@ -240,7 +240,7 @@
                                         <select id="alliedcourses" name="{{ $key }}" class="grade-select border-transparent focus:ring-transparent focus:border-emerald-300 w-full focus:rounded-lg dark:bg-transparent" required>
                                         @endif
                                     @endforeach
-                                        <option value="" disabled selected>Select Grade</option>
+                                        <option class="text-slate-900 dark:text-white dark:bg-slate-800" value="" disabled selected>Select Grade</option>
                                         @foreach($grades as $grade)
                                             <option value="{{ $grade }}" class="dark:bg-slate-800" >{{ $grade }}</option>
                                         @endforeach
@@ -254,10 +254,10 @@
             </div>
 
             <div id="step5" class="hidden step-content">
-                <div class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
+                <div class="border-b border-slate-200 dark:border-slate-800 px-8 pb-6 rounded-t-xl">
                     <p class="font-bold text-xl text-emerald-600 dark:text-emerald-400">Professional Courses</p>
                 </div>
-                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg p-8">
+                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg m-8">
                     <table class="table-auto w-full text-slate-800 dark:text-slate-200 border-collapse">
                         <thead>
                             <tr class="bg-emerald-100 dark:bg-emerald-700 border-b-2 border-slate-400 dark:border-slate-700">
@@ -275,7 +275,7 @@
                                         <select id="profcourses" name="{{ $key }}" class="grade-select border-transparent focus:ring-transparent focus:border-emerald-300 w-full focus:rounded-lg dark:bg-transparent" required>
                                         @endif
                                     @endforeach
-                                        <option value="" disabled selected>Select Grade</option>
+                                        <option class="text-slate-900 dark:text-white dark:bg-slate-800" value="" disabled selected>Select Grade</option>
                                         @foreach($grades as $grade)
                                             <option value="{{ $grade }}" class="dark:bg-slate-800" >{{ $grade }}</option>
                                         @endforeach
@@ -289,10 +289,10 @@
             </div>
 
             <div id="step6" class="hidden step-content">
-                <div class="border-b border-slate-200 dark:border-slate-800 px-8 py-6 rounded-t-xl">
+                <div class="border-b border-slate-200 dark:border-slate-800 px-8 pb-6 rounded-t-xl">
                     <p class="font-bold text-xl text-emerald-600 dark:text-emerald-400">Technical Elective Courses</p>
                 </div>
-                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg p-8">
+                <div class="max-h-64 overflow-y-auto border border-slate-300 dark:border-slate-600 rounded-lg m-8">
                     <table class="table-auto w-full text-slate-800 dark:text-slate-200 border-collapse">
                         <thead>
                             <tr class="bg-emerald-100 dark:bg-emerald-700 border-b-2 border-slate-400 dark:border-slate-700">
@@ -310,7 +310,7 @@
                                         <select id="techelecourses" name="{{ $key }}" class="grade-select border-transparent focus:ring-transparent focus:border-emerald-300 w-full focus:rounded-lg dark:bg-transparent" required>
                                         @endif
                                     @endforeach
-                                        <option value="" disabled selected>Select Grade</option>
+                                        <option class="text-slate-900 dark:text-white dark:bg-slate-800" value="" disabled selected>Select Grade</option>
                                         @foreach($grades as $grade)
                                             <option value="{{ $grade }}" class="dark:bg-slate-800" >{{ $grade }}</option>
                                         @endforeach
@@ -324,7 +324,7 @@
             </div>
             
             <!-- Navigation Buttons -->
-            <div class="flex justify-between px-8 py-4">
+            <div class="flex justify-between px-8 pt-4 pb-8">
                 <button type="button" id="prevStep" class="hidden py-2.5 px-8 text-sm font-medium rounded-lg bg-transparent border border-emerald-200 hover:bg-emerald-300 dark:text-white dark:hover:bg-emerald-600 focus:ring-2 focus:outline-none focus:ring-emerald-300 dark:focus:ring-emerald-800">
                     Previous
                 </button>
