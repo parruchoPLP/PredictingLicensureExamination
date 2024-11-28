@@ -101,7 +101,7 @@
             interventionTitle = "Suggested Action:";
             interventionMessage = lowCategories.length > 0
                 ? "Focus on improving in the topics and courses under the aforementioned areas."
-                : "Great job! Keep up the excellent work.";
+                : "Great job so far! Don't get complacent—this is just a prediction. Stay focused and keep working hard to maintain your performance.";
         } else {
             interventionTitle = "Recommended Intervention:";
             interventionMessage = "It is recommended to focus on improving more in the topics and courses under the aforementioned areas.";
